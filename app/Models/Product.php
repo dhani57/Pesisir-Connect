@@ -134,13 +134,16 @@ class Product extends Model
         return "https://wa.me/{$phone}?text={$message}";
     }
 
-    /** Thumbnail URL with fallback. */
     public function getThumbnailUrlAttribute(): string
     {
+        if ($this->thumbnail && str_starts_with($this->thumbnail, 'http')) {
+            return $this->thumbnail;
+        }
+
         if ($this->thumbnail && file_exists(public_path($this->thumbnail))) {
             return asset($this->thumbnail);
         }
 
-        return asset('images/products/placeholder.png');
+        return 'https://placehold.co/800x600/0ea5e9/ffffff?text=PesisirConnect';
     }
 }

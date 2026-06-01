@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Island Hopping Boat Pahawang', 'location' => 'Pahawang', 'price' => 750000, 'capacity' => 15],
         ];
 
-        foreach ($boatNames as $boat) {
+        foreach ($boatNames as $index => $boat) {
             Product::factory()->create([
                 'user_id'           => $vendors->random()->id,
                 'category_id'       => $categories[0]->id,
@@ -81,7 +81,7 @@ class DatabaseSeeder extends Seeder
                 'capacity'          => $boat['capacity'],
                 'facilities'        => ['Life Jacket', 'Guide', 'P3K', 'Air Mineral'],
                 'is_featured'       => true,
-                'thumbnail'         => 'images/categories/boat.png',
+                'thumbnail'         => 'https://loremflickr.com/800/600/boat?random=' . $index,
             ]);
         }
 
@@ -94,7 +94,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Snorkeling Gear Kiluan Bay', 'location' => 'Teluk Kiluan', 'price' => 75000],
         ];
 
-        foreach ($snorkelNames as $snorkel) {
+        foreach ($snorkelNames as $index => $snorkel) {
             Product::factory()->create([
                 'user_id'           => $vendors->random()->id,
                 'category_id'       => $categories[1]->id,
@@ -104,7 +104,7 @@ class DatabaseSeeder extends Seeder
                 'price_unit'        => 'set',
                 'facilities'        => ['Masker', 'Snorkel', 'Fin', 'Life Jacket'],
                 'is_featured'       => true,
-                'thumbnail'         => 'images/categories/snorkeling.png',
+                'thumbnail'         => 'https://loremflickr.com/800/600/snorkeling?random=' . $index,
             ]);
         }
 
@@ -119,7 +119,7 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Rumah Pantai Krui Surf House', 'location' => 'Krui', 'price' => 600000, 'capacity' => 8],
         ];
 
-        foreach ($homestayNames as $homestay) {
+        foreach ($homestayNames as $index => $homestay) {
             Product::factory()->create([
                 'user_id'           => $vendors->random()->id,
                 'category_id'       => $categories[2]->id,
@@ -133,7 +133,7 @@ class DatabaseSeeder extends Seeder
                     fake()->numberBetween(3, 6)
                 ),
                 'is_featured'       => true,
-                'thumbnail'         => 'images/categories/homestay.png',
+                'thumbnail'         => 'https://loremflickr.com/800/600/homestay?random=' . $index,
             ]);
         }
     }
