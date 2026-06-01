@@ -40,13 +40,13 @@
                    id="nav-catalog">
                     Katalog
                 </a>
-                <a href="#destinasi"
+                <a href="{{ route('destinasi') }}"
                    :class="scrolled ? 'text-gray-700 hover:text-ocean-600' : 'text-white/90 hover:text-white'"
                    class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200"
                    id="nav-destinations">
                     Destinasi
                 </a>
-                <a href="#tentang"
+                <a href="{{ route('tentang') }}"
                    :class="scrolled ? 'text-gray-700 hover:text-ocean-600' : 'text-white/90 hover:text-white'"
                    class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200"
                    id="nav-about">
@@ -128,8 +128,8 @@
         <div class="px-4 py-4 space-y-1">
             <a href="{{ route('home') }}" class="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Beranda</a>
             <a href="{{ route('catalog') }}" class="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Katalog</a>
-            <a href="#destinasi" @click="open = false" class="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Destinasi</a>
-            <a href="#tentang" @click="open = false" class="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Tentang</a>
+            <a href="{{ route('destinasi') }}" class="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Destinasi</a>
+            <a href="{{ route('tentang') }}" class="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Tentang</a>
 
             <hr class="my-3 border-gray-100">
 
