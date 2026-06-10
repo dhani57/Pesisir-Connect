@@ -30,26 +30,45 @@
 
             {{-- Desktop Navigation --}}
             <div class="hidden md:flex items-center gap-1">
-                <a href="{{ route('home') }}"
-                   :class="scrolled ? '{{ request()->routeIs('home') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('home') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
-                   class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
-                    Beranda
-                </a>
-                <a href="{{ route('catalog') }}"
-                   :class="scrolled ? '{{ request()->routeIs('catalog') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('catalog') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
-                   class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
-                    Katalog
-                </a>
-                <a href="{{ route('destinasi') }}"
-                   :class="scrolled ? '{{ request()->routeIs('destinasi') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('destinasi') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
-                   class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
-                    Destinasi
-                </a>
-                <a href="{{ route('tentang') }}"
-                   :class="scrolled ? '{{ request()->routeIs('tentang') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('tentang') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
-                   class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
-                    Tentang
-                </a>
+                @guest
+                    <a href="{{ route('catalog') }}"
+                       :class="scrolled ? '{{ request()->routeIs('catalog') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('catalog') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
+                       class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
+                        Katalog
+                    </a>
+                    <a href="{{ route('destinasi') }}"
+                       :class="scrolled ? '{{ request()->routeIs('destinasi') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('destinasi') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
+                       class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
+                        Destinasi
+                    </a>
+                    <a href="{{ route('tentang') }}"
+                       :class="scrolled ? '{{ request()->routeIs('tentang') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('tentang') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
+                       class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
+                        Tentang
+                    </a>
+                @else
+                    <a href="{{ route('dashboard') }}"
+                       :class="scrolled ? '{{ request()->routeIs('dashboard') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('dashboard') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
+                       class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
+                        Dashboard
+                    </a>
+                    <a href="{{ route('catalog') }}"
+                       :class="scrolled ? '{{ request()->routeIs('catalog') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('catalog') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
+                       class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
+                        Katalog
+                    </a>
+                    <a href="{{ route('destinasi') }}"
+                       :class="scrolled ? '{{ request()->routeIs('destinasi') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('destinasi') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
+                       class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
+                        Destinasi
+                    </a>
+                    <a href="{{ route('wishlist.index') }}"
+                       :class="scrolled ? '{{ request()->routeIs('wishlist.index') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('wishlist.index') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
+                       class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
+                        Simpan
+                    </a>
+                @endguest
             </div>
 
             {{-- Desktop Auth Buttons --}}
@@ -124,20 +143,26 @@
          class="md:hidden bg-white/95 backdrop-blur-xl border-t border-gray-100 shadow-lg"
          id="mobile-menu">
         <div class="px-4 py-4 space-y-1">
-            <a href="{{ route('home') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('home') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Beranda</a>
-            <a href="{{ route('catalog') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('catalog') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Katalog</a>
-            <a href="{{ route('destinasi') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('destinasi') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Destinasi</a>
-            <a href="{{ route('tentang') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('tentang') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Tentang</a>
-
-            <hr class="my-3 border-gray-100">
-
             @guest
+                <a href="{{ route('catalog') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('catalog') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Katalog</a>
+                <a href="{{ route('destinasi') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('destinasi') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Destinasi</a>
+                <a href="{{ route('tentang') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('tentang') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Tentang</a>
+                
+                <hr class="my-3 border-gray-100">
                 <div class="flex gap-3 pt-2">
                     <a href="{{ route('login') }}" class="btn-outline flex-1 !py-2.5 text-center">Masuk</a>
                     <a href="{{ route('register') }}" class="btn-primary flex-1 !py-2.5 text-center">Daftar</a>
                 </div>
             @else
                 <a href="{{ route('dashboard') }}" class="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Dashboard</a>
+                <a href="{{ route('catalog') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('catalog') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Katalog</a>
+                <a href="{{ route('destinasi') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('destinasi') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Destinasi</a>
+                <a href="{{ route('wishlist.index') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors flex items-center justify-between {{ request()->routeIs('wishlist.index') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">
+                    <span>Simpan</span>
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
+                </a>
+                
+                <hr class="my-3 border-gray-100">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">Keluar</button>

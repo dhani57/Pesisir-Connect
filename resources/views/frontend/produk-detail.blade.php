@@ -45,8 +45,19 @@
                     </div>
 
                     {{-- Informasi Utama --}}
-                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
-                        <div class="flex flex-wrap items-center gap-3 mb-4">
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 relative">
+                        @auth
+                            <form action="{{ route('wishlist.toggle', $product->id) }}" method="POST" class="absolute top-6 right-6">
+                                @csrf
+                                <button type="submit" class="w-10 h-10 rounded-full flex items-center justify-center transition-colors {{ $isSaved ? 'bg-red-50 text-red-500 hover:bg-red-100' : 'bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-500' }}" title="{{ $isSaved ? 'Hapus dari Simpanan' : 'Simpan Wisata' }}">
+                                    <svg class="w-6 h-6" fill="{{ $isSaved ? 'currentColor' : 'none' }}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                    </svg>
+                                </button>
+                            </form>
+                        @endauth
+
+                        <div class="flex flex-wrap items-center gap-3 mb-4 pr-12">
                             <span class="px-3 py-1 text-xs font-semibold rounded-full bg-ocean-50 text-ocean-700">{{ $product->category->name }}</span>
                             <span class="flex items-center text-sm text-gray-500">
                                 <svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -97,6 +108,7 @@
                             </div>
                         </div>
 
+                        @auth
                         <form action="{{ route('checkout', $product->slug) }}" method="POST" class="space-y-5">
                             @csrf
                             
@@ -136,6 +148,39 @@
                                 Proses checkout terenkripsi
                             </p>
                         </form>
+                        @else
+                        <div class="space-y-5">
+                            {{-- Date Picker (Disabled) --}}
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Pilih Tanggal</label>
+                                <div class="relative opacity-50 cursor-not-allowed">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                    </div>
+                                    <input type="date" disabled
+                                           class="w-full pl-10 pr-3 py-2.5 rounded-xl border-gray-200 text-sm bg-gray-50 cursor-not-allowed">
+                                </div>
+                            </div>
+
+                            {{-- Quantity (Disabled) --}}
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Jumlah / Pax</label>
+                                <div class="relative opacity-50 cursor-not-allowed">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                                    </div>
+                                    <input type="number" disabled value="1"
+                                           class="w-full pl-10 pr-3 py-2.5 rounded-xl border-gray-200 text-sm bg-gray-50 cursor-not-allowed">
+                                </div>
+                            </div>
+
+                            {{-- CTA Button (Login) --}}
+                            <a href="{{ route('login') }}" class="w-full inline-flex justify-center items-center gap-2 px-4 py-3.5 bg-gray-800 hover:bg-gray-900 text-white text-sm font-bold rounded-xl transition-colors active:scale-[0.98] shadow-md shadow-gray-800/20">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+                                Login untuk Memesan
+                            </a>
+                        </div>
+                        @endauth
                     </div>
                 </div>
 

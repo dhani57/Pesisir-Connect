@@ -21,6 +21,13 @@ class ProductController extends Controller
             ->orWhere('id', $slug)
             ->firstOrFail();
 
-        return view('frontend.produk-detail', compact('product'));
+        $isSaved = false;
+        if (auth()->check()) {
+            $isSaved = \App\Models\Wishlist::where('user_id', auth()->id())
+                ->where('product_id', $product->id)
+                ->exists();
+        }
+
+        return view('frontend.produk-detail', compact('product', 'isSaved'));
     }
 }
