@@ -18,11 +18,14 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                        {{ __('Beranda') }}
-                    </x-nav-link>
                     <x-nav-link :href="route('catalog')" :active="request()->routeIs('catalog')">
                         {{ __('Katalog') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('destinasi')" :active="request()->routeIs('destinasi')">
+                        {{ __('Destinasi') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('wishlist.index')" :active="request()->routeIs('wishlist.index')">
+                        {{ __('Simpan') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -79,11 +82,14 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
-                {{ __('Beranda') }}
-            </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('catalog')" :active="request()->routeIs('catalog')">
                 {{ __('Katalog') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('destinasi')" :active="request()->routeIs('destinasi')">
+                {{ __('Destinasi') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('wishlist.index')" :active="request()->routeIs('wishlist.index')">
+                {{ __('Simpan') }}
             </x-responsive-nav-link>
         </div>
 

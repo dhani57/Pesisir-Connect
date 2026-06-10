@@ -31,10 +31,10 @@
             {{-- Desktop Navigation --}}
             <div class="hidden md:flex items-center gap-1">
                 @guest
-                    <a href="{{ route('catalog') }}"
-                       :class="scrolled ? '{{ request()->routeIs('catalog') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('catalog') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
+                    <a href="{{ route('home') }}"
+                       :class="scrolled ? '{{ request()->routeIs('home') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('home') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
                        class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
-                        Katalog
+                        Beranda
                     </a>
                     <a href="{{ route('destinasi') }}"
                        :class="scrolled ? '{{ request()->routeIs('destinasi') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('destinasi') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
@@ -64,8 +64,7 @@
                     </a>
                     <a href="{{ route('wishlist.index') }}"
                        :class="scrolled ? '{{ request()->routeIs('wishlist.index') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('wishlist.index') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
-                       class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200 flex items-center gap-1">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
+                       class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
                         Simpan
                     </a>
                 @endguest
@@ -144,7 +143,7 @@
          id="mobile-menu">
         <div class="px-4 py-4 space-y-1">
             @guest
-                <a href="{{ route('catalog') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('catalog') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Katalog</a>
+                <a href="{{ route('home') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('home') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Beranda</a>
                 <a href="{{ route('destinasi') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('destinasi') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Destinasi</a>
                 <a href="{{ route('tentang') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('tentang') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Tentang</a>
                 
@@ -157,9 +156,8 @@
                 <a href="{{ route('dashboard') }}" class="block px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Dashboard</a>
                 <a href="{{ route('catalog') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('catalog') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Katalog</a>
                 <a href="{{ route('destinasi') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('destinasi') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Destinasi</a>
-                <a href="{{ route('wishlist.index') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors flex items-center justify-between {{ request()->routeIs('wishlist.index') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">
-                    <span>Simpan</span>
-                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
+                <a href="{{ route('wishlist.index') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('wishlist.index') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">
+                    Simpan
                 </a>
                 
                 <hr class="my-3 border-gray-100">
