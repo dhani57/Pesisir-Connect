@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PageController;
+use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/katalog', [HomeController::class, 'catalog'])->name('catalog');
+Route::get('/produk/{slug}', [ProductController::class, 'show'])->name('produk.detail');
+Route::post('/checkout/{slug}', function($slug) {
+    // TODO: Implement Midtrans logic here
+    return "Halaman Checkout untuk {$slug} (Integrasi Midtrans Dalam Pengembangan)";
+})->name('checkout');
 Route::get('/destinasi', [PageController::class, 'destinasi'])->name('destinasi');
 Route::get('/tentang', [PageController::class, 'tentang'])->name('tentang');
 

@@ -63,15 +63,15 @@
                             <label class="block text-xs font-semibold text-gray-700 mb-2">Kategori</label>
                             <div class="space-y-2">
                                 <label class="flex items-center gap-2 cursor-pointer">
-                                    <input type="radio" name="category" value=""
-                                           {{ !request('category') ? 'checked' : '' }}
+                                    <input type="radio" name="kategori" value=""
+                                           {{ !request('kategori') ? 'checked' : '' }}
                                            class="text-ocean-500 focus:ring-ocean-400 border-gray-300">
                                     <span class="text-sm text-gray-600">Semua Kategori</span>
                                 </label>
                                 @foreach($categories as $cat)
                                     <label class="flex items-center gap-2 cursor-pointer">
-                                        <input type="radio" name="category" value="{{ $cat->slug }}"
-                                               {{ request('category') === $cat->slug ? 'checked' : '' }}
+                                        <input type="radio" name="kategori" value="{{ $cat->slug }}"
+                                               {{ request('kategori') === $cat->slug ? 'checked' : '' }}
                                                class="text-ocean-500 focus:ring-ocean-400 border-gray-300">
                                         <span class="text-sm text-gray-600">{{ $cat->name }}</span>
                                     </label>
@@ -82,11 +82,11 @@
                         {{-- Location --}}
                         <div>
                             <label class="block text-xs font-semibold text-gray-700 mb-2">Lokasi</label>
-                            <select name="location"
+                            <select name="lokasi"
                                     class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-400 focus:ring-ocean-400">
                                 <option value="">Semua Lokasi</option>
                                 @foreach($locations as $loc)
-                                    <option value="{{ $loc }}" {{ request('location') === $loc ? 'selected' : '' }}>{{ $loc }}</option>
+                                    <option value="{{ $loc }}" {{ request('lokasi') === $loc ? 'selected' : '' }}>{{ $loc }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -108,7 +108,7 @@
                             Terapkan Filter
                         </button>
 
-                        @if(request()->hasAny(['search', 'category', 'location', 'sort']))
+                        @if(request()->hasAny(['search', 'kategori', 'lokasi', 'sort']))
                             <a href="{{ route('catalog') }}" class="block text-center text-xs text-gray-400 hover:text-coral-500 transition-colors">Reset semua filter</a>
                         @endif
                     </form>

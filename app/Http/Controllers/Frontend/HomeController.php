@@ -47,13 +47,13 @@ class HomeController extends Controller
         $query = Product::active()->with(['category', 'vendor']);
 
         // Filter by category
-        if ($request->filled('category')) {
-            $query->whereHas('category', fn ($q) => $q->where('slug', $request->category));
+        if ($request->filled('kategori')) {
+            $query->whereHas('category', fn ($q) => $q->where('slug', $request->kategori));
         }
 
         // Filter by location
-        if ($request->filled('location')) {
-            $query->byLocation($request->location);
+        if ($request->filled('lokasi')) {
+            $query->byLocation($request->lokasi);
         }
 
         // Search by name
