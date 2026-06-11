@@ -45,4 +45,36 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/simpan/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Vendor Registration & Public Routes
+|--------------------------------------------------------------------------
+*/
+
+use App\Http\Controllers\Vendor\VendorRegistrationController;
+use App\Http\Controllers\Vendor\VendorSettingsController;
+use App\Http\Controllers\Vendor\VendorDashboardController;
+
+Route::middleware('auth')->group(function () {
+    Route::get('/vendor/register', [VendorRegistrationController::class, 'create'])->name('vendor.register');
+    Route::post('/vendor/register', [VendorRegistrationController::class, 'store']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Vendor Dashboard Routes (Protected)
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(function () {
+    Route::get('/dashboard', [VendorDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/profile', [VendorSettingsController::class, 'profile'])->name('profile');
+    Route::get('/settings', [VendorSettingsController::class, 'edit'])->name('settings.edit');
+    Route::patch('/settings', [VendorSettingsController::class, 'update'])->name('settings.update');
+});
+
+// Public vendor profile
+Route::get('/toko/{vendor}', [VendorSettingsController::class, 'publicProfile'])->name('vendor.public-profile');
+
 require __DIR__.'/auth.php';
+require __DIR__.'/vendor.php';

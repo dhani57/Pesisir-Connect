@@ -27,6 +27,17 @@
                     <x-nav-link :href="route('wishlist.index')" :active="request()->routeIs('wishlist.index')">
                         {{ __('Simpan') }}
                     </x-nav-link>
+                    @auth
+                        @if(auth()->user()->isVendor() && auth()->user()->vendor)
+                            <x-nav-link :href="route('vendor.dashboard')" :active="request()->routeIs('vendor.*')">
+                                {{ __('Vendor Panel') }}
+                            </x-nav-link>
+                        @elseif(!auth()->user()->isVendor())
+                            <x-nav-link :href="route('vendor.register')" :active="request()->routeIs('vendor.register')">
+                                {{ __('Jadi Vendor') }}
+                            </x-nav-link>
+                        @endif
+                    @endauth
                 </div>
             </div>
 
@@ -49,6 +60,16 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profil Saya') }}
                         </x-dropdown-link>
+
+                        @if(auth()->user()->isVendor() && auth()->user()->vendor)
+                            <x-dropdown-link :href="route('vendor.dashboard')">
+                                {{ __('🏪 Vendor Dashboard') }}
+                            </x-dropdown-link>
+                        @elseif(!auth()->user()->isVendor())
+                            <x-dropdown-link :href="route('vendor.register')">
+                                {{ __('🚀 Jadi Vendor') }}
+                            </x-dropdown-link>
+                        @endif
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
