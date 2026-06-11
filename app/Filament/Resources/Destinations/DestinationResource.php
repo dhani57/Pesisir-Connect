@@ -22,7 +22,7 @@ class DestinationResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationLabel = 'Destinasi Wisata';
+    protected static ?string $navigationLabel = 'Manajemen Konten Destinasi';
 
     protected static ?string $modelLabel = 'Destinasi';
 

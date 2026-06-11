@@ -22,7 +22,7 @@ class TransactionResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'invoice_number';
 
-    protected static ?string $navigationLabel = 'Transaksi';
+    protected static ?string $navigationLabel = 'Dashboard Finansial Global';
 
     protected static ?string $modelLabel = 'Transaksi';
 

@@ -22,7 +22,7 @@ class UserResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationLabel = 'Pengguna';
+    protected static ?string $navigationLabel = 'Manajemen Vendor (Verifikasi)';
 
     protected static ?string $modelLabel = 'Pengguna';
 
