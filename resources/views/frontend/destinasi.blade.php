@@ -105,12 +105,12 @@
 
                                 {{-- CTA --}}
                                 <div class="flex flex-col sm:flex-row gap-3">
-                                    <a href="{{ route('catalog', ['location' => $dest['name'] === 'Pantai Krui' ? 'Krui' : ($dest['name'] === 'Teluk Kiluan' ? 'Teluk Kiluan' : 'Pahawang')]) }}"
+                                    <a href="{{ auth()->check() ? route('catalog', ['location' => $dest['name'] === 'Pantai Krui' ? 'Krui' : ($dest['name'] === 'Teluk Kiluan' ? 'Teluk Kiluan' : 'Pahawang')]) : route('login') }}"
                                        class="btn-primary !py-3">
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                                         Lihat Layanan
                                     </a>
-                                    <a href="{{ route('catalog') }}"
+                                    <a href="{{ auth()->check() ? route('catalog') : route('login') }}"
                                        class="btn-outline !py-3">
                                         Jelajahi Semua
                                     </a>
@@ -141,7 +141,7 @@
                 Pilih destinasi favoritmu dan temukan layanan wisata terbaik — mulai dari sewa perahu, alat snorkeling, hingga homestay nyaman dengan harga terjangkau.
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="{{ route('catalog') }}" class="btn-cta !py-3.5 !px-8">
+                <a href="{{ auth()->check() ? route('catalog') : route('login') }}" class="btn-cta !py-3.5 !px-8">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                     Mulai Jelajahi Katalog
                 </a>
