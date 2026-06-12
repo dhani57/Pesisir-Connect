@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // 2. Vendor User (Utama)
-        User::create([
+        $vendorUtama = User::create([
             'name'              => 'Vendor Utama',
             'email'             => 'vendor@pesisirconnect.com',
             'email_verified_at' => now(),
@@ -43,6 +43,24 @@ class DatabaseSeeder extends Seeder
             'role'              => 'vendor',
             'phone'             => '081234567891',
             'is_active'         => true,
+        ]);
+
+        Vendor::create([
+            'user_id'         => $vendorUtama->id,
+            'shop_name'       => 'Vendor Utama Official',
+            'business_type'   => 'wisata',
+            'phone'           => '081234567891',
+            'address'         => 'Jl. Utama Vendor No 1',
+            'city'            => 'Bandar Lampung',
+            'zip_code'        => '35111',
+            'bank_name'       => 'BCA',
+            'account_holder'  => 'Vendor Utama',
+            'account_number'  => '1234567890',
+            'bio'             => 'Vendor utama resmi dari PesisirConnect.',
+            'status'          => 'approved',
+            'is_approved'     => true,
+            'verified_at'     => now(),
+            'commission_rate' => 10,
         ]);
 
         // 3. Customer User (Utama)
