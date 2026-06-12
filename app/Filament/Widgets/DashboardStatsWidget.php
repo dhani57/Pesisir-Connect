@@ -10,6 +10,13 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class DashboardStatsWidget extends BaseWidget
 {
     protected static ?int $sort = 1;
+    
+    // Filament natively handles responsive columns for this widget. 
+    // Setting getColumns() to 3 will render 1 col on mobile, 3 on md+ screens.
+    protected function getColumns(): int
+    {
+        return 3;
+    }
 
     protected function getStats(): array
     {

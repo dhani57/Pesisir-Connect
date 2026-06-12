@@ -37,7 +37,7 @@ class DestinationForm
                             ->label('Deskripsi')
                             ->columnSpanFull(),
                     ])
-                    ->columns(['sm' => 1, 'md' => 2]),
+                    ->columns(['sm' => 1, 'md' => 2, 'lg' => 2]),
             ]);
     }
 }

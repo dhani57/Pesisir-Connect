@@ -38,9 +38,12 @@ class TransactionsTable
                     ->badge()
                     ->colors([
                         'danger' => 'failed',
+                        'danger' => 'cancelled',
                         'warning' => 'pending',
-                        'success' => fn ($state) => in_array($state, ['paid', 'success']),
-                    ]),
+                        'info' => 'confirmed',
+                        'success' => fn ($state) => in_array($state, ['paid', 'completed', 'success']),
+                    ])
+                    ->formatStateUsing(fn (string $state): string => ucfirst($state)),
                 TextColumn::make('created_at')
                     ->label('Tanggal Transaksi')
                     ->dateTime()

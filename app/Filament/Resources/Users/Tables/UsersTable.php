@@ -7,6 +7,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class UsersTable
@@ -20,31 +21,40 @@ class UsersTable
                 TextColumn::make('email')
                     ->label('Email address')
                     ->searchable(),
-                TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
                 TextColumn::make('role')
-                    ->badge(),
+                    ->badge()
+                    ->colors([
+                        'danger' => 'admin',
+                        'warning' => 'vendor',
+                        'success' => 'customer',
+                    ])
+                    ->formatStateUsing(fn (string $state): string => ucfirst($state)),
                 TextColumn::make('phone')
                     ->searchable(),
-                TextColumn::make('avatar')
-                    ->searchable(),
                 IconColumn::make('is_active')
-                    ->boolean(),
+                    ->boolean()
+                    ->label('Aktif'),
                 TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('role')
+                    ->options([
+                        'admin' => 'Admin',
+                        'vendor' => 'Vendor',
+                        'customer' => 'Customer',
+                    ]),
+                SelectFilter::make('is_active')
+                    ->label('Status Aktif')
+                    ->options([
+                        '1' => 'Aktif',
+                        '0' => 'Nonaktif / Pending',
+                    ]),
             ])
             ->recordActions([
-                \Filament\Tables\Actions\Action::make('approveVendor')
+                \Filament\Actions\Action::make('approveVendor')
                     ->label('Approve')
                     ->icon('heroicon-o-check-circle')
                     ->color('success')

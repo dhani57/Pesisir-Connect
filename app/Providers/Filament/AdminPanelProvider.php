@@ -10,6 +10,9 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Navigation\MenuItem;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\HtmlString;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -29,9 +32,27 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->colors([
                 'primary' => Color::Sky,
+                'danger' => Color::Rose,
+                'accent' => Color::Rose,
             ])
+            ->navigationGroups([
+                \Filament\Navigation\NavigationGroup::make('Laporan & Transaksi')->collapsible(),
+                \Filament\Navigation\NavigationGroup::make('Manajemen Pengguna')->collapsible(),
+                \Filament\Navigation\NavigationGroup::make('Manajemen Konten')->collapsible(),
+            ])
+            ->globalSearch(false)
+            ->breadcrumbs(false)
             ->font('Plus Jakarta Sans')
-            ->brandName('PesisirConnect')
+            ->darkMode(false)
+            ->defaultAvatarProvider(\App\Filament\AvatarProviders\CustomAvatarProvider::class)
+            ->userMenuItems([
+                'profile' => MenuItem::make()
+                    ->label('Profil Saya')
+                    ->url(fn (): string => route('profile.edit')),
+                'logout' => MenuItem::make()
+                    ->label('Keluar')
+                    ->color('danger'),
+            ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([

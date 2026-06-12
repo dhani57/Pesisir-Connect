@@ -41,7 +41,7 @@ class CategoryForm
                             ->rows(3)
                             ->columnSpanFull(),
                     ])
-                    ->columns(['sm' => 1, 'md' => 2]),
+                    ->columns(['sm' => 1, 'md' => 2, 'lg' => 2]),
 
                 Section::make('Media & Tampilan')
                     ->description('Ikon dan gambar untuk tampilan frontend.')
@@ -61,7 +61,7 @@ class CategoryForm
                             ->imageResizeTargetWidth('800')
                             ->imageResizeTargetHeight('450'),
                     ])
-                    ->columns(['sm' => 1, 'md' => 2]),
+                    ->columns(['sm' => 1, 'md' => 2, 'lg' => 2]),
 
                 Section::make('Pengaturan')
                     ->icon('heroicon-o-cog-6-tooth')
@@ -77,7 +77,7 @@ class CategoryForm
                             ->default(true)
                             ->helperText('Kategori nonaktif tidak tampil di frontend.'),
                     ])
-                    ->columns(['sm' => 1, 'md' => 2]),
+                    ->columns(['sm' => 1, 'md' => 2, 'lg' => 2]),
             ]);
     }
 }
