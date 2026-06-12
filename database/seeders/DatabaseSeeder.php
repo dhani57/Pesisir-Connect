@@ -25,38 +25,34 @@ class DatabaseSeeder extends Seeder
     {
         // 1. Admin User
         User::create([
-            'name'      => 'Admin User',
-            'email'     => 'admin@pesisirconnect.com',
-            'password'  => bcrypt('password'), // default password
-            'role'      => 'admin',
-            'is_active' => true,
-        ]);
-
-        // 2. Vendor User
-        User::create([
-            'name'      => 'Vendor User',
-            'email'     => 'vendor@pesisirconnect.com',
-            'password'  => bcrypt('password'),
-            'role'      => 'vendor',
-            'is_active' => true,
-        ]);
-
-        // 3. Customer User
-        User::create([
-            'name'      => 'Customer User',
-            'email'     => 'customer@pesisirconnect.com',
-            'password'  => bcrypt('password'),
-            'role'      => 'customer',
-            'is_active' => true, // Customers generally active
-        ]);
-        // ──────────────────────────────────────
-        User::create([
             'name'              => 'Admin PesisirConnect',
             'email'             => 'admin@pesisirconnect.com',
             'email_verified_at' => now(),
             'password'          => Hash::make('password'),
             'role'              => 'admin',
             'phone'             => '081234567890',
+            'is_active'         => true,
+        ]);
+
+        // 2. Vendor User (Utama)
+        User::create([
+            'name'              => 'Vendor Utama',
+            'email'             => 'vendor@pesisirconnect.com',
+            'email_verified_at' => now(),
+            'password'          => Hash::make('password'),
+            'role'              => 'vendor',
+            'phone'             => '081234567891',
+            'is_active'         => true,
+        ]);
+
+        // 3. Customer User (Utama)
+        User::create([
+            'name'              => 'Customer Utama',
+            'email'             => 'customer@pesisirconnect.com',
+            'email_verified_at' => now(),
+            'password'          => Hash::make('password'),
+            'role'              => 'customer',
+            'phone'             => '081234567892',
             'is_active'         => true,
         ]);
 

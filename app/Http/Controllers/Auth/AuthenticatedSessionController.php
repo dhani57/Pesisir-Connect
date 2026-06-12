@@ -28,24 +28,14 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        if ($user->isAdmin()) {
+        if ($user->role === 'admin') {
             return redirect()->intended('/admin/dashboard');
-        } elseif ($user->isVendor()) {
-            return redirect()->intended('/vendor/dashboard');
+        } elseif ($user->role === 'vendor') {
+            return redirect()->intended(route('vendor.dashboard', absolute: false));
         }
 
-        // Redirect based on user role
-        $user = Auth::user();
-        
-        if ($user->role === 'vendor') {
-            return redirect()->intended(route('vendor.dashboard', absolute: false));
-        } elseif ($user->role === 'admin') {
-            return redirect()->intended(route('filament.admin.pages.dashboard', absolute: false));
-        }
-        
         // Default redirect for regular users
         return redirect()->intended(route('dashboard', absolute: false));
     }
