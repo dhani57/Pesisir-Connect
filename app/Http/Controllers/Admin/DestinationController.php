@@ -13,7 +13,7 @@ class DestinationController extends Controller
 {
     public function index(): View
     {
-        $destinations = Destination::orderBy('name')->paginate(15);
+        $destinations = Destination::orderBy('sort_order')->orderBy('name')->paginate(15);
         return view('admin.destinations.index', compact('destinations'));
     }
 
@@ -25,11 +25,19 @@ class DestinationController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
+            'name'        => 'required|string|max:255',
+            'location'    => 'required|string|max:255',
+            'tagline'     => 'nullable|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'highlights'  => 'nullable|string',
+            'sort_order'  => 'nullable|integer|min:0',
+            'is_active'   => 'nullable|boolean',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
+
+        // Parse highlights from comma-separated string to array
+        $validated['highlights'] = $this->parseHighlights($request->input('highlights'));
+        $validated['is_active']  = $request->boolean('is_active');
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('destinations', 'public');
@@ -49,11 +57,18 @@ class DestinationController extends Controller
     public function update(Request $request, Destination $destination): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
+            'name'        => 'required|string|max:255',
+            'location'    => 'required|string|max:255',
+            'tagline'     => 'nullable|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'highlights'  => 'nullable|string',
+            'sort_order'  => 'nullable|integer|min:0',
+            'is_active'   => 'nullable|boolean',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
+
+        $validated['highlights'] = $this->parseHighlights($request->input('highlights'));
+        $validated['is_active']  = $request->boolean('is_active');
 
         if ($request->hasFile('image')) {
             if ($destination->image && str_starts_with($destination->image, '/storage/')) {
@@ -77,5 +92,23 @@ class DestinationController extends Controller
         $destination->delete();
         
         return redirect()->route('admin.destinations.index')->with('success', 'Destinasi berhasil dihapus.');
+    }
+
+    /**
+     * Parse comma-separated highlights string into an array.
+     *
+     * @return array<string>|null
+     */
+    private function parseHighlights(?string $input): ?array
+    {
+        if (empty($input)) {
+            return null;
+        }
+
+        return array_values(
+            array_filter(
+                array_map('trim', explode(',', $input))
+            )
+        );
     }
 }
