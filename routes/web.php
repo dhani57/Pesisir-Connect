@@ -45,4 +45,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/simpan/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+});
+
 require __DIR__.'/auth.php';
