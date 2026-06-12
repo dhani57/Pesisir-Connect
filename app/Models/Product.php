@@ -14,12 +14,16 @@ class Product extends Model
 
     protected $fillable = [
         'user_id',
+        'vendor_id',
         'category_id',
         'name',
         'slug',
+        'sku',
         'description',
         'short_description',
         'price',
+        'discount',
+        'discount_type',
         'price_unit',
         'location',
         'address',
@@ -28,12 +32,18 @@ class Product extends Model
         'thumbnail',
         'gallery',
         'capacity',
+        'stock',
         'facilities',
         'whatsapp',
         'rating',
         'total_reviews',
         'is_featured',
         'is_active',
+        'status',
+        'min_stock_alert',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
         'sort_order',
     ];
 
@@ -44,6 +54,7 @@ class Product extends Model
             'latitude'      => 'decimal:8',
             'longitude'     => 'decimal:8',
             'rating'        => 'decimal:2',
+            'discount'      => 'decimal:2',
             'gallery'       => 'array',
             'facilities'    => 'array',
             'is_featured'   => 'boolean',
@@ -68,10 +79,16 @@ class Product extends Model
     // Relationships
     // ──────────────────────────────────────────
 
+    /** User who owns this product. */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     /** Vendor who owns this product. */
     public function vendor(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Vendor::class);
     }
 
     /** Category this product belongs to. */
@@ -95,6 +112,16 @@ class Product extends Model
         return $query->where('is_active', true);
     }
 
+    public function scopeByVendor($query, int $vendorId)
+    {
+        return $query->where('vendor_id', $vendorId);
+    }
+
+    public function scopePublished($query)
+    {
+        return $query->where('status', 'active');
+    }
+
     public function scopeFeatured($query)
     {
         return $query->where('is_featured', true);
@@ -113,6 +140,18 @@ class Product extends Model
     // ──────────────────────────────────────────
     // Accessors
     // ──────────────────────────────────────────
+
+    /** Discounted price calculation. */
+    public function getDiscountedPriceAttribute(): float
+    {
+        if ($this->discount <= 0) return (float) $this->price;
+
+        if ($this->discount_type === 'percentage') {
+            return (float) $this->price * (1 - $this->discount / 100);
+        }
+
+        return max(0, (float) $this->price - (float) $this->discount);
+    }
 
     /** Formatted price in Rupiah. */
     public function getFormattedPriceAttribute(): string

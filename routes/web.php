@@ -68,5 +68,26 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     // 5. Audit Finansial Global
     Route::get('/transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('admin.transactions.index');
 });
+| Vendor Registration & Public Routes
+|--------------------------------------------------------------------------
+*/
+
+use App\Http\Controllers\Vendor\VendorRegistrationController;
+use App\Http\Controllers\Vendor\VendorSettingsController;
+
+Route::middleware('auth')->group(function () {
+    Route::get('/vendor/register', [VendorRegistrationController::class, 'create'])->name('vendor.register');
+    Route::post('/vendor/register', [VendorRegistrationController::class, 'store']);
+});
+
+// Public vendor profile (accessible without auth)
+Route::get('/toko/{vendor}', [VendorSettingsController::class, 'publicProfile'])->name('vendor.public-profile');
+
+/*
+|--------------------------------------------------------------------------
+| Include additional route files
+|--------------------------------------------------------------------------
+*/
 
 require __DIR__.'/auth.php';
+require __DIR__.'/vendor.php';

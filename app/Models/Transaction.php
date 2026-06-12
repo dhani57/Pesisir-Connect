@@ -14,6 +14,7 @@ class Transaction extends Model
         'invoice_number',
         'user_id',
         'product_id',
+        'vendor_id',
         'check_in',
         'check_out',
         'quantity',
@@ -21,11 +22,13 @@ class Transaction extends Model
         'unit_price',
         'total_price',
         'status',
+        'vendor_status',
         'payment_method',
         'midtrans_transaction_id',
         'midtrans_payment_type',
         'midtrans_response',
         'paid_at',
+        'completed_at',
         'notes',
         'vendor_notes',
     ];
@@ -39,6 +42,7 @@ class Transaction extends Model
             'total_price'       => 'decimal:2',
             'midtrans_response' => 'array',
             'paid_at'           => 'datetime',
+            'completed_at'      => 'datetime',
         ];
     }
 
@@ -63,6 +67,12 @@ class Transaction extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /** Vendor for this transaction. */
+    public function vendor(): BelongsTo
+    {
+        return $this->belongsTo(Vendor::class);
     }
 
     /** Product being booked. */
