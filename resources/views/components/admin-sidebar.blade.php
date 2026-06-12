@@ -16,7 +16,7 @@
     
     <!-- Sidebar Header -->
     <div class="flex h-16 shrink-0 items-center px-6 border-b border-sky-900">
-        <a href="{{ url('/') }}" class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+        <a href="{{ route('admin.dashboard') }}" class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
             <!-- Ocean Blue / Wave Icon -->
             <svg class="w-8 h-8 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
             Pesisir Admin
