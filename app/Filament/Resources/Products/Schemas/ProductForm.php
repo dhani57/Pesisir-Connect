@@ -52,11 +52,17 @@ class ProductForm
                             ]),
 
                         Select::make('user_id')
-                            ->label('Vendor / Pemilik')
-                            ->relationship('vendor', 'name')
+                            ->label('Pemilik (User)')
+                            ->relationship('user', 'name')
                             ->searchable()
                             ->preload()
                             ->required(),
+
+                        Select::make('vendor_id')
+                            ->label('Vendor / Toko')
+                            ->relationship('vendor', 'shop_name')
+                            ->searchable()
+                            ->preload(),
 
                         Textarea::make('description')
                             ->label('Deskripsi Lengkap')
