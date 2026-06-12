@@ -10,7 +10,7 @@
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
         <x-admin-stat-card 
             title="Total Pendapatan" 
-            value="Rp 45.000.000" 
+            value="Rp {{ number_format($totalRevenue, 0, ',', '.') }}" 
             color="emerald"
         >
             <x-slot name="icon">
@@ -22,7 +22,7 @@
 
         <x-admin-stat-card 
             title="Vendor Aktif" 
-            value="124" 
+            value="{{ number_format($activeVendors, 0, ',', '.') }}" 
             color="sky"
         >
             <x-slot name="icon">
@@ -34,7 +34,7 @@
 
         <x-admin-stat-card 
             title="Transaksi Sukses" 
-            value="892" 
+            value="{{ number_format($successfulTransactions, 0, ',', '.') }}" 
             color="coral"
         >
             <x-slot name="icon">

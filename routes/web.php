@@ -52,9 +52,21 @@ Route::middleware(['auth'])->group(function () {
 */
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
+    // 1. Dashboard Metrik Global
+    Route::get('/dashboard', \App\Http\Controllers\Admin\DashboardController::class)->name('admin.dashboard');
+
+    // 2. Sistem Verifikasi Vendor
+    Route::get('/vendors', [\App\Http\Controllers\Admin\VendorController::class, 'index'])->name('admin.vendors.index');
+    Route::patch('/vendors/{vendor}/toggle', [\App\Http\Controllers\Admin\VendorController::class, 'toggleStatus'])->name('admin.vendors.toggle');
+
+    // 3. Manajemen Kategori
+    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class, ['as' => 'admin'])->except(['show']);
+
+    // 4. Manajemen Konten Destinasi
+    Route::resource('destinations', \App\Http\Controllers\Admin\DestinationController::class, ['as' => 'admin'])->except(['show']);
+
+    // 5. Audit Finansial Global
+    Route::get('/transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('admin.transactions.index');
 });
 
 require __DIR__.'/auth.php';
