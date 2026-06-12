@@ -14,7 +14,7 @@ use Filament\Panel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role', 'phone', 'address', 'avatar', 'is_active'])]
+#[Fillable(['name', 'email', 'password', 'role', 'is_active'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser
 {
@@ -82,6 +82,10 @@ class User extends Authenticatable implements FilamentUser
     
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->isAdmin() || $this->isVendor();
+        if ($panel->getId() === 'admin') {
+            return $this->isAdmin() && $this->is_active;
+        }
+
+        return false;
     }
 }

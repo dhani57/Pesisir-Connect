@@ -77,7 +77,7 @@ class ProductForm
                             ->helperText('Tampil di kartu produk. Maks 300 karakter.')
                             ->columnSpanFull(),
                     ])
-                    ->columns(2),
+                    ->columns(['sm' => 1, 'md' => 2]),
 
                 // ─── Harga & Lokasi ───
                 Section::make('Harga & Lokasi')
@@ -131,7 +131,7 @@ class ProductForm
                             ->placeholder('08xxxxxxxxxx')
                             ->helperText('Untuk tombol "Pesan via WhatsApp".'),
                     ])
-                    ->columns(2),
+                    ->columns(['sm' => 1, 'md' => 2, 'lg' => 3]),
 
                 // ─── Media ───
                 Section::make('Media')
@@ -207,7 +207,7 @@ class ProductForm
                             ->default(true)
                             ->helperText('Produk nonaktif tidak tampil di frontend.'),
                     ])
-                    ->columns(3),
+                    ->columns(['sm' => 1, 'md' => 2, 'lg' => 3]),
             ]);
     }
 }

@@ -22,7 +22,7 @@ class ProductResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationLabel = 'Produk / Layanan';
+    protected static ?string $navigationLabel = 'Akses Multi-Tenant';
 
     protected static ?string $modelLabel = 'Produk';
 

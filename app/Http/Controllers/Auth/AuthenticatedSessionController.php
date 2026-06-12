@@ -28,6 +28,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        if ($user->isAdmin()) {
+            return redirect()->intended('/admin/dashboard');
+        } elseif ($user->isVendor()) {
+            return redirect()->intended('/vendor/dashboard');
+        }
+
         // Redirect based on user role
         $user = Auth::user();
         

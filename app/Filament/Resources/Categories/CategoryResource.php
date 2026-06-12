@@ -22,7 +22,7 @@ class CategoryResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    protected static ?string $navigationLabel = 'Kategori';
+    protected static ?string $navigationLabel = 'Manajemen Kategori';
 
     protected static ?string $modelLabel = 'Kategori';
 

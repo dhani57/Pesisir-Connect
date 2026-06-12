@@ -15,14 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'vendor', 'customer'])->default('customer');
-            $table->string('phone', 20)->nullable();
-            $table->text('address')->nullable();
-            $table->string('avatar')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->rememberToken();
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
 
