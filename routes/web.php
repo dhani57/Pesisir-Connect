@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Frontend\CheckoutController;
+use App\Http\Controllers\Frontend\CustomerDashboardController;
+use App\Http\Controllers\Frontend\CustomerReviewController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PageController;
 use App\Http\Controllers\Frontend\ProductController;
@@ -25,9 +28,9 @@ Route::get('/tentang', [PageController::class, 'tentang'])->name('tentang');
 |--------------------------------------------------------------------------
 */
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [CustomerDashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -36,14 +39,22 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::post('/checkout/{slug}', function($slug) {
-        // TODO: Implement Midtrans logic here
-        return "Halaman Checkout untuk {$slug} (Integrasi Midtrans Dalam Pengembangan)";
-    })->name('checkout');
+    // Checkout Flow (specific route before wildcard)
+    Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+    Route::match(['get', 'post'], '/checkout/{slug}', [CheckoutController::class, 'show'])->name('checkout');
+    Route::get('/payment/finish/{invoiceNumber}', [CheckoutController::class, 'finish'])->name('checkout.finish');
 
+    // Customer Reviews
+    Route::post('/review/{transaction}', [CustomerReviewController::class, 'store'])->name('customer.review.store');
+    Route::patch('/transaction/{transaction}/cancel', [CustomerReviewController::class, 'cancelTransaction'])->name('customer.transaction.cancel');
+
+    // Wishlist
     Route::get('/simpan', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/simpan/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 });
+
+// Midtrans Webhook (no auth — called by Midtrans servers)
+Route::post('/midtrans/notification', [CheckoutController::class, 'notification'])->name('midtrans.notification');
 
 /*
 |--------------------------------------------------------------------------

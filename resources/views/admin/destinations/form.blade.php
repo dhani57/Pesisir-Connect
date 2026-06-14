@@ -43,7 +43,21 @@
                 <div class="sm:col-span-3">
                     <label for="location" class="block text-sm font-medium leading-6 text-gray-900">Lokasi / Daerah <span class="text-rose-500">*</span></label>
                     <div class="mt-2">
-                        <input type="text" name="location" id="location" value="{{ old('location', $destination->location ?? '') }}" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6" placeholder="Contoh: Pahawang, Pesawaran">
+                        <input type="text" name="location" id="location" value="{{ old('location', $destination->location ?? '') }}" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6" placeholder="Contoh: Pesawaran, Lampung">
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                    <label for="tagline" class="block text-sm font-medium leading-6 text-gray-900">Tagline</label>
+                    <div class="mt-2">
+                        <input type="text" name="tagline" id="tagline" value="{{ old('tagline', $destination->tagline ?? '') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6" placeholder="Contoh: Surga Snorkeling Lampung">
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                    <label for="sort_order" class="block text-sm font-medium leading-6 text-gray-900">Urutan Tampil</label>
+                    <div class="mt-2">
+                        <input type="number" name="sort_order" id="sort_order" value="{{ old('sort_order', $destination->sort_order ?? 0) }}" min="0" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">
                     </div>
                 </div>
 
@@ -51,7 +65,7 @@
                     <label for="image" class="block text-sm font-medium leading-6 text-gray-900">Foto Cover</label>
                     <div class="mt-2 flex items-center gap-x-3">
                         @if(isset($destination) && $destination->image)
-                            <img src="{{ asset($destination->image) }}" alt="Preview" class="h-20 w-32 object-cover rounded-lg shadow-sm border border-gray-200">
+                            <img src="{{ $destination->image_url }}" alt="Preview" class="h-20 w-32 object-cover rounded-lg shadow-sm border border-gray-200">
                         @endif
                         <input type="file" name="image" id="image" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100">
                     </div>
@@ -62,6 +76,22 @@
                     <div class="mt-2">
                         <textarea id="description" name="description" rows="5" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">{{ old('description', $destination->description ?? '') }}</textarea>
                     </div>
+                </div>
+
+                <div class="col-span-full">
+                    <label for="highlights" class="block text-sm font-medium leading-6 text-gray-900">Highlights</label>
+                    <p class="mt-1 text-xs text-gray-500">Pisahkan setiap highlight dengan koma. Contoh: Snorkeling & Diving, Terumbu Karang, Sunset Point</p>
+                    <div class="mt-2">
+                        <input type="text" name="highlights" id="highlights" value="{{ old('highlights', isset($destination) && $destination->highlights ? implode(', ', $destination->highlights) : '') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6" placeholder="Snorkeling & Diving, Terumbu Karang Alami, Island Hopping">
+                    </div>
+                </div>
+
+                <div class="sm:col-span-3">
+                    <label class="flex items-center gap-3">
+                        <input type="hidden" name="is_active" value="0">
+                        <input type="checkbox" name="is_active" value="1" {{ old('is_active', $destination->is_active ?? true) ? 'checked' : '' }} class="rounded border-gray-300 text-sky-600 focus:ring-sky-600">
+                        <span class="text-sm font-medium text-gray-900">Aktif (tampil di halaman depan)</span>
+                    </label>
                 </div>
 
             </div>

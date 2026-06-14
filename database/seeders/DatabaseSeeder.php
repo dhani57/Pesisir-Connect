@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Destination;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Vendor;
@@ -524,6 +525,52 @@ class DatabaseSeeder extends Seeder
                 'status'      => 'active',
                 'stock'       => fake()->numberBetween(5, 20),
             ]));
+        }
+
+        // ──────────────────────────────────────
+        // 9. Destinations
+        // ──────────────────────────────────────
+        $destinationData = [
+            [
+                'name'          => 'Pulau Pahawang',
+                'slug'          => 'pahawang',
+                'location'      => 'Pesawaran, Lampung',
+                'tagline'       => 'Surga Snorkeling Lampung',
+                'description'   => 'Pulau Pahawang terkenal dengan terumbu karang yang masih alami dan air laut yang jernih. Destinasi sempurna untuk snorkeling, diving, dan menikmati keindahan bawah laut tropis. Hanya 1,5 jam perjalanan laut dari Dermaga Ketapang.',
+                'highlights'    => ['Snorkeling & Diving', 'Terumbu Karang Alami', 'Island Hopping', 'Sunset Point'],
+                'image'         => 'destinations/pahawang.png',
+                'rating'        => 4.8,
+                'reviews_count' => 324,
+                'sort_order'    => 1,
+            ],
+            [
+                'name'          => 'Pantai Krui',
+                'slug'          => 'krui',
+                'location'      => 'Pesisir Barat, Lampung',
+                'tagline'       => 'Ombak Kelas Dunia',
+                'description'   => 'Krui adalah surga tersembunyi para peselancar dengan ombak kelas dunia yang sudah diakui internasional. Pantainya yang panjang dengan pasir putih dikelilingi tebing dan hutan tropis, menawarkan pengalaman surfing dan sunset yang tak terlupakan.',
+                'highlights'    => ['World-Class Surfing', 'Pantai Pasir Putih', 'Tebing & Goa Laut', 'Kuliner Pesisir'],
+                'image'         => 'destinations/krui.png',
+                'rating'        => 4.7,
+                'reviews_count' => 256,
+                'sort_order'    => 2,
+            ],
+            [
+                'name'          => 'Teluk Kiluan',
+                'slug'          => 'kiluan',
+                'location'      => 'Tanggamus, Lampung',
+                'tagline'       => 'Rumah Para Lumba-Lumba',
+                'description'   => 'Teluk Kiluan menawarkan pengalaman unik menyaksikan lumba-lumba berenang bebas di habitat aslinya. Dikelilingi perbukitan hijau dan pantai yang tenang, tempat ini cocok untuk wisata edukasi dan ekowisata yang mendukung masyarakat lokal.',
+                'highlights'    => ['Dolphin Watching', 'Ekowisata', 'Pantai Virgin', 'Camping & Trekking'],
+                'image'         => 'destinations/kiluan.png',
+                'rating'        => 4.9,
+                'reviews_count' => 412,
+                'sort_order'    => 3,
+            ],
+        ];
+
+        foreach ($destinationData as $dest) {
+            Destination::create($dest);
         }
     }
 }
