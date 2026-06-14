@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Destination;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -17,12 +18,12 @@ class PageController extends Controller
     /**
      * Halaman Destinasi — menampilkan daftar destinasi utama pesisir Lampung.
      *
-     * Saat ini menggunakan data statis. Ke depan bisa diganti
-     * dengan query ke tabel `destinations` di database.
+     * Mengambil data dari tabel `destinations` di database.
      */
     public function destinasi(): View
     {
         $destinations = \App\Models\Destination::all();
+        $destinations = Destination::active()->ordered()->get();
 
         return view('frontend.destinasi', compact('destinations'));
     }
