@@ -13,7 +13,10 @@ class DestinationController extends Controller
 {
     public function index(): View
     {
-        $destinations = Destination::orderBy('sort_order')->orderBy('name')->paginate(15);
+        $perPage = request('per_page', 10);
+        $perPage = $perPage === 'all' ? 1000000 : (int) $perPage;
+        
+        $destinations = Destination::orderBy('sort_order')->orderBy('name')->paginate($perPage);
         return view('admin.destinations.index', compact('destinations'));
     }
 

@@ -108,10 +108,8 @@
             </table>
         </div>
         
-        @if($destinations->hasPages())
-            <div class="border-t border-gray-200 px-6 py-4">
-                {{ $destinations->links() }}
-            </div>
-        @endif
+        <div class="border-t border-gray-200 px-6 py-4">
+            <x-admin-pagination :paginator="$destinations" />
+        </div>
     </div>
 </x-admin-layout>

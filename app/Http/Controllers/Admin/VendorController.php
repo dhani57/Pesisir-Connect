@@ -15,9 +15,12 @@ class VendorController extends Controller
      */
     public function index(): View
     {
+        $perPage = request('per_page', 10);
+        $perPage = $perPage === 'all' ? 1000000 : (int) $perPage;
+
         $vendors = User::where('role', 'vendor')
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->paginate($perPage);
 
         return view('admin.vendors.index', compact('vendors'));
     }

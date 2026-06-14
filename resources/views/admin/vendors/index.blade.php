@@ -126,10 +126,8 @@
             </table>
         </div>
         
-        @if($vendors->hasPages())
-            <div class="border-t border-gray-200 px-6 py-4">
-                {{ $vendors->links() }}
-            </div>
-        @endif
+        <div class="border-t border-gray-200 px-6 py-4">
+            <x-admin-pagination :paginator="$vendors" />
+        </div>
     </div>
 </x-admin-layout>

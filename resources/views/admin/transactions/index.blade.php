@@ -110,10 +110,8 @@
             </table>
         </div>
         
-        @if($transactions->hasPages())
-            <div class="border-t border-gray-200 px-6 py-4">
-                {{ $transactions->links() }}
-            </div>
-        @endif
+        <div class="border-t border-gray-200 px-6 py-4">
+            <x-admin-pagination :paginator="$transactions" />
+        </div>
     </div>
 </x-admin-layout>

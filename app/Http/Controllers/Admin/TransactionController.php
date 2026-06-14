@@ -14,10 +14,13 @@ class TransactionController extends Controller
      */
     public function index(): View
     {
+        $perPage = request('per_page', 10);
+        $perPage = $perPage === 'all' ? 1000000 : (int) $perPage;
+
         // Eager loading customer and product.vendor to avoid N+1 issues
         $transactions = Transaction::with(['customer', 'product.vendor'])
             ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->paginate($perPage);
 
         return view('admin.transactions.index', compact('transactions'));
     }

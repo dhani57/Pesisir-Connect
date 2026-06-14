@@ -14,7 +14,10 @@ class CategoryController extends Controller
 {
     public function index(): View
     {
-        $categories = Category::orderBy('name')->paginate(15);
+        $perPage = request('per_page', 10);
+        $perPage = $perPage === 'all' ? 1000000 : (int) $perPage;
+        
+        $categories = Category::orderBy('name')->paginate($perPage);
         return view('admin.categories.index', compact('categories'));
     }
 
