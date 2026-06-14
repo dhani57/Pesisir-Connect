@@ -7,7 +7,7 @@
     </div>
 
     <!-- Stat Cards Grid -->
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4 mb-8">
         <x-admin-stat-card 
             title="Total Pendapatan" 
             value="Rp {{ number_format($totalRevenue, 0, ',', '.') }}" 
@@ -43,6 +43,105 @@
                 </svg>
             </x-slot>
         </x-admin-stat-card>
+
+        <x-admin-stat-card 
+            title="Menunggu Verifikasi" 
+            value="{{ number_format($pendingVendorsCount, 0, ',', '.') }}" 
+            color="amber"
+        >
+            <x-slot name="icon">
+                <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </x-slot>
+        </x-admin-stat-card>
     </div>
 
+    <!-- Dua Kolom: Transaksi Terbaru & Vendor Menunggu -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Transaksi Terbaru -->
+        <div class="bg-white shadow-sm ring-1 ring-gray-200 sm:rounded-2xl overflow-hidden flex flex-col">
+            <div class="border-b border-gray-200 bg-gray-50/50 px-6 py-5 sm:flex sm:items-center sm:justify-between">
+                <h3 class="text-base font-semibold leading-6 text-gray-900">Transaksi Terbaru</h3>
+                <a href="{{ route('admin.transactions.index') }}" class="text-sm font-semibold text-sky-600 hover:text-sky-500 mt-3 sm:mt-0">Lihat Semua &rarr;</a>
+            </div>
+            <div class="flex-1 overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                        @forelse($recentTransactions as $trx)
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="whitespace-nowrap px-6 py-4">
+                                    <div class="text-sm font-medium text-gray-900">{{ $trx->invoice_number }}</div>
+                                    <div class="text-xs text-gray-500 mt-1">{{ $trx->created_at->format('d M Y, H:i') }}</div>
+                                </td>
+                                <td class="whitespace-nowrap px-6 py-4">
+                                    <div class="text-sm text-gray-900">{{ $trx->customer->name ?? 'User' }}</div>
+                                    <div class="text-xs text-gray-500 mt-1">{{ $trx->product->name ?? 'Produk' }}</div>
+                                </td>
+                                <td class="whitespace-nowrap px-6 py-4 text-right">
+                                    <div class="text-sm font-semibold text-gray-900">{{ $trx->formatted_total }}</div>
+                                    <div class="mt-1">
+                                        @if($trx->status === 'paid')
+                                            <span class="inline-flex items-center rounded-md bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20">Sukses</span>
+                                        @elseif($trx->status === 'pending')
+                                            <span class="inline-flex items-center rounded-md bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700 ring-1 ring-inset ring-amber-600/20">Pending</span>
+                                        @else
+                                            <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-700 ring-1 ring-inset ring-gray-600/20">{{ ucfirst($trx->status) }}</span>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="px-6 py-8 text-center text-sm text-gray-500">Belum ada transaksi terbaru.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Vendor Menunggu Verifikasi -->
+        <div class="bg-white shadow-sm ring-1 ring-gray-200 sm:rounded-2xl overflow-hidden flex flex-col">
+            <div class="border-b border-gray-200 bg-gray-50/50 px-6 py-5 sm:flex sm:items-center sm:justify-between">
+                <h3 class="text-base font-semibold leading-6 text-gray-900">Perlu Verifikasi</h3>
+                <a href="{{ route('admin.vendors.index') }}" class="text-sm font-semibold text-sky-600 hover:text-sky-500 mt-3 sm:mt-0">Kelola Vendor &rarr;</a>
+            </div>
+            <div class="flex-1 overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <tbody class="divide-y divide-gray-200 bg-white">
+                        @forelse($pendingVendors as $vendor)
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="whitespace-nowrap px-6 py-4">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 flex-shrink-0">
+                                            <img class="h-10 w-10 rounded-full object-cover" src="https://ui-avatars.com/api/?name={{ urlencode($vendor->name) }}&background=fef3c7&color=b45309" alt="">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="font-medium text-gray-900">{{ $vendor->name }}</div>
+                                            <div class="text-xs text-gray-500 mt-0.5">{{ $vendor->vendor->shop_name ?? 'Belum isi profil' }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="whitespace-nowrap px-6 py-4 text-right">
+                                    <a href="{{ route('admin.vendors.show', $vendor) }}" class="inline-flex items-center gap-x-1.5 rounded-md bg-white px-2.5 py-1.5 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                                        Tinjau
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="2" class="px-6 py-8 text-center text-sm text-gray-500">
+                                    <svg class="mx-auto h-8 w-8 text-emerald-400 mb-3" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                    Semua vendor telah diverifikasi!
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </x-admin-layout>

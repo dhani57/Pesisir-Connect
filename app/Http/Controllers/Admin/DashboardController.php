@@ -24,6 +24,28 @@ class DashboardController extends Controller
         // 3. Total Transaksi Sukses
         $successfulTransactions = Transaction::where('status', 'paid')->count();
 
-        return view('admin.dashboard', compact('totalRevenue', 'activeVendors', 'successfulTransactions'));
+        // 4. Vendor Menunggu Verifikasi
+        $pendingVendorsCount = User::where('role', 'vendor')->where('is_active', false)->count();
+
+        // 5. Vendor Baru Menunggu Verifikasi (Tabel)
+        $pendingVendors = User::where('role', 'vendor')->where('is_active', false)
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // 6. Transaksi Terbaru
+        $recentTransactions = Transaction::with(['customer', 'product', 'vendor.user'])
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('admin.dashboard', compact(
+            'totalRevenue', 
+            'activeVendors', 
+            'successfulTransactions',
+            'pendingVendorsCount',
+            'pendingVendors',
+            'recentTransactions'
+        ));
     }
 }
