@@ -5,6 +5,9 @@
             <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Sistem Verifikasi Vendor</h2>
             <p class="mt-1 text-sm leading-6 text-gray-500">Kelola akses vendor untuk berjualan di platform PesisirConnect.</p>
         </div>
+        <div class="mt-4 sm:mt-0">
+            <x-admin-search placeholder="Cari nama vendor atau email..." />
+        </div>
     </div>
 
     <!-- Alert Success -->

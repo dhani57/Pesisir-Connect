@@ -5,6 +5,9 @@
             <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Audit Finansial Global</h2>
             <p class="mt-1 text-sm leading-6 text-gray-500">Memantau seluruh arus kas masuk dari transaksi produk milik semua vendor.</p>
         </div>
+        <div class="mt-4 sm:mt-0">
+            <x-admin-search placeholder="Cari invoice, pelanggan, atau produk..." />
+        </div>
     </div>
 
     <!-- Transactions Container -->

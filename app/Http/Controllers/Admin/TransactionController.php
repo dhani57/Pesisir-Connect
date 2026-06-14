@@ -16,9 +16,19 @@ class TransactionController extends Controller
     {
         $perPage = request('per_page', 10);
         $perPage = $perPage === 'all' ? 1000000 : (int) $perPage;
+        $search = request('search');
 
         // Eager loading customer and product.vendor to avoid N+1 issues
         $transactions = Transaction::with(['customer', 'product.vendor'])
+            ->when($search, function ($query, $search) {
+                $query->where('invoice_number', 'like', "%{$search}%")
+                      ->orWhereHas('customer', function ($q) use ($search) {
+                          $q->where('name', 'like', "%{$search}%");
+                      })
+                      ->orWhereHas('product', function ($q) use ($search) {
+                          $q->where('name', 'like', "%{$search}%");
+                      });
+            })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
