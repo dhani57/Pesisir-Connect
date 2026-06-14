@@ -79,6 +79,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     // 5. Audit Finansial Global
     Route::get('/transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('admin.transactions.index');
+
+    // 6. Pengaturan Global
+    Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('admin.settings.index');
+    Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('admin.settings.update');
 });
 /*
 |--------------------------------------------------------------------------
