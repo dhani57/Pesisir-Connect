@@ -4,7 +4,10 @@
     query: '{{ request('search') }}',
     isLoading: false,
     abortController: null,
+    isUnloading: false,
     search() {
+        if (this.isUnloading) return;
+        
         this.isLoading = true;
         let url = new URL(window.location.href);
         if (this.query.trim() !== '') {
@@ -30,6 +33,7 @@
         })
             .then(res => res.text())
             .then(html => {
+                if (this.isUnloading) return;
                 let parser = new DOMParser();
                 let doc = parser.parseFromString(html, 'text/html');
                 let newTable = doc.getElementById('table-container');
@@ -47,6 +51,7 @@
     },
     init() {
         window.addEventListener('beforeunload', () => {
+            this.isUnloading = true;
             if (this.abortController) this.abortController.abort();
         });
     }
