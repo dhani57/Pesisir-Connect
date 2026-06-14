@@ -11,8 +11,19 @@ class Destination extends Model
 
     protected $fillable = [
         'name',
+        'slug',
+        'tagline',
         'image',
         'location',
         'description',
+        'highlights',
+        'rating',
+        'reviews',
+    ];
+
+    protected $casts = [
+        'highlights' => 'array',
+        'rating' => 'decimal:1',
+        'reviews' => 'integer',
     ];
 }
