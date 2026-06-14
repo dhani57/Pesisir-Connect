@@ -76,10 +76,8 @@
             </table>
         </div>
         
-        @if($categories->hasPages())
-            <div class="border-t border-gray-200 px-6 py-4">
-                {{ $categories->links() }}
-            </div>
-        @endif
+        <div class="border-t border-gray-200 px-6 py-4">
+            <x-admin-pagination :paginator="$categories" />
+        </div>
     </div>
 </x-admin-layout>

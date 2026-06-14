@@ -62,19 +62,22 @@
                 </div>
 
                 <div class="col-span-full">
-                    <label for="image" class="block text-sm font-medium leading-6 text-gray-900">Foto Cover</label>
-                    <div class="mt-2 flex items-center gap-x-3">
+                    <label class="block text-sm font-medium leading-6 text-gray-900">Foto Cover</label>
+                    <p class="text-xs text-gray-500 mt-1">Pilih salah satu: unggah file gambar atau masukkan link URL gambar.</p>
+                    <div class="mt-2 flex flex-col md:flex-row items-start md:items-center gap-4">
                         @if(isset($destination) && $destination->image)
                             <img src="{{ $destination->image_url }}" alt="Preview" class="h-20 w-32 object-cover rounded-lg shadow-sm border border-gray-200">
                         @endif
-                        <input type="file" name="image" id="image" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100">
-                    </div>
-                </div>
-
-                <div class="sm:col-span-3">
-                    <label for="tagline" class="block text-sm font-medium leading-6 text-gray-900">Tagline Pendek</label>
-                    <div class="mt-2">
-                        <input type="text" name="tagline" id="tagline" value="{{ old('tagline', $destination->tagline ?? '') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6" placeholder="Contoh: Surga Snorkeling Lampung">
+                        <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                            <div>
+                                <label for="image_file" class="block text-xs text-gray-500 mb-1">Unggah File (Abaikan jika menggunakan link)</label>
+                                <input type="file" name="image_file" id="image_file" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100">
+                            </div>
+                            <div>
+                                <label for="image_url" class="block text-xs text-gray-500 mb-1">Atau Link URL Gambar</label>
+                                <input type="url" name="image_url" id="image_url" value="{{ old('image_url', (isset($destination) && Str::startsWith($destination->image, 'http')) ? $destination->image : '') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6" placeholder="https://example.com/image.jpg">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -86,9 +89,9 @@
                 </div>
 
                 <div class="sm:col-span-3">
-                    <label for="reviews" class="block text-sm font-medium leading-6 text-gray-900">Jumlah Review</label>
+                    <label for="reviews_count" class="block text-sm font-medium leading-6 text-gray-900">Jumlah Review</label>
                     <div class="mt-2">
-                        <input type="number" min="0" name="reviews" id="reviews" value="{{ old('reviews', $destination->reviews ?? '0') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">
+                        <input type="number" min="0" name="reviews_count" id="reviews_count" value="{{ old('reviews_count', $destination->reviews_count ?? '0') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">
                     </div>
                 </div>
 
@@ -104,13 +107,6 @@
                     <p class="text-xs text-gray-500 mt-1">Pisahkan tiap poin highlight dengan baris baru (Enter).</p>
                     <div class="mt-2">
                         <textarea id="highlights" name="highlights" rows="4" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">{{ old('highlights', isset($destination) && is_array($destination->highlights) ? implode("\n", $destination->highlights) : '') }}</textarea>
-                    </div>
-                </div>
-
-                    <label for="highlights" class="block text-sm font-medium leading-6 text-gray-900">Highlights</label>
-                    <p class="mt-1 text-xs text-gray-500">Pisahkan setiap highlight dengan koma. Contoh: Snorkeling & Diving, Terumbu Karang, Sunset Point</p>
-                    <div class="mt-2">
-                        <input type="text" name="highlights" id="highlights" value="{{ old('highlights', isset($destination) && $destination->highlights ? implode(', ', $destination->highlights) : '') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6" placeholder="Snorkeling & Diving, Terumbu Karang Alami, Island Hopping">
                     </div>
                 </div>
 

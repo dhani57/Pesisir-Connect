@@ -5,10 +5,13 @@
             <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Audit Finansial Global</h2>
             <p class="mt-1 text-sm leading-6 text-gray-500">Memantau seluruh arus kas masuk dari transaksi produk milik semua vendor.</p>
         </div>
+        <div class="mt-4 sm:mt-0">
+            <x-admin-search placeholder="Cari invoice, pelanggan, atau produk..." />
+        </div>
     </div>
 
     <!-- Transactions Container -->
-    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+    <div id="table-container" class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
         
         <!-- Mobile Card View (Hidden on sm and up) -->
         <div class="block sm:hidden divide-y divide-gray-200">
@@ -110,10 +113,8 @@
             </table>
         </div>
         
-        @if($transactions->hasPages())
-            <div class="border-t border-gray-200 px-6 py-4">
-                {{ $transactions->links() }}
-            </div>
-        @endif
+        <div class="border-t border-gray-200 px-6 py-4">
+            <x-admin-pagination :paginator="$transactions" />
+        </div>
     </div>
 </x-admin-layout>

@@ -15,11 +15,36 @@ class VendorController extends Controller
      */
     public function index(): View
     {
+        $perPage = request('per_page', 10);
+        $perPage = $perPage === 'all' ? 1000000 : (int) $perPage;
+        $search = request('search');
+
         $vendors = User::where('role', 'vendor')
+            ->when($search, function ($query, $search) {
+                $query->where(function($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%")
+                      ->orWhereHas('vendor', function($vq) use ($search) {
+                          $vq->where('shop_name', 'like', "%{$search}%");
+                      });
+                });
+            })
             ->orderBy('created_at', 'desc')
-            ->paginate(15);
+            ->paginate($perPage);
 
         return view('admin.vendors.index', compact('vendors'));
+    }
+
+    /**
+     * Display the specified vendor details.
+     */
+    public function show(User $vendor): View
+    {
+        if ($vendor->role !== 'vendor') {
+            abort(404, 'Vendor not found.');
+        }
+
+        return view('admin.vendors.show', compact('vendor'));
     }
 
     /**

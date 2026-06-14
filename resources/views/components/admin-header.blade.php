@@ -55,7 +55,7 @@
                      class="absolute right-0 z-10 mt-2.5 w-48 origin-top-right rounded-xl bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none" 
                      role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" style="display: none;">
                     
-                    <!-- Profil Anda dihapus sementara agar Admin tidak terlempar ke layout frontend pengguna -->
+                    <a href="{{ route('admin.settings.index') }}" class="block px-4 py-2 text-sm leading-6 text-gray-700 hover:bg-gray-50" role="menuitem" tabindex="-1">Pengaturan Global</a>
 
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
