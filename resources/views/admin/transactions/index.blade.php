@@ -11,7 +11,7 @@
     </div>
 
     <!-- Transactions Container -->
-    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+    <div id="table-container" class="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
         
         <!-- Mobile Card View (Hidden on sm and up) -->
         <div class="block sm:hidden divide-y divide-gray-200">
