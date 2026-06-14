@@ -16,17 +16,10 @@ class Destination extends Model
         'tagline',
         'image',
         'location',
-        'tagline',
         'description',
         'highlights',
         'rating',
         'reviews',
-    ];
-
-    protected $casts = [
-        'highlights' => 'array',
-        'rating' => 'decimal:1',
-        'reviews' => 'integer',
         'reviews_count',
         'sort_order',
         'is_active',
