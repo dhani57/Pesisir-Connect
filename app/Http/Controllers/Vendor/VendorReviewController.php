@@ -38,16 +38,16 @@ class VendorReviewController extends Controller
 
     public function toggleHide(VendorReview $review): RedirectResponse
     {
-        $vendor = auth()->user()->vendor;
-        if ($review->vendor_id !== $vendor->id) abort(403);
+        $this->authorize('manage', $review);
+
         $review->update(['is_hidden' => !$review->is_hidden]);
         return back()->with('success', $review->is_hidden ? 'Ulasan disembunyikan.' : 'Ulasan ditampilkan.');
     }
 
     public function reply(Request $request, VendorReview $review): RedirectResponse
     {
-        $vendor = auth()->user()->vendor;
-        if ($review->vendor_id !== $vendor->id) abort(403);
+        $this->authorize('manage', $review);
+
         $request->validate(['vendor_reply' => 'required|string|max:1000']);
         $review->update(['vendor_reply' => $request->input('vendor_reply'), 'vendor_reply_at' => now()]);
         return back()->with('success', 'Balasan berhasil dikirim.');

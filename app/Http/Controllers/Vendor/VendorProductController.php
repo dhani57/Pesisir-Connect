@@ -198,13 +198,10 @@ class VendorProductController extends Controller
     }
 
     /**
-     * Verify vendor owns this product.
+     * Verify vendor owns this product (via Policy).
      */
     private function authorizeVendorProduct(Product $product): void
     {
-        $vendor = auth()->user()->vendor;
-        if ($product->vendor_id !== $vendor->id) {
-            abort(403, 'Anda tidak memiliki akses ke produk ini.');
-        }
+        $this->authorize('update', $product);
     }
 }

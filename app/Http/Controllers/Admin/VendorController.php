@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\VendorApprovedMail;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class VendorController extends Controller
@@ -68,6 +70,11 @@ class VendorController extends Controller
                 'status' => $newActiveStatus ? 'approved' : 'suspended',
                 'verified_at' => $newActiveStatus ? now() : null,
             ]);
+        }
+
+        // Send approval email to vendor when activated
+        if ($newActiveStatus) {
+            Mail::to($vendor)->send(new VendorApprovedMail($vendor));
         }
 
         $status = $newActiveStatus ? 'diaktifkan (Approved)' : 'dinonaktifkan (Suspended)';

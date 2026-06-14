@@ -79,6 +79,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     // 5. Audit Finansial Global
     Route::get('/transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('admin.transactions.index');
+    Route::get('/transactions/export', [\App\Http\Controllers\Admin\TransactionController::class, 'export'])->name('admin.transactions.export');
+    Route::get('/transactions/{transaction}', [\App\Http\Controllers\Admin\TransactionController::class, 'show'])->name('admin.transactions.show');
+    Route::patch('/transactions/{transaction}/status', [\App\Http\Controllers\Admin\TransactionController::class, 'updateStatus'])->name('admin.transactions.update-status');
+    Route::get('/transactions/{transaction}/invoice-pdf', [\App\Http\Controllers\Admin\TransactionController::class, 'downloadInvoice'])->name('admin.transactions.invoice-pdf');
 
     // 6. Pengaturan Global
     Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('admin.settings.index');

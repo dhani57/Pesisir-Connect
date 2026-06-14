@@ -7,14 +7,18 @@ use App\Http\Requests\Vendor\OrderStatusRequest;
 use App\Models\Transaction;
 use App\Models\VendorNotification;
 use App\Services\CommissionService;
+use App\Services\InvoiceService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class VendorOrderController extends Controller
 {
-    public function __construct(private CommissionService $commissionService)
-    {
+    public function __construct(
+        private CommissionService $commissionService,
+        private InvoiceService $invoiceService,
+    ) {
     }
 
     /**
@@ -82,11 +86,9 @@ class VendorOrderController extends Controller
      */
     public function show(Transaction $transaction): View
     {
-        $vendor = auth()->user()->vendor;
-        if ($transaction->vendor_id !== $vendor->id) {
-            abort(403, 'Anda tidak memiliki akses ke pesanan ini.');
-        }
+        $this->authorize('view', $transaction);
 
+        $vendor = auth()->user()->vendor;
         $transaction->load(['customer', 'product']);
 
         return view('vendor.orders.show', compact('transaction', 'vendor'));
@@ -97,10 +99,9 @@ class VendorOrderController extends Controller
      */
     public function updateStatus(OrderStatusRequest $request, Transaction $transaction): RedirectResponse
     {
+        $this->authorize('updateStatus', $transaction);
+
         $vendor = auth()->user()->vendor;
-        if ($transaction->vendor_id !== $vendor->id) {
-            abort(403);
-        }
 
         $newStatus = $request->validated()['vendor_status'];
         $transaction->update([
@@ -133,14 +134,32 @@ class VendorOrderController extends Controller
      */
     public function sendInvoice(Transaction $transaction): RedirectResponse
     {
-        $vendor = auth()->user()->vendor;
-        if ($transaction->vendor_id !== $vendor->id) {
-            abort(403);
+        $this->authorize('sendInvoice', $transaction);
+
+        $transaction->load(['customer', 'product.category', 'vendor.user']);
+
+        if (!$transaction->customer?->email) {
+            return back()->with('error', 'Pelanggan tidak memiliki alamat email.');
         }
 
-        // In production, this would send an email with invoice
-        // For now, just flash a success message
-        return back()->with('success', 'Invoice berhasil dikirim ke pelanggan.');
+        try {
+            $pdfContent = $this->invoiceService->toRaw($transaction);
+            $filename = 'Invoice-' . $transaction->invoice_number . '.pdf';
+
+            Mail::raw(
+                'Terlampir invoice untuk pesanan #' . $transaction->invoice_number . '. Terima kasih telah menggunakan PesisirConnect.',
+                function ($message) use ($transaction, $pdfContent, $filename) {
+                    $message->to($transaction->customer->email, $transaction->customer->name)
+                        ->subject('Invoice Pesanan #' . $transaction->invoice_number . ' — PesisirConnect')
+                        ->attachData($pdfContent, $filename, ['mime' => 'application/pdf']);
+                }
+            );
+
+            return back()->with('success', 'Invoice berhasil dikirim ke ' . $transaction->customer->email);
+        } catch (\Exception $e) {
+            logger()->error('Send invoice failed: ' . $e->getMessage());
+            return back()->with('error', 'Gagal mengirim invoice. Silakan coba lagi.');
+        }
     }
 
     /**
@@ -148,14 +167,21 @@ class VendorOrderController extends Controller
      */
     public function addNotes(Request $request, Transaction $transaction): RedirectResponse
     {
-        $vendor = auth()->user()->vendor;
-        if ($transaction->vendor_id !== $vendor->id) {
-            abort(403);
-        }
+        $this->authorize('updateStatus', $transaction);
 
         $request->validate(['vendor_notes' => 'required|string|max:1000']);
         $transaction->update(['vendor_notes' => $request->input('vendor_notes')]);
 
         return back()->with('success', 'Catatan berhasil ditambahkan.');
+    }
+
+    /**
+     * Download invoice PDF for a transaction.
+     */
+    public function downloadInvoice(Transaction $transaction): \Symfony\Component\HttpFoundation\Response
+    {
+        $this->authorize('downloadInvoice', $transaction);
+
+        return $this->invoiceService->download($transaction);
     }
 }

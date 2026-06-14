@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         // Register vendor middleware alias
         Route::aliasMiddleware('vendor', IsVendor::class);
 
-        // Authorization Gates
+        // Authorization Gates (non-model-specific)
         Gate::define('view-vendor-dashboard', function (User $user) {
             return $user->role === 'vendor' && $user->vendor && $user->vendor->is_approved;
         });
@@ -36,12 +36,9 @@ class AppServiceProvider extends ServiceProvider
             return $user->role === 'vendor';
         });
 
-        Gate::define('update-product', function (User $user, Product $product) {
-            return $user->vendor && $user->vendor->id === $product->vendor_id;
-        });
-
-        Gate::define('delete-product', function (User $user, Product $product) {
-            return $user->vendor && $user->vendor->id === $product->vendor_id;
-        });
+        // Model-specific authorization is handled by Policies:
+        // - ProductPolicy (auto-discovered for App\Models\Product)
+        // - TransactionPolicy (auto-discovered for App\Models\Transaction)
+        // - VendorReviewPolicy (auto-discovered for App\Models\VendorReview)
     }
 }
