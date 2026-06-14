@@ -23,6 +23,18 @@ class VendorController extends Controller
     }
 
     /**
+     * Display the specified vendor details.
+     */
+    public function show(User $vendor): View
+    {
+        if ($vendor->role !== 'vendor') {
+            abort(404, 'Vendor not found.');
+        }
+
+        return view('admin.vendors.show', compact('vendor'));
+    }
+
+    /**
      * Toggle the active status of a vendor.
      */
     public function toggleStatus(User $vendor): RedirectResponse

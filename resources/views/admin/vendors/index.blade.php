@@ -86,13 +86,13 @@
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                                 <div class="flex items-center justify-end gap-x-2">
-                                    <button type="button" x-data x-on:click="$dispatch('open-modal', 'vendor-detail-{{ $vendor->id }}')" class="inline-flex items-center gap-1 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all">
+                                    <a href="{{ route('admin.vendors.show', $vendor) }}" class="inline-flex items-center gap-1 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all">
                                         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                         </svg>
                                         Detail
-                                    </button>
+                                    </a>
 
                                     <form action="{{ route('admin.vendors.toggle', $vendor) }}" method="POST" class="inline-block">
                                         @csrf
@@ -112,8 +112,7 @@
                                     </form>
                                 </div>
 
-                                <!-- Render Modal Component for this Vendor -->
-                                <x-vendor-detail-modal :vendor="$vendor" />
+
                             </td>
                         </tr>
                     @empty

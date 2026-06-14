@@ -68,6 +68,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
 
     // 2. Sistem Verifikasi Vendor
     Route::get('/vendors', [\App\Http\Controllers\Admin\VendorController::class, 'index'])->name('admin.vendors.index');
+    Route::get('/vendors/{vendor}', [\App\Http\Controllers\Admin\VendorController::class, 'show'])->name('admin.vendors.show');
     Route::patch('/vendors/{vendor}/toggle', [\App\Http\Controllers\Admin\VendorController::class, 'toggleStatus'])->name('admin.vendors.toggle');
 
     // 3. Manajemen Kategori
