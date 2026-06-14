@@ -72,13 +72,6 @@
                 </div>
 
                 <div class="sm:col-span-3">
-                    <label for="tagline" class="block text-sm font-medium leading-6 text-gray-900">Tagline Pendek</label>
-                    <div class="mt-2">
-                        <input type="text" name="tagline" id="tagline" value="{{ old('tagline', $destination->tagline ?? '') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6" placeholder="Contoh: Surga Snorkeling Lampung">
-                    </div>
-                </div>
-
-                <div class="sm:col-span-3">
                     <label for="rating" class="block text-sm font-medium leading-6 text-gray-900">Rating (0.0 - 5.0)</label>
                     <div class="mt-2">
                         <input type="number" step="0.1" min="0" max="5" name="rating" id="rating" value="{{ old('rating', $destination->rating ?? '0.0') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">
@@ -86,9 +79,9 @@
                 </div>
 
                 <div class="sm:col-span-3">
-                    <label for="reviews" class="block text-sm font-medium leading-6 text-gray-900">Jumlah Review</label>
+                    <label for="reviews_count" class="block text-sm font-medium leading-6 text-gray-900">Jumlah Review</label>
                     <div class="mt-2">
-                        <input type="number" min="0" name="reviews" id="reviews" value="{{ old('reviews', $destination->reviews ?? '0') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">
+                        <input type="number" min="0" name="reviews_count" id="reviews_count" value="{{ old('reviews_count', $destination->reviews_count ?? '0') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">
                     </div>
                 </div>
 
@@ -104,13 +97,6 @@
                     <p class="text-xs text-gray-500 mt-1">Pisahkan tiap poin highlight dengan baris baru (Enter).</p>
                     <div class="mt-2">
                         <textarea id="highlights" name="highlights" rows="4" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">{{ old('highlights', isset($destination) && is_array($destination->highlights) ? implode("\n", $destination->highlights) : '') }}</textarea>
-                    </div>
-                </div>
-
-                    <label for="highlights" class="block text-sm font-medium leading-6 text-gray-900">Highlights</label>
-                    <p class="mt-1 text-xs text-gray-500">Pisahkan setiap highlight dengan koma. Contoh: Snorkeling & Diving, Terumbu Karang, Sunset Point</p>
-                    <div class="mt-2">
-                        <input type="text" name="highlights" id="highlights" value="{{ old('highlights', isset($destination) && $destination->highlights ? implode(', ', $destination->highlights) : '') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6" placeholder="Snorkeling & Diving, Terumbu Karang Alami, Island Hopping">
                     </div>
                 </div>
 
