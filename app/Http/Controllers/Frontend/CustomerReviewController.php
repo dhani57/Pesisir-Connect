@@ -25,15 +25,8 @@ class CustomerReviewController extends Controller
     {
         $user = auth()->user();
 
-        // Verify ownership — customer can only review their own transactions
-        if ($transaction->user_id !== $user->id) {
-            abort(403, 'Anda tidak memiliki akses ke transaksi ini.');
-        }
-
-        // Verify the transaction is completed
-        if ($transaction->vendor_status !== 'completed') {
-            return back()->with('error', 'Ulasan hanya dapat diberikan untuk pesanan yang sudah selesai.');
-        }
+        // Verify ownership and completion status — via Policy
+        $this->authorize('review', $transaction);
 
         // Prevent duplicate reviews
         $existingReview = VendorReview::where('user_id', $user->id)
@@ -81,11 +74,9 @@ class CustomerReviewController extends Controller
      */
     public function cancelTransaction(Transaction $transaction): RedirectResponse
     {
-        $user = auth()->user();
+        $this->authorize('cancel', $transaction);
 
-        if ($transaction->user_id !== $user->id) {
-            abort(403);
-        }
+        $user = auth()->user();
 
         // Can only cancel if payment is still pending
         if ($transaction->status !== 'pending') {

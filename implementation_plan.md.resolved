@@ -56,10 +56,10 @@ graph TB
         V9["Notifikasi ✅"]
     end
 
-    subgraph "💳 Payment (BELUM)"
-        P1["Checkout Flow ❌"]
-        P2["Midtrans Integration ❌"]
-        P3["Payment Callback ❌"]
+    subgraph "💳 Payment (Midtrans)"
+        P1["Checkout Flow ✅"]
+        P2["Midtrans Integration ✅"]
+        P3["Payment Callback ✅"]
     end
 ```
 
@@ -84,20 +84,19 @@ graph TB
 | **Vendor Reviews** | ✅ | ✅ | ✅ | — | ✅ | ✅ Selesai |
 | **Vendor Earnings** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Selesai |
 | **Vendor Notifications** | ✅ | ✅ | ✅ | — | ✅ | ✅ Selesai |
-| **Checkout/Payment** | ❌ | ❌ | — | ❌ | ⚠️ TODO | ❌ Belum |
+| **Checkout/Payment** | ✅ | ✅ | — | ✅ | ✅ | ✅ Selesai |
 | **Wishlist** | ✅ | ✅ | ✅ | — | ✅ | ✅ Selesai |
-| **Customer Dashboard** | ⚠️ | ⚠️ | — | — | ✅ | ⚠️ Minimal |
-| **Destinasi (Dynamic)** | ⚠️ | ✅ | ✅ | — | ✅ | ⚠️ Data Statis |
+| **Customer Dashboard** | ✅ | ✅ | — | — | ✅ | ✅ Selesai |
+| **Destinasi (Dynamic)** | ✅ | ✅ | ✅ | — | ✅ | ✅ Selesai |
 
 ### Temuan Kritis & Gap
 
 > [!WARNING]
-> **5 Gap kritikal yang harus segera ditangani:**
-> 1. **Checkout & Payment (Midtrans)** — Route `/checkout/{slug}` masih return string placeholder, package `midtrans/midtrans-php` sudah terpasang tapi belum digunakan
-> 2. **Customer Dashboard** — Hanya return `view('dashboard')` tanpa data, tidak ada riwayat transaksi customer
-> 3. **Halaman Destinasi** — Masih menggunakan data statis di controller, padahal model `Destination` dan migrasi sudah ada
-> 4. **Database Production** — Menggunakan SQLite, belum siap untuk production traffic
-> 5. **Testing** — Hanya ada default Breeze tests, tidak ada custom test untuk fitur vendor/admin
+> **Gap yang harus segera ditangani:**
+> 1. **Database Production** — Menggunakan SQLite, perlu migrasi ke MySQL sebelum live.
+> 2. **Sistem Email** — Belum ada notifikasi email, masih bergantung pada log atau in-app notification.
+> 3. **Admin Panel** — Detail transaksi untuk admin dan export/invoice PDF belum diimplementasikan.
+> 4. **Testing** — Tidak ada custom test untuk fitur vendor/admin.
 
 ---
 
@@ -105,175 +104,96 @@ graph TB
 
 ---
 
-### 🔴 PRIORITAS 1 — KRITIKAL (Wajib Selesai)
+### 🟢 SELESAI (Sprint 1)
 
-> [!CAUTION]
-> Fitur-fitur ini **wajib ada** agar sistem bisa digunakan secara fungsional oleh pengguna akhir. Tanpa ini, marketplace tidak bisa beroperasi.
-
-#### 1.1 Sistem Checkout & Integrasi Midtrans
-**Estimasi:** 3-5 hari kerja
-
-Checkout adalah *lifeblood* marketplace — tanpa ini, tidak ada transaksi yang bisa terjadi.
-
-**Yang Perlu Dibuat:**
-- [ ] `CheckoutController` — menangani alur checkout lengkap
-- [ ] `MidtransService` — service wrapper untuk Snap API Midtrans
-- [ ] `MidtransCallbackController` — handle notification/callback dari Midtrans
-- [ ] View `checkout.blade.php` — form booking (tanggal, jumlah tamu, catatan)
-- [ ] View `payment.blade.php` — halaman pembayaran Midtrans Snap
-- [ ] View `payment-success.blade.php` / `payment-failed.blade.php`
-- [ ] Konfigurasi `.env` untuk Midtrans keys (`MIDTRANS_SERVER_KEY`, `MIDTRANS_CLIENT_KEY`, `MIDTRANS_IS_PRODUCTION`)
-- [ ] Route: `GET /checkout/{slug}`, `POST /checkout`, `POST /midtrans/callback`
-- [ ] Logika stok management (decrement saat checkout, rollback saat expired/gagal)
-- [ ] Auto-assign `vendor_id` pada transaksi berdasarkan produk
-
-**Alur yang Diharapkan:**
-```
-Detail Produk → Pilih Tanggal & Jumlah → Review Booking → Midtrans Snap Popup → 
-Callback (Success/Pending/Failed) → Update Transaction Status → Notifikasi ke Vendor
-```
+Fitur kritikal berikut sudah berhasil diimplementasikan:
+- ✅ **Checkout & Midtrans Integration**: Snap popup, webhook penanganan callback, auto cancel.
+- ✅ **Customer Dashboard**: Menampilkan statistik dasar dan riwayat transaksi.
+- ✅ **Sistem Review Customer**: Validasi per transaksi yang telah selesai.
+- ✅ **Halaman Destinasi Dinamis**: Menggunakan data `Destination` yang diambil dari database.
 
 ---
 
-#### 1.2 Customer Dashboard & Riwayat Transaksi
-**Estimasi:** 2-3 hari kerja
-
-Customer perlu melihat status booking mereka dan melacak pesanan.
-
-**Yang Perlu Dibuat:**
-- [ ] `CustomerDashboardController` — data dashboard customer
-- [ ] View `dashboard.blade.php` (upgrade dari yang sekarang, kosong)
-- [ ] Widget ringkasan: Total booking, booking aktif, booking selesai
-- [ ] Tabel riwayat transaksi: Invoice, produk, vendor, status, tanggal, total
-- [ ] Detail transaksi customer: status pembayaran, bukti, timeline
-- [ ] Kemampuan customer untuk membatalkan booking (jika status masih `pending`)
-- [ ] Link ke halaman review setelah booking selesai
-
----
-
-#### 1.3 Sistem Review dari Customer
-**Estimasi:** 2 hari kerja
-
-Vendor sudah bisa melihat & membalas review, tapi customer belum bisa memberikan review.
-
-**Yang Perlu Dibuat:**
-- [ ] `CustomerReviewController` — submit review untuk vendor/produk
-- [ ] Form review di halaman riwayat transaksi (hanya bisa review setelah `vendor_status = completed`)
-- [ ] Validasi: 1 review per transaksi, rating 1-5, teks review
-- [ ] Update otomatis `rating` dan `total_reviews` di model `Product`
-- [ ] Update `average_rating` accessor di `Vendor` model (sudah ada tapi belum ada input)
-- [ ] Notifikasi ke vendor saat ada review baru
-
----
-
-#### 1.4 Halaman Destinasi Dinamis (dari Database)
-**Estimasi:** 1 hari kerja
-
-Model `Destination` dan migrasi sudah ada, tapi `PageController::destinasi()` masih pakai data hardcoded.
-
-**Yang Perlu Dibuat:**
-- [ ] Update `PageController::destinasi()` — query dari tabel `destinations`
-- [ ] Admin seeder untuk data destinasi awal
-- [ ] Pastikan Admin Destination CRUD sudah terintegrasi dengan halaman frontend
-- [ ] Tambahkan field `highlights` (JSON) ke tabel destinations jika belum ada
-
----
-
-### 🟠 PRIORITAS 2 — PENTING (Sangat Disarankan)
+### 🔴 PRIORITAS 1 — PENTING (Sangat Disarankan)
 
 > [!IMPORTANT]
 > Fitur-fitur ini meningkatkan keandalan, keamanan, dan pengalaman pengguna secara signifikan. Harus ada sebelum production launch.
 
-#### 2.1 Email Notification System
+#### 1.1 Migrasi Database ke MySQL
+**Estimasi:** 1 hari kerja
+
+Aplikasi saat ini berjalan di atas SQLite, perlu diubah ke environment MySQL.
+
+**Yang Perlu Dibuat:**
+- [ ] Ubah `DB_CONNECTION` di `.env` menjadi `mysql`
+- [ ] Konfigurasi database MySQL
+- [ ] Jalankan `php artisan migrate:fresh --seed`
+- [ ] Uji coba transaksi dan fungsionalitas menggunakan MySQL
+
+---
+
+#### 1.2 Email Notification System
 **Estimasi:** 2-3 hari kerja
 
 Sistem notifikasi email belum ada — semua notifikasi hanya in-app.
 
 **Yang Perlu Dibuat:**
-- [ ] Mailables: `OrderCreatedMail`, `PaymentReceivedMail`, `VendorApprovedMail`, `PayoutProcessedMail`
-- [ ] Konfigurasi SMTP di `.env`
-- [ ] Queue job untuk pengiriman email agar tidak blocking
-- [ ] Template email HTML yang branded (PesisirConnect theme)
-- [ ] Trigger email di: checkout berhasil, status order berubah, vendor approved, payout
+- [x] Mailables: `OrderCreatedMail`, `PaymentReceivedMail`, `VendorApprovedMail`, `PayoutProcessedMail`
+- [x] Konfigurasi SMTP di `.env` (Panduan ada di testing instructions)
+- [x] Queue job untuk pengiriman email agar tidak blocking
+- [x] Template email HTML yang branded (PesisirConnect theme)
+- [x] Trigger email di: checkout berhasil, status order berubah, vendor approved, payout
 
 ---
 
-#### 2.2 Migrasi Database ke MySQL/PostgreSQL
-**Estimasi:** 1 hari kerja
-
-SQLite tidak cocok untuk production (concurrent writes, scaling).
-
-**Yang Perlu Dibuat:**
-- [ ] Konfigurasi `.env` untuk MySQL/PostgreSQL
-- [ ] Verifikasi semua migrasi kompatibel (cek raw SQL di analytics controller)
-- [ ] Test `VendorAnalyticsController` — ada `havingRaw()` dan `selectRaw()` yang mungkin perlu adjustment
-- [ ] Setup proper indexing pada tabel yang sering di-query
-
----
-
-#### 2.3 Invoice PDF Generation
+#### 1.3 Invoice PDF Generation
 **Estimasi:** 1-2 hari kerja
 
 Tombol "Kirim Invoice" di vendor order sudah ada tapi cuma flash message.
 
 **Yang Perlu Dibuat:**
-- [ ] Install `barryvdh/laravel-dompdf` atau `spatie/laravel-pdf`
-- [ ] `InvoiceService` — generate PDF invoice
-- [ ] Template invoice blade (branded, berisi: data order, produk, harga, QR code)
-- [ ] Integrasi: `VendorOrderController::sendInvoice()` kirim email + PDF attachment
-- [ ] Route: download invoice (`GET /vendor/orders/{id}/invoice-pdf`)
+- [x] Install `barryvdh/laravel-dompdf` atau `spatie/laravel-pdf`
+- [x] `InvoiceService` — generate PDF invoice
+- [x] Template invoice blade (branded, berisi: data order, produk, harga, QR code)
+- [x] Integrasi: `VendorOrderController::sendInvoice()` kirim email + PDF attachment
+- [x] Route: download invoice (`GET /vendor/orders/{id}/invoice-pdf`)
 
 ---
 
-#### 2.4 Admin Dashboard Enhancement
-**Estimasi:** 2 hari kerja
-
-Dashboard admin saat ini sangat minimal (3 angka).
-
-**Yang Perlu Dibuat:**
-- [ ] Chart pendapatan (line chart, bulanan/mingguan)
-- [ ] Chart distribusi transaksi per status (pie chart)
-- [ ] Tabel 10 transaksi terbaru dengan link ke detail
-- [ ] Widget: total customer terdaftar, total produk aktif
-- [ ] Trend growth comparison (bulan ini vs bulan lalu)
-- [ ] Quick actions: approve vendor terbaru, lihat pending transactions
-
----
-
-#### 2.5 Admin Transaction Detail & Management
+#### 1.4 Admin Transaction Detail & Management
 **Estimasi:** 1-2 hari kerja
 
 Admin Transaction Controller hanya ada `index()`, belum ada detail atau aksi.
 
 **Yang Perlu Dibuat:**
-- [ ] `TransactionController::show()` — detail transaksi
-- [ ] View `admin/transactions/show.blade.php` — detail lengkap
-- [ ] Filter & search di halaman index (status, vendor, tanggal, customer)
-- [ ] Export data transaksi (CSV/Excel)
-- [ ] Kemampuan admin untuk override status pembayaran (mark as paid/refunded)
+- [x] `TransactionController::show()` — detail transaksi
+- [x] View `admin/transactions/show.blade.php` — detail lengkap
+- [x] Filter & search di halaman index (status, vendor, tanggal, customer)
+- [x] Export data transaksi (CSV/Excel)
+- [x] Kemampuan admin untuk override status pembayaran (mark as paid/refunded)
 
 ---
 
-#### 2.6 Proper Authorization dengan Policy
+#### 1.5 Proper Authorization dengan Policy
 **Estimasi:** 1 hari kerja
 
 Saat ini authorization manual di setiap controller (`if ($product->vendor_id !== $vendor->id) abort(403)`).
 
 **Yang Perlu Dibuat:**
-- [ ] `ProductPolicy` — canView, canUpdate, canDelete
-- [ ] `TransactionPolicy` — canView, canUpdateStatus
-- [ ] `VendorPolicy` — canAccess, canModify
-- [ ] Register policies di `AppServiceProvider` atau auto-discover
-- [ ] Ganti manual abort(403) dengan `$this->authorize()` calls
+- [x] `ProductPolicy` — canView, canUpdate, canDelete
+- [x] `TransactionPolicy` — canView, canUpdateStatus
+- [x] `VendorReviewPolicy` — canManage
+- [x] Register policies di `AppServiceProvider` atau auto-discover
+- [x] Ganti manual abort(403) dengan `$this->authorize()` calls
 
 ---
 
-### 🟡 PRIORITAS 3 — MENENGAH (Nice to Have Sebelum Launch)
+### 🟡 PRIORITAS 2 — MENENGAH (Nice to Have Sebelum Launch)
 
 > [!NOTE]
 > Fitur ini meningkatkan UX dan daya saing platform, tapi bisa dilaunching tanpa ini.
 
-#### 3.1 Halaman Profil Customer
+#### 2.1 Halaman Profil Customer
 **Estimasi:** 1-2 hari kerja
 
 - [ ] View profil customer publik (nama, avatar, join date)
@@ -283,7 +203,7 @@ Saat ini authorization manual di setiap controller (`if ($product->vendor_id !==
 
 ---
 
-#### 3.2 Search & Filter Enhancement
+#### 2.2 Search & Filter Enhancement
 **Estimasi:** 1-2 hari kerja
 
 - [ ] Full-text search di katalog (nama + deskripsi)
@@ -295,7 +215,7 @@ Saat ini authorization manual di setiap controller (`if ($product->vendor_id !==
 
 ---
 
-#### 3.3 Sistem Chat / Messaging (Vendor ↔ Customer)
+#### 2.3 Sistem Chat / Messaging (Vendor ↔ Customer)
 **Estimasi:** 3-4 hari kerja
 
 Saat ini komunikasi hanya lewat WhatsApp link.
@@ -311,7 +231,7 @@ Saat ini komunikasi hanya lewat WhatsApp link.
 
 ---
 
-#### 3.4 Image Optimization & Storage
+#### 2.4 Image Optimization & Storage
 **Estimasi:** 1-2 hari kerja
 
 Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
@@ -324,7 +244,7 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-#### 3.5 SEO & Social Sharing
+#### 2.5 SEO & Social Sharing
 **Estimasi:** 1 hari kerja
 
 - [ ] Dynamic meta tags per halaman produk (`<title>`, `<meta description>`)
@@ -336,7 +256,7 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-#### 3.6 Multi-Language Support (i18n)
+#### 2.6 Multi-Language Support (i18n)
 **Estimasi:** 2 hari kerja
 
 - [ ] Gunakan Laravel Localization (`resources/lang/id/`, `resources/lang/en/`)
@@ -346,12 +266,12 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-### 🟢 PRIORITAS 4 — OPSIONAL (Enhancement Masa Depan)
+### 🟢 PRIORITAS 3 — OPSIONAL (Enhancement Masa Depan)
 
 > [!TIP]
 > Fitur-fitur ini untuk iterasi mendatang setelah platform sudah live dan mendapat user feedback.
 
-#### 4.1 Progressive Web App (PWA)
+#### 3.1 Progressive Web App (PWA)
 **Estimasi:** 1-2 hari kerja
 
 - [ ] Service Worker untuk offline caching
@@ -361,7 +281,7 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-#### 4.2 Advanced Analytics (Admin)
+#### 3.2 Advanced Analytics (Admin)
 **Estimasi:** 3-4 hari kerja
 
 - [ ] Dashboard dengan Google Charts / ApexCharts yang lebih interaktif
@@ -373,7 +293,7 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-#### 4.3 Promo, Voucher & Coupon System
+#### 3.3 Promo, Voucher & Coupon System
 **Estimasi:** 3-4 hari kerja
 
 - [ ] Model `Coupon` (kode, tipe diskon, min order, max diskon, expired date)
@@ -385,7 +305,7 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-#### 4.4 Loyalty & Points System
+#### 3.4 Loyalty & Points System
 **Estimasi:** 2-3 hari kerja
 
 - [ ] Poin per transaksi berhasil
@@ -395,7 +315,7 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-#### 4.5 Maps Integration (Google Maps / OpenStreetMap)
+#### 3.5 Maps Integration (Google Maps / OpenStreetMap)
 **Estimasi:** 2 hari kerja
 
 - [ ] Peta interaktif di halaman destinasi (pin semua produk di peta)
@@ -406,7 +326,7 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-#### 4.6 API REST untuk Mobile App
+#### 3.6 API REST untuk Mobile App
 **Estimasi:** 5-7 hari kerja
 
 - [ ] `routes/api.php` dengan Laravel Sanctum authentication
@@ -417,7 +337,7 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-#### 4.7 Automated Testing Suite
+#### 3.7 Automated Testing Suite
 **Estimasi:** 3-5 hari kerja
 
 - [ ] Feature tests: Auth flow, checkout flow, vendor CRUD
@@ -428,7 +348,7 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-#### 4.8 Dark Mode
+#### 3.8 Dark Mode
 **Estimasi:** 1-2 hari kerja
 
 - [ ] Tailwind dark mode via class strategy
@@ -437,7 +357,7 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-#### 4.9 Social Login (OAuth)
+#### 3.9 Social Login (OAuth)
 **Estimasi:** 1 hari kerja
 
 - [ ] Install `laravel/socialite`
@@ -448,7 +368,7 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-#### 4.10 Activity Log & Audit Trail
+#### 3.10 Activity Log & Audit Trail
 **Estimasi:** 1-2 hari kerja
 
 - [ ] Install `spatie/laravel-activitylog`
@@ -462,38 +382,35 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 | Prioritas | Jumlah Fitur | Total Estimasi | Impact |
 |---|:---:|:---:|---|
-| 🔴 **Kritikal** | 4 | 8-11 hari | Marketplace bisa beroperasi penuh |
-| 🟠 **Penting** | 6 | 8-11 hari | Reliability & security production-ready |
+| 🔴 **Penting (Sangat Disarankan)** | 5 | 6-9 hari | Reliability & security production-ready |
 | 🟡 **Menengah** | 6 | 9-13 hari | UX excellence & daya saing |
 | 🟢 **Opsional** | 10 | 22-33 hari | Growth & scale enhancement |
-| **Total** | **26 fitur** | **47-68 hari** | — |
+| **Total** | **21 fitur** | **37-55 hari** | — |
 
 ---
 
 ## 🎯 Rekomendasi Urutan Pengerjaan (Sprint Plan)
 
-### Sprint 1 (Minggu 1-2) — "Make It Work"
-1. ✅ Checkout & Midtrans Integration (1.1)
-2. ✅ Customer Dashboard (1.2)
-3. ✅ Customer Review System (1.3)
-4. ✅ Destinasi Dinamis (1.4)
+### Sprint 1 (Selesai) ✅
+- Checkout & Midtrans Integration
+- Customer Dashboard
+- Customer Review System
+- Destinasi Dinamis
+- Admin Dashboard Enhancement
 
-### Sprint 2 (Minggu 3) — "Make It Solid"
-5. Database Migration ke MySQL (2.2)
-6. Email Notification System (2.1)
-7. Invoice PDF Generation (2.3)
-8. Authorization Policies (2.6)
+### Sprint 2 — "Make It Solid"
+1. Database Migration ke MySQL (1.1)
+2. ✅ Email Notification System (1.2)
+3. ✅ Invoice PDF Generation (1.3)
+4. ✅ Admin Transaction Detail (1.4)
+5. ✅ Authorization Policies (1.5)
 
-### Sprint 3 (Minggu 4) — "Make It Shine"
-9. Admin Dashboard Enhancement (2.4)
-10. Admin Transaction Detail (2.5)
-11. Search & Filter Enhancement (3.2)
-12. SEO & Social Sharing (3.5)
-
-### Sprint 4+ (Minggu 5+) — "Make It Scale"
-13. Image Optimization (3.4)
-14. Customer Profile (3.1)
-15. Sisanya sesuai kebutuhan & user feedback
+### Sprint 3 — "Make It Shine"
+6. Search & Filter Enhancement (2.2)
+7. SEO & Social Sharing (2.5)
+8. Image Optimization (2.4)
+9. Customer Profile (2.1)
+10. Sisanya sesuai kebutuhan & user feedback
 
 ---
 

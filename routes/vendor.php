@@ -32,6 +32,7 @@ Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(
     Route::get('orders/{transaction}', [VendorOrderController::class, 'show'])->name('orders.show');
     Route::patch('orders/{transaction}/status', [VendorOrderController::class, 'updateStatus'])->name('orders.update-status');
     Route::post('orders/{transaction}/send-invoice', [VendorOrderController::class, 'sendInvoice'])->name('orders.send-invoice');
+    Route::get('orders/{transaction}/invoice-pdf', [VendorOrderController::class, 'downloadInvoice'])->name('orders.invoice-pdf');
     Route::post('orders/{transaction}/notes', [VendorOrderController::class, 'addNotes'])->name('orders.add-notes');
 
     // Profile & Settings

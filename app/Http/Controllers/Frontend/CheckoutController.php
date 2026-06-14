@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Mail\OrderCreatedMail;
+use App\Mail\PaymentReceivedMail;
+use App\Mail\VendorNewOrderMail;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\VendorNotification;
@@ -10,6 +13,7 @@ use App\Services\MidtransService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 /**
@@ -114,6 +118,9 @@ class CheckoutController extends Controller
                 ]);
             });
 
+            // Send order created email to customer
+            Mail::to($transaction->customer)->send(new OrderCreatedMail($transaction));
+
             // Generate Midtrans Snap token
             $snap = $this->midtransService->createSnapToken($transaction);
 
@@ -198,6 +205,10 @@ class CheckoutController extends Controller
             'midtrans_response'      => $data['raw'] ?? null,
         ]);
 
+        // Email customer: payment confirmed
+        $transaction->load(['customer', 'product', 'vendor.user']);
+        Mail::to($transaction->customer)->send(new PaymentReceivedMail($transaction));
+
         // Notify the vendor about the new paid order
         if ($transaction->vendor_id) {
             VendorNotification::send(
@@ -209,6 +220,11 @@ class CheckoutController extends Controller
                 ' telah berhasil diterima.',
                 route('vendor.orders.show', $transaction->id)
             );
+
+            // Email vendor: new paid order
+            if ($transaction->vendor?->user?->email) {
+                Mail::to($transaction->vendor->user)->send(new VendorNewOrderMail($transaction));
+            }
         }
     }
 

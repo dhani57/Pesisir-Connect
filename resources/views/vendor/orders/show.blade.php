@@ -85,8 +85,9 @@
                 <div class="space-y-2">
                     <form method="POST" action="{{ route('vendor.orders.send-invoice', $transaction) }}">
                         @csrf
-                        <button type="submit" class="w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 flex items-center gap-2 text-gray-700">📧 Kirim Invoice</button>
+                        <button type="submit" class="w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 flex items-center gap-2 text-gray-700">📧 Kirim Invoice via Email</button>
                     </form>
+                    <a href="{{ route('vendor.orders.invoice-pdf', $transaction) }}" target="_blank" class="block px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 flex items-center gap-2 text-gray-700">📄 Download Invoice PDF</a>
                     @if($transaction->customer?->phone)
                         <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $transaction->customer->phone) }}" target="_blank" class="block px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 flex items-center gap-2 text-gray-700">💬 Hubungi via WhatsApp</a>
                     @endif
