@@ -29,6 +29,7 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider w-16">No.</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Destinasi</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Lokasi</th>
                         <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Aksi</th>
@@ -37,6 +38,9 @@
                 <tbody class="divide-y divide-gray-200 bg-white">
                     @forelse($destinations as $destination)
                         <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 font-medium">
+                                {{ $destinations->firstItem() + $loop->index }}
+                            </td>
                             <td class="whitespace-nowrap px-6 py-4">
                                 <div class="flex items-center">
                                     <div class="h-16 w-24 flex-shrink-0">
@@ -67,7 +71,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="px-6 py-10 text-center text-sm text-gray-500">
+                            <td colspan="4" class="px-6 py-10 text-center text-sm text-gray-500">
                                 Belum ada konten destinasi.
                             </td>
                         </tr>

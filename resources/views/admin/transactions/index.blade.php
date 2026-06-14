@@ -52,6 +52,7 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider w-16">No.</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Invoice & Tgl</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Customer</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Produk & Vendor</th>
@@ -62,6 +63,9 @@
                 <tbody class="divide-y divide-gray-200 bg-white">
                     @forelse($transactions as $trx)
                         <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 font-medium">
+                                {{ $transactions->firstItem() + $loop->index }}
+                            </td>
                             <td class="whitespace-nowrap px-6 py-4">
                                 <div class="font-medium text-gray-900">{{ $trx->invoice_number }}</div>
                                 <div class="text-xs text-gray-500">{{ $trx->created_at->format('d M Y H:i') }}</div>
@@ -97,7 +101,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-10 text-center text-sm text-gray-500">
+                            <td colspan="6" class="px-6 py-10 text-center text-sm text-gray-500">
                                 Belum ada transaksi yang tercatat di platform.
                             </td>
                         </tr>
