@@ -31,11 +31,21 @@ class VendorController extends Controller
             return back()->withErrors(['message' => 'User ini bukan vendor.']);
         }
 
+        $newActiveStatus = !$vendor->is_active;
+
         $vendor->update([
-            'is_active' => !$vendor->is_active
+            'is_active' => $newActiveStatus
         ]);
 
-        $status = $vendor->is_active ? 'diaktifkan (Approved)' : 'dinonaktifkan (Pending)';
+        if ($vendor->vendor) {
+            $vendor->vendor->update([
+                'is_approved' => $newActiveStatus,
+                'status' => $newActiveStatus ? 'approved' : 'suspended',
+                'verified_at' => $newActiveStatus ? now() : null,
+            ]);
+        }
+
+        $status = $newActiveStatus ? 'diaktifkan (Approved)' : 'dinonaktifkan (Suspended)';
 
         return back()->with('success', "Status vendor {$vendor->name} berhasil diperbarui menjadi {$status}.");
     }
