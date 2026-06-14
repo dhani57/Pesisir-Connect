@@ -3,6 +3,7 @@
 <div class="mb-4 sm:mb-0 sm:w-72" x-data="{
     query: '{{ request('search') }}',
     isLoading: false,
+    abortController: null,
     search() {
         this.isLoading = true;
         let url = new URL(window.location.href);
@@ -13,11 +14,20 @@
         }
         url.searchParams.delete('page');
         
-        // Perbarui URL browser tanpa reload
-        window.history.pushState({}, '', url);
+        // Perbarui URL browser tanpa memenuhi history (replaceState)
+        window.history.replaceState({}, '', url);
+
+        // Batalkan request AJAX sebelumnya jika ada, agar tidak terjadi antrean/session lock
+        if (this.abortController) {
+            this.abortController.abort();
+        }
+        this.abortController = new AbortController();
 
         // Ambil data tabel terbaru via AJAX
-        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        fetch(url, { 
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            signal: this.abortController.signal
+        })
             .then(res => res.text())
             .then(html => {
                 let parser = new DOMParser();
@@ -28,12 +38,17 @@
                 }
             })
             .catch(error => {
+                if (error.name === 'AbortError') return;
                 console.error('Search error:', error);
-                window.location.reload(); // Fallback jika AJAX gagal
             })
             .finally(() => {
                 this.isLoading = false;
             });
+    },
+    init() {
+        window.addEventListener('beforeunload', () => {
+            if (this.abortController) this.abortController.abort();
+        });
     }
 }">
     <form @submit.prevent="search" class="relative flex items-center">
