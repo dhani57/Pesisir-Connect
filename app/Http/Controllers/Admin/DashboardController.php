@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\VendorCommissionLog;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -15,9 +16,12 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request): View
     {
-        // 1. Total Pendapatan Platform (akumulasi Midtrans sukses)
+        // 1. Total Nilai Transaksi / GMV (akumulasi Midtrans sukses)
         $totalRevenue = Transaction::where('status', 'paid')->sum('total_price');
         
+        // 1b. Komisi Bersih Platform
+        $netCommission = VendorCommissionLog::sum('commission_amount');
+
         // 2. Total Vendor Aktif
         $activeVendors = User::where('role', 'vendor')->where('is_active', true)->count();
         
@@ -41,6 +45,7 @@ class DashboardController extends Controller
 
         return view('admin.dashboard', compact(
             'totalRevenue', 
+            'netCommission',
             'activeVendors', 
             'successfulTransactions',
             'pendingVendorsCount',
