@@ -47,6 +47,7 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider w-16">No.</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Nama Vendor</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Tgl Daftar</th>
@@ -57,6 +58,9 @@
                 <tbody class="divide-y divide-gray-200 bg-white">
                     @forelse($vendors as $vendor)
                         <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 font-medium">
+                                {{ $vendors->firstItem() + $loop->index }}
+                            </td>
                             <td class="whitespace-nowrap px-6 py-4">
                                 <div class="flex items-center">
                                     <div class="h-10 w-10 flex-shrink-0">
@@ -101,7 +105,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-10 text-center text-sm text-gray-500">
+                            <td colspan="6" class="px-6 py-10 text-center text-sm text-gray-500">
                                 Belum ada data vendor terdaftar.
                             </td>
                         </tr>
