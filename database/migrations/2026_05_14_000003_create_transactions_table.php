@@ -20,6 +20,8 @@ return new class extends Migration
             $table->foreignId('product_id')
                   ->constrained()
                   ->cascadeOnDelete();
+            $table->foreignId('vendor_id')->nullable()
+                  ->constrained('vendors')->nullOnDelete();
             $table->date('check_in');                    // Tanggal mulai
             $table->date('check_out');                   // Tanggal selesai
             $table->integer('quantity')->default(1);     // Jumlah unit
@@ -34,6 +36,7 @@ return new class extends Migration
                 'cancelled',
                 'refunded',
             ])->default('pending');
+            $table->string('vendor_status', 50)->default('pending'); // pending, ready, completed, cancelled
             $table->enum('payment_method', [
                 'midtrans',
                 'bank_transfer',
@@ -43,6 +46,7 @@ return new class extends Migration
             $table->string('midtrans_payment_type')->nullable();
             $table->json('midtrans_response')->nullable(); // Raw response Midtrans
             $table->timestamp('paid_at')->nullable();
+            $table->timestamp('completed_at')->nullable();
             $table->text('notes')->nullable();             // Catatan dari customer
             $table->text('vendor_notes')->nullable();      // Catatan dari vendor
             $table->timestamps();
@@ -50,6 +54,8 @@ return new class extends Migration
             $table->index(['user_id', 'status']);
             $table->index(['product_id', 'status']);
             $table->index('status');
+            $table->index('vendor_id');
+            $table->index('vendor_status');
         });
     }
 
