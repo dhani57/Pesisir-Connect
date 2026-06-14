@@ -85,22 +85,35 @@
                                 @endif
                             </td>
                             <td class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
-                                <form action="{{ route('admin.vendors.toggle', $vendor) }}" method="POST" class="inline-block">
-                                    @csrf
-                                    @method('PATCH')
-                                    @if($vendor->is_active)
-                                        <button type="submit" class="text-rose-600 hover:text-rose-900 transition-colors" onclick="return confirm('Apakah Anda yakin ingin MENCABUT akses vendor ini?')">
-                                            Revoke Akses
-                                        </button>
-                                    @else
-                                        <button type="submit" class="inline-flex items-center gap-1 rounded-md bg-rose-500 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-rose-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-500 transition-all">
-                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                            </svg>
-                                            Approve
-                                        </button>
-                                    @endif
-                                </form>
+                                <div class="flex items-center justify-end gap-x-2">
+                                    <button type="button" x-data x-on:click="$dispatch('open-modal', 'vendor-detail-{{ $vendor->id }}')" class="inline-flex items-center gap-1 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 transition-all">
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                        Detail
+                                    </button>
+
+                                    <form action="{{ route('admin.vendors.toggle', $vendor) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('PATCH')
+                                        @if($vendor->is_active)
+                                            <button type="submit" class="inline-flex items-center gap-1 rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-rose-600 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-rose-50 hover:ring-rose-200 transition-all" onclick="return confirm('Apakah Anda yakin ingin MENCABUT akses vendor ini?')">
+                                                Revoke
+                                            </button>
+                                        @else
+                                            <button type="submit" class="inline-flex items-center gap-1 rounded-md bg-rose-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-rose-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-500 transition-all">
+                                                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                                </svg>
+                                                Approve
+                                            </button>
+                                        @endif
+                                    </form>
+                                </div>
+
+                                <!-- Render Modal Component for this Vendor -->
+                                <x-vendor-detail-modal :vendor="$vendor" />
                             </td>
                         </tr>
                     @empty
