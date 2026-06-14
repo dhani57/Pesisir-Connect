@@ -22,6 +22,7 @@ class PageController extends Controller
      */
     public function destinasi(): View
     {
+        $destinations = \App\Models\Destination::all();
         $destinations = Destination::active()->ordered()->get();
 
         return view('frontend.destinasi', compact('destinations'));

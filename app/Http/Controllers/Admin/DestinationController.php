@@ -25,6 +25,14 @@ class DestinationController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'tagline' => 'nullable|string|max:255',
+            'location' => 'required|string|max:255',
+            'description' => 'required|string',
+            'highlights' => 'nullable|string',
+            'rating' => 'nullable|numeric|min:0|max:5',
+            'reviews' => 'nullable|integer|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'name'        => 'required|string|max:255',
             'location'    => 'required|string|max:255',
             'tagline'     => 'nullable|string|max:255',
@@ -44,6 +52,14 @@ class DestinationController extends Controller
             $validated['image'] = '/storage/' . $path;
         }
 
+        $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
+        
+        if (!empty($validated['highlights'])) {
+            $validated['highlights'] = array_filter(array_map('trim', explode("\n", $validated['highlights'])));
+        } else {
+            $validated['highlights'] = [];
+        }
+
         Destination::create($validated);
 
         return redirect()->route('admin.destinations.index')->with('success', 'Destinasi berhasil ditambahkan.');
@@ -57,6 +73,14 @@ class DestinationController extends Controller
     public function update(Request $request, Destination $destination): RedirectResponse
     {
         $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'tagline' => 'nullable|string|max:255',
+            'location' => 'required|string|max:255',
+            'description' => 'required|string',
+            'highlights' => 'nullable|string',
+            'rating' => 'nullable|numeric|min:0|max:5',
+            'reviews' => 'nullable|integer|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'name'        => 'required|string|max:255',
             'location'    => 'required|string|max:255',
             'tagline'     => 'nullable|string|max:255',
@@ -76,6 +100,14 @@ class DestinationController extends Controller
             }
             $path = $request->file('image')->store('destinations', 'public');
             $validated['image'] = '/storage/' . $path;
+        }
+
+        $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
+
+        if (!empty($validated['highlights'])) {
+            $validated['highlights'] = array_filter(array_map('trim', explode("\n", $validated['highlights'])));
+        } else {
+            $validated['highlights'] = [];
         }
 
         $destination->update($validated);

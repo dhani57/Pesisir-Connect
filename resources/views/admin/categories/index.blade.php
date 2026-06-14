@@ -29,7 +29,7 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Ikon</th>
+                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider w-16">No.</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Nama Kategori</th>
                         <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
                         <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Aksi</th>
@@ -38,8 +38,8 @@
                 <tbody class="divide-y divide-gray-200 bg-white">
                     @forelse($categories as $category)
                         <tr class="hover:bg-gray-50 transition-colors">
-                            <td class="whitespace-nowrap px-6 py-4 text-2xl">
-                                {{ $category->icon ?? '🏖️' }}
+                            <td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500 font-medium">
+                                {{ $categories->firstItem() + $loop->index }}
                             </td>
                             <td class="whitespace-nowrap px-6 py-4">
                                 <div class="font-medium text-gray-900">{{ $category->name }}</div>

@@ -24,7 +24,7 @@
         </div>
     @endif
 
-    <form action="{{ isset($category) ? route('admin.categories.update', $category) : route('admin.categories.store') }}" method="POST" class="bg-white shadow-sm ring-1 ring-gray-200 sm:rounded-2xl md:col-span-2">
+    <form action="{{ isset($category) ? route('admin.categories.update', $category) : route('admin.categories.store') }}" method="POST" enctype="multipart/form-data" class="bg-white shadow-sm ring-1 ring-gray-200 sm:rounded-2xl md:col-span-2">
         @csrf
         @if(isset($category))
             @method('PUT')
@@ -40,10 +40,36 @@
                     </div>
                 </div>
 
-                <div class="sm:col-span-2">
-                    <label for="icon" class="block text-sm font-medium leading-6 text-gray-900">Ikon (Emoji)</label>
-                    <div class="mt-2">
-                        <input type="text" name="icon" id="icon" value="{{ old('icon', $category->icon ?? '🏖️') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">
+                <div class="sm:col-span-6 hidden">
+                    <!-- Icon field removed per request, retaining space if needed or just remove it entirely. I will remove the div entirely by replacing it with nothing. Actually, I can just replace the block with an empty string, but to maintain valid HTML grid structure if there was any dependency (there isn't, it was just col-span-2). Let's remove it completely. -->
+                </div>
+
+                <div class="col-span-full" x-data="{ imageType: '{{ old('image_type', isset($category) && $category->image && Str::startsWith($category->image, ['http://', 'https://']) ? 'url' : 'upload') }}' }">
+                    <label class="block text-sm font-medium leading-6 text-gray-900">Foto Kategori (Untuk Landing Page)</label>
+                    
+                    <div class="mt-2 flex items-center space-x-6">
+                        <div class="flex items-center">
+                            <input id="type_upload" name="image_type" type="radio" value="upload" x-model="imageType" class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
+                            <label for="type_upload" class="ml-2 block text-sm font-medium text-gray-900">Upload File</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input id="type_url" name="image_type" type="radio" value="url" x-model="imageType" class="h-4 w-4 border-gray-300 text-sky-600 focus:ring-sky-600">
+                            <label for="type_url" class="ml-2 block text-sm font-medium text-gray-900">Link URL</label>
+                        </div>
+                    </div>
+
+                    <div class="mt-4" x-show="imageType === 'upload'" x-transition>
+                        <input type="file" name="image_file" id="image_file" accept="image/*" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-md cursor-pointer bg-gray-50 focus:outline-none py-1.5 px-3">
+                        @if(isset($category) && $category->image && !Str::startsWith($category->image, ['http://', 'https://']))
+                            <p class="mt-2 text-sm text-gray-500">Foto saat ini: <a href="{{ Storage::url($category->image) }}" target="_blank" class="text-sky-600 hover:underline">Lihat Foto</a></p>
+                        @endif
+                    </div>
+
+                    <div class="mt-4" x-show="imageType === 'url'" x-cloak x-transition>
+                        <input type="url" name="image_url" id="image_url" placeholder="https://example.com/image.jpg" value="{{ old('image_url', isset($category) && Str::startsWith($category->image ?? '', ['http://', 'https://']) ? $category->image : '') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">
+                        @if(isset($category) && $category->image && Str::startsWith($category->image, ['http://', 'https://']))
+                            <p class="mt-2 text-sm text-gray-500">URL Foto saat ini: <a href="{{ $category->image }}" target="_blank" class="text-sky-600 hover:underline">{{ Str::limit($category->image, 40) }}</a></p>
+                        @endif
                     </div>
                 </div>
 
