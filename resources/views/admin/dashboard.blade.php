@@ -69,6 +69,13 @@
         </x-admin-stat-card>
     </div>
 
+    <!-- Grafik Perkembangan Transaksi -->
+    <x-admin-chart 
+        :labels="$chartLabels" 
+        :revenue="$chartRevenue" 
+        :count="$chartCount" 
+    />
+
     <!-- Dua Kolom: Transaksi Terbaru & Vendor Menunggu -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Transaksi Terbaru -->

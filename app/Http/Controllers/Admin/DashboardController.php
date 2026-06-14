@@ -43,6 +43,40 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        // 7. Data Grafik Transaksi (6 Bulan Terakhir)
+        $sixMonthsAgo = now()->subMonths(5)->startOfMonth();
+        $monthlyTransactions = Transaction::selectRaw('
+                YEAR(created_at) as year,
+                MONTH(created_at) as month,
+                SUM(total_price) as revenue,
+                COUNT(id) as total_transactions
+            ')
+            ->where('status', 'paid')
+            ->where('created_at', '>=', $sixMonthsAgo)
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->get();
+
+        // Format data untuk grafik
+        $chartLabels = [];
+        $chartRevenue = [];
+        $chartCount = [];
+
+        // Pastikan bulan yang kosong tetap ada (Fill empty months)
+        for ($i = 0; $i < 6; $i++) {
+            $date = now()->subMonths(5 - $i);
+            $monthLabel = $date->translatedFormat('M Y');
+            
+            $data = $monthlyTransactions->firstWhere(function($item) use ($date) {
+                return $item->year == $date->year && $item->month == $date->month;
+            });
+
+            $chartLabels[] = $monthLabel;
+            $chartRevenue[] = $data ? (float) $data->revenue : 0;
+            $chartCount[] = $data ? (int) $data->total_transactions : 0;
+        }
+
         return view('admin.dashboard', compact(
             'totalRevenue', 
             'netCommission',
@@ -50,7 +84,10 @@ class DashboardController extends Controller
             'successfulTransactions',
             'pendingVendorsCount',
             'pendingVendors',
-            'recentTransactions'
+            'recentTransactions',
+            'chartLabels',
+            'chartRevenue',
+            'chartCount'
         ));
     }
 }
