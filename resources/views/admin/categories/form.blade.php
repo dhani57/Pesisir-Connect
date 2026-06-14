@@ -40,11 +40,8 @@
                     </div>
                 </div>
 
-                <div class="sm:col-span-2">
-                    <label for="icon" class="block text-sm font-medium leading-6 text-gray-900">Ikon (Emoji)</label>
-                    <div class="mt-2">
-                        <input type="text" name="icon" id="icon" value="{{ old('icon', $category->icon ?? '🏖️') }}" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6">
-                    </div>
+                <div class="sm:col-span-6 hidden">
+                    <!-- Icon field removed per request, retaining space if needed or just remove it entirely. I will remove the div entirely by replacing it with nothing. Actually, I can just replace the block with an empty string, but to maintain valid HTML grid structure if there was any dependency (there isn't, it was just col-span-2). Let's remove it completely. -->
                 </div>
 
                 <div class="col-span-full" x-data="{ imageType: '{{ old('image_type', isset($category) && $category->image && Str::startsWith($category->image, ['http://', 'https://']) ? 'url' : 'upload') }}' }">

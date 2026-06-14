@@ -27,7 +27,6 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:categories,name',
-            'icon' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'is_active' => 'boolean',
             'image_type' => 'required|in:upload,url',
@@ -45,7 +44,6 @@ class CategoryController extends Controller
         Category::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
-            'icon' => $request->icon ?? '🏖️',
             'description' => $request->description,
             'image' => $imagePath,
             'is_active' => $request->boolean('is_active', true),
@@ -63,7 +61,6 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
-            'icon' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'is_active' => 'boolean',
             'image_type' => 'required|in:upload,url',
@@ -90,7 +87,6 @@ class CategoryController extends Controller
         $category->update([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
-            'icon' => $request->icon ?? '🏖️',
             'description' => $request->description,
             'image' => $imagePath,
             'is_active' => $request->boolean('is_active', true),
