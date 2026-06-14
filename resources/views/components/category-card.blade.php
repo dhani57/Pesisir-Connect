@@ -6,9 +6,10 @@
    id="category-{{ $category->slug }}">
 
     {{-- Background Image --}}
-    <img src="{{ $category->image ? asset($category->image) : asset('images/categories/boat.png') }}"
+    <img src="{{ $category->image ? (Str::startsWith($category->image, ['http://', 'https://']) ? $category->image : Storage::url($category->image)) : asset('images/categories/boat.png') }}"
          alt="{{ $category->name }}"
          loading="lazy"
+         decoding="async"
          class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
 
     {{-- Gradient Overlay --}}
