@@ -34,17 +34,23 @@ class DestinationController extends Controller
             'reviews_count' => 'nullable|integer|min:0',
             'sort_order'  => 'nullable|integer|min:0',
             'is_active'   => 'nullable|boolean',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image_file'  => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image_url'   => 'nullable|url|max:2048',
         ]);
 
         $validated['highlights'] = $this->parseHighlights($request->input('highlights'));
         $validated['is_active']  = $request->boolean('is_active', true);
         $validated['slug']       = \Illuminate\Support\Str::slug($validated['name']);
 
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('destinations', 'public');
+        if ($request->hasFile('image_file')) {
+            $path = $request->file('image_file')->store('destinations', 'public');
             $validated['image'] = '/storage/' . $path;
+        } elseif ($request->filled('image_url')) {
+            $validated['image'] = $request->input('image_url');
         }
+
+        unset($validated['image_file']);
+        unset($validated['image_url']);
 
         Destination::create($validated);
 
@@ -68,20 +74,29 @@ class DestinationController extends Controller
             'reviews_count' => 'nullable|integer|min:0',
             'sort_order'  => 'nullable|integer|min:0',
             'is_active'   => 'nullable|boolean',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image_file'  => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'image_url'   => 'nullable|url|max:2048',
         ]);
 
         $validated['highlights'] = $this->parseHighlights($request->input('highlights'));
         $validated['is_active']  = $request->boolean('is_active', true);
         $validated['slug']       = \Illuminate\Support\Str::slug($validated['name']);
 
-        if ($request->hasFile('image')) {
+        if ($request->hasFile('image_file')) {
             if ($destination->image && str_starts_with($destination->image, '/storage/')) {
                 Storage::disk('public')->delete(str_replace('/storage/', '', $destination->image));
             }
-            $path = $request->file('image')->store('destinations', 'public');
+            $path = $request->file('image_file')->store('destinations', 'public');
             $validated['image'] = '/storage/' . $path;
+        } elseif ($request->filled('image_url')) {
+            if ($destination->image && str_starts_with($destination->image, '/storage/') && $destination->image !== $request->input('image_url')) {
+                Storage::disk('public')->delete(str_replace('/storage/', '', $destination->image));
+            }
+            $validated['image'] = $request->input('image_url');
         }
+
+        unset($validated['image_file']);
+        unset($validated['image_url']);
 
         $destination->update($validated);
 
