@@ -49,22 +49,23 @@
                                    name="search"
                                    x-model="search"
                                    placeholder="Cari perahu, snorkeling, homestay..."
-                                   class="w-full border-0 bg-transparent text-sm text-gray-700 placeholder-gray-400 focus:ring-0 focus:outline-none p-0"
+                                   class="w-full border-0 bg-transparent text-sm text-gray-700 placeholder-gray-400 focus:ring-0 focus:outline-none py-1.5"
                                    id="hero-search-input">
                         </div>
 
                         {{-- Location Select --}}
-                        <div class="flex items-center gap-3 px-4 py-2 sm:py-0 sm:border-l border-gray-200">
+                        <div class="flex items-center gap-3 px-4 py-2 sm:py-0 sm:border-l border-gray-200 relative min-w-[160px] shrink-0">
                             <svg class="w-5 h-5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             <select name="location"
                                     x-model="location"
-                                    class="w-full border-0 bg-transparent text-sm text-gray-700 focus:ring-0 focus:outline-none p-0 appearance-none cursor-pointer"
+                                    class="w-full border-0 bg-transparent text-sm text-gray-700 focus:ring-0 focus:outline-none py-1.5 pr-6 appearance-none cursor-pointer"
                                     id="hero-location-select">
                                 <option value="">Semua Lokasi</option>
                                 @foreach($locations as $loc)
                                     <option value="{{ $loc }}">{{ $loc }}</option>
                                 @endforeach
                             </select>
+                            <svg class="w-4 h-4 text-gray-400 absolute right-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                         </div>
 
                         {{-- Search Button --}}

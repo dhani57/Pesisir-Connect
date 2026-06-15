@@ -1,7 +1,7 @@
 {{-- Product Card Component --}}
 @props(['product'])
 
-<div class="product-card group" id="product-{{ $product->id }}">
+<div class="product-card group flex flex-col h-full bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden" id="product-{{ $product->id }}">
     {{-- Image --}}
     <div class="card-image">
         <img src="{{ $product->thumbnail_url }}"
@@ -24,7 +24,7 @@
     </div>
 
     {{-- Content --}}
-    <div class="p-4 sm:p-5">
+    <div class="p-4 sm:p-5 flex-1 flex flex-col">
         {{-- Location & Vendor Info --}}
         <div class="flex items-center gap-2 text-gray-400 text-[11px] sm:text-xs mb-2">
             <div class="flex items-center gap-1 shrink-0">
@@ -72,7 +72,7 @@
         @endif
 
         {{-- Price & CTA --}}
-        <div class="flex items-end justify-between pt-3 border-t border-gray-100">
+        <div class="mt-auto pt-3 border-t border-gray-100 flex items-end justify-between">
             <div>
                 <span class="text-xs text-gray-400">Mulai dari</span>
                 <div class="flex items-baseline gap-1">

@@ -36,6 +36,11 @@
                        class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
                         Beranda
                     </a>
+                    <a href="{{ route('catalog') }}"
+                       :class="scrolled ? '{{ request()->routeIs('catalog') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('catalog') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
+                       class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
+                        Katalog
+                    </a>
                     <a href="{{ route('destinasi') }}"
                        :class="scrolled ? '{{ request()->routeIs('destinasi') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('destinasi') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
                        class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
@@ -168,6 +173,7 @@
         <div class="px-4 py-4 space-y-1">
             @guest
                 <a href="{{ route('home') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('home') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Beranda</a>
+                <a href="{{ route('catalog') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('catalog') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Katalog</a>
                 <a href="{{ route('destinasi') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('destinasi') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Destinasi</a>
                 <a href="{{ route('tentang') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('tentang') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Tentang</a>
                 
