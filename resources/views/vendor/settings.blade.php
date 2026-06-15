@@ -43,7 +43,7 @@
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
             <h3 class="text-lg font-bold text-gray-900 mb-4">💰 Komisi & Pendapatan</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-gray-50 rounded-xl p-4"><p class="text-xs text-gray-500 font-medium">Tarif Komisi</p><p class="text-xl font-bold text-gray-900 mt-1">{{ $vendor->commission_rate }}%</p></div>
+                <div class="bg-gray-50 rounded-xl p-4"><p class="text-xs text-gray-500 font-medium">Tarif Komisi</p><p class="text-xl font-bold text-gray-900 mt-1">{{ $vendor->effective_commission_rate }}%</p></div>
                 <div class="bg-gray-50 rounded-xl p-4"><p class="text-xs text-gray-500 font-medium">Pendapatan Bulan Ini</p><p class="text-xl font-bold text-emerald-600 mt-1">Rp {{ number_format($earningsThisMonth, 0, ',', '.') }}</p></div>
                 <div class="bg-gray-50 rounded-xl p-4"><p class="text-xs text-gray-500 font-medium">Total Pendapatan</p><p class="text-xl font-bold text-gray-900 mt-1">{{ $vendor->formatted_earnings }}</p></div>
             </div>
