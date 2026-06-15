@@ -96,6 +96,12 @@ class Vendor extends Model
         return $this->hasMany(VendorNotification::class);
     }
 
+    /** Conversations with customers. */
+    public function conversations(): HasMany
+    {
+        return $this->hasMany(Conversation::class);
+    }
+
     // ──────────────────────────────────────────
     // Scopes
     // ──────────────────────────────────────────

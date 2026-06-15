@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Frontend\CheckoutController;
+use App\Http\Controllers\Frontend\ChatController;
 use App\Http\Controllers\Frontend\CustomerDashboardController;
+use App\Http\Controllers\Frontend\CustomerProfileController;
 use App\Http\Controllers\Frontend\CustomerReviewController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\PageController;
@@ -51,6 +53,18 @@ Route::middleware(['auth'])->group(function () {
     // Wishlist
     Route::get('/simpan', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/simpan/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+
+    // Customer Profile
+    Route::get('/profil/edit', [CustomerProfileController::class, 'edit'])->name('customer.profile.edit');
+    Route::patch('/profil/update', [CustomerProfileController::class, 'update'])->name('customer.profile.update');
+
+    // Chat / Messaging
+    Route::get('/pesan', [ChatController::class, 'inbox'])->name('chat.inbox');
+    Route::get('/pesan/{conversation}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/pesan/mulai', [ChatController::class, 'startConversation'])->name('chat.start');
+    Route::post('/pesan/{conversation}/kirim', [ChatController::class, 'sendMessage'])->name('chat.send');
+    Route::get('/pesan/{conversation}/poll', [ChatController::class, 'pollMessages'])->name('chat.poll');
+    Route::get('/api/chat/unread', [ChatController::class, 'unreadCount'])->name('chat.unread');
 });
 
 // Midtrans Webhook (no auth — called by Midtrans servers)
@@ -104,6 +118,12 @@ Route::middleware('auth')->group(function () {
 
 // Public vendor profile (accessible without auth)
 Route::get('/toko/{vendor}', [VendorSettingsController::class, 'publicProfile'])->name('vendor.public-profile');
+
+// Public customer profile (accessible without auth)
+Route::get('/profil/{user}', [CustomerProfileController::class, 'show'])->name('customer.profile.show');
+
+// Search autocomplete API (no auth required)
+Route::get('/api/search/suggestions', [HomeController::class, 'searchSuggestions'])->name('search.suggestions');
 
 /*
 |--------------------------------------------------------------------------

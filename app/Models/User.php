@@ -14,7 +14,7 @@ use Filament\Panel;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role', 'is_active'])]
+#[Fillable(['name', 'email', 'password', 'role', 'is_active', 'phone', 'avatar', 'bio', 'address'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser
 {
@@ -57,6 +57,24 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Transaction::class);
     }
 
+    /** Reviews written by this customer. */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(VendorReview::class);
+    }
+
+    /** Conversations where this user is the customer. */
+    public function conversations(): HasMany
+    {
+        return $this->hasMany(Conversation::class, 'customer_id');
+    }
+
+    /** Messages sent by this user. */
+    public function sentMessages(): HasMany
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
     // ──────────────────────────────────────────
     // Role Helpers
     // ──────────────────────────────────────────
@@ -74,6 +92,33 @@ class User extends Authenticatable implements FilamentUser
     public function isCustomer(): bool
     {
         return $this->role === 'customer';
+    }
+
+    // ──────────────────────────────────────────
+    // Accessors
+    // ──────────────────────────────────────────
+
+    /** Get avatar URL with fallback to UI Avatars. */
+    public function getAvatarUrlAttribute(): string
+    {
+        if ($this->avatar && str_starts_with($this->avatar, 'http')) {
+            return $this->avatar;
+        }
+
+        if ($this->avatar && file_exists(public_path($this->avatar))) {
+            return asset($this->avatar);
+        }
+
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=0ea5e9&color=fff&size=128';
+    }
+
+    /** Get total unread chat messages count. */
+    public function getUnreadMessagesCountAttribute(): int
+    {
+        return Message::where('sender_id', '!=', $this->id)
+            ->whereNull('read_at')
+            ->whereHas('conversation', fn ($q) => $q->where('customer_id', $this->id))
+            ->count();
     }
 
     // ──────────────────────────────────────────

@@ -181,6 +181,48 @@
                             </a>
                         </div>
                         @endauth
+                        @auth
+                            @if(auth()->id() !== $product->vendor->user_id)
+                            <div x-data="{ openChatModal: false }" class="mt-4 pt-4 border-t border-gray-100">
+                                <button @click="openChatModal = true" type="button" class="w-full inline-flex justify-center items-center gap-2 px-4 py-3 bg-white hover:bg-gray-50 border-2 border-ocean-600 text-ocean-700 text-sm font-bold rounded-xl transition-colors active:scale-[0.98]">
+                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                    Chat Vendor
+                                </button>
+
+                                {{-- Chat Modal --}}
+                                <div x-show="openChatModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm" x-transition.opacity x-cloak>
+                                    <div @click.away="openChatModal = false" class="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden" x-transition.scale.origin.bottom>
+                                        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                                            <h3 class="font-bold text-lg text-gray-900">Kirim Pesan ke Vendor</h3>
+                                            <button @click="openChatModal = false" class="text-gray-400 hover:text-gray-600">
+                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                                            </button>
+                                        </div>
+                                        <form action="{{ route('chat.start') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="vendor_id" value="{{ $product->vendor_id }}">
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <div class="p-6">
+                                                <div class="flex items-center gap-3 mb-4 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                                                    <img src="{{ $product->thumbnail_url }}" class="w-12 h-12 rounded-lg object-cover">
+                                                    <div class="truncate">
+                                                        <p class="text-xs text-gray-500">Tanya tentang:</p>
+                                                        <p class="text-sm font-bold text-gray-900 truncate">{{ $product->name }}</p>
+                                                    </div>
+                                                </div>
+                                                <label class="block text-sm font-medium text-gray-700 mb-2">Pesan Anda</label>
+                                                <textarea name="message" rows="4" required placeholder="Halo, apakah layanan ini tersedia untuk tanggal..." class="w-full rounded-xl border-gray-300 focus:border-ocean-500 focus:ring-ocean-500 text-sm resize-none"></textarea>
+                                            </div>
+                                            <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end gap-3">
+                                                <button type="button" @click="openChatModal = false" class="btn-outline !py-2.5">Batal</button>
+                                                <button type="submit" class="btn-primary !py-2.5">Kirim Pesan</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+                        @endauth
                     </div>
                 </div>
 
