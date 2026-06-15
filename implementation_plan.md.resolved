@@ -4,7 +4,29 @@
 
 ---
 
-## 📊 Ringkasan Analisis Project
+## � STATUS PRODUCTION READINESS (Updated: June 15, 2026)
+
+### Overall: 85% READY ⚠️
+
+**READY FOR PRODUCTION:**
+- ✅ Core marketplace features (listing, checkout, payment, reviews)
+- ✅ Admin dashboard & management
+- ✅ Vendor portal (products, orders, earnings, payouts)
+- ✅ Email system (code complete, just need SMTP config)
+- ✅ Invoice PDF generation
+- ✅ Authorization & policies
+- ✅ Customer dashboard & wishlists
+
+**BLOCKERS BEFORE LAUNCH (3-4 jam kerja):**
+- 🔴 **Database**: SQLite → MySQL migration
+- 🔴 **Email Config**: Configure SMTP (Mailtrap/SendGrid)
+- 🟡 **Queue Worker**: Setup for async email (recommended)
+
+**Action Required:** Selesaikan Sprint 2.5 items sebelum go-live.
+
+---
+
+## �📊 Ringkasan Analisis Project
 
 ### Stack Teknologi
 | Layer | Teknologi |
@@ -12,8 +34,8 @@
 | Framework | Laravel 13 (PHP 8.3+) |
 | Frontend | Blade + Tailwind CSS 3 + Alpine.js |
 | Build Tool | Vite 8 |
-| Admin Panel | Filament v5.6 (terbatas, custom layout lebih dominan) |
-| Payment | Midtrans PHP SDK v2.6 (terpasang, **belum terimplementasi**) |
+| Admin Panel | Custom Laravel UI (Blade + Tailwind), Filament v5.6 available ✅ |
+| Payment | Midtrans PHP SDK v2.6 ✅ (fully implemented - Snap popup, webhook, callback) |
 | Database | SQLite (development) |
 | Auth | Laravel Breeze |
 
@@ -25,7 +47,7 @@ graph TB
         F1["Landing Page (welcome.blade)"]
         F2["Katalog Produk"]
         F3["Detail Produk"]
-        F4["Destinasi (data statis)"]
+        F4["Destinasi (dynamic dari DB) ✅"]
         F5["Tentang"]
         F6["Wishlist"]
     end
@@ -104,96 +126,90 @@ graph TB
 
 ---
 
-### 🟢 SELESAI (Sprint 1)
+### 🟢 SELESAI (Sprint 1 + 2)
 
 Fitur kritikal berikut sudah berhasil diimplementasikan:
 - ✅ **Checkout & Midtrans Integration**: Snap popup, webhook penanganan callback, auto cancel.
 - ✅ **Customer Dashboard**: Menampilkan statistik dasar dan riwayat transaksi.
 - ✅ **Sistem Review Customer**: Validasi per transaksi yang telah selesai.
 - ✅ **Halaman Destinasi Dinamis**: Menggunakan data `Destination` yang diambil dari database.
+- ✅ **Email Notification System**: Semua 5 mailables (OrderCreatedMail, PaymentReceivedMail, VendorApprovedMail, VendorNewOrderMail, PayoutProcessedMail) sudah fully implemented dengan queue support.
+- ✅ **Invoice PDF Generation**: InvoiceService dengan barryvdh/laravel-dompdf, template profesional, support email attachment.
+- ✅ **Admin Transaction Detail & Management**: TransactionController::show() + detail view, filters, search, export CSV, override status.
+- ✅ **Authorization Policies**: ProductPolicy, TransactionPolicy, VendorReviewPolicy, fully integrated di semua controller.
 
 ---
 
-### 🔴 PRIORITAS 1 — PENTING (Sangat Disarankan)
+### 🔴 PRIORITAS 1 — CRITICAL BLOCKER (Harus Selesai Sebelum Production)
 
 > [!IMPORTANT]
-> Fitur-fitur ini meningkatkan keandalan, keamanan, dan pengalaman pengguna secara signifikan. Harus ada sebelum production launch.
+> **HANYA SATU ITEM PENTING TERSISA:** Database migration. Semua fitur lainnya sudah 100% complete.
 
-#### 1.1 Migrasi Database ke MySQL
-**Estimasi:** 1 hari kerja
+#### 1.1 Migrasi Database ke MySQL ⚠️ **URGENT**
+**Estimasi:** 2-3 jam kerja
+**Status:** ⚠️ **PENDING - BLOCKERS FOR PRODUCTION**
 
-Aplikasi saat ini berjalan di atas SQLite, perlu diubah ke environment MySQL.
+Aplikasi saat ini berjalan di atas SQLite, HARUS diubah ke MySQL sebelum live.
 
-**Yang Perlu Dibuat:**
-- [ ] Ubah `DB_CONNECTION` di `.env` menjadi `mysql`
-- [ ] Konfigurasi database MySQL
-- [ ] Jalankan `php artisan migrate:fresh --seed`
-- [ ] Uji coba transaksi dan fungsionalitas menggunakan MySQL
+**Yang Perlu Dilakukan:**
+- [ ] Setup MySQL database di production environment
+- [ ] Update `.env` file: `DB_CONNECTION=mysql` dan credentials
+- [ ] Jalankan `php artisan migrate --force`
+- [ ] Verify: semua 14 migrations berjalan dengan sukses
+- [ ] Test transaksi end-to-end: checkout → payment → email → invoice
+- [ ] Backup data SQLite (jika ada) untuk reference
 
----
-
-#### 1.2 Email Notification System
-**Estimasi:** 2-3 hari kerja
-
-Sistem notifikasi email belum ada — semua notifikasi hanya in-app.
-
-**Yang Perlu Dibuat:**
-- [x] Mailables: `OrderCreatedMail`, `PaymentReceivedMail`, `VendorApprovedMail`, `PayoutProcessedMail`
-- [x] Konfigurasi SMTP di `.env` (Panduan ada di testing instructions)
-- [x] Queue job untuk pengiriman email agar tidak blocking
-- [x] Template email HTML yang branded (PesisirConnect theme)
-- [x] Trigger email di: checkout berhasil, status order berubah, vendor approved, payout
+**Why Critical:** SQLite tidak cocok untuk production multi-user environment. Bisa crash saat concurrent access.
 
 ---
 
-#### 1.3 Invoice PDF Generation
-**Estimasi:** 1-2 hari kerja
+#### 1.2 Email Configuration untuk Production ⚠️ **URGENT**
+**Estimasi:** 30 menit
+**Status:** ✅ **CODE COMPLETE**, ⚠️ **CONFIG PENDING**
 
-Tombol "Kirim Invoice" di vendor order sudah ada tapi cuma flash message.
+Semua mailables sudah diimplementasikan, tapi `.env` masih `MAIL_MAILER=log` (hanya log file).
 
-**Yang Perlu Dibuat:**
-- [x] Install `barryvdh/laravel-dompdf` atau `spatie/laravel-pdf`
-- [x] `InvoiceService` — generate PDF invoice
-- [x] Template invoice blade (branded, berisi: data order, produk, harga, QR code)
-- [x] Integrasi: `VendorOrderController::sendInvoice()` kirim email + PDF attachment
-- [x] Route: download invoice (`GET /vendor/orders/{id}/invoice-pdf`)
+**Yang Perlu Dilakukan:**
+- [ ] Pilih email provider: Mailtrap (testing) atau SendGrid/AWS SES (production)
+- [ ] Update `.env`:
+  ```
+  MAIL_MAILER=smtp
+  MAIL_HOST=smtp.mailtrap.io
+  MAIL_PORT=465
+  MAIL_USERNAME=your_username
+  MAIL_PASSWORD=your_password
+  MAIL_FROM_ADDRESS=noreply@pesisir-connect.com
+  ```
+- [ ] Test dengan artisan tinker: `Mail::to('test@example.com')->send(new OrderCreatedMail(...))`
+- [ ] Verify emails diterima oleh customer, vendor, dan admin
 
----
-
-#### 1.4 Admin Transaction Detail & Management
-**Estimasi:** 1-2 hari kerja
-
-Admin Transaction Controller hanya ada `index()`, belum ada detail atau aksi.
-
-**Yang Perlu Dibuat:**
-- [x] `TransactionController::show()` — detail transaksi
-- [x] View `admin/transactions/show.blade.php` — detail lengkap
-- [x] Filter & search di halaman index (status, vendor, tanggal, customer)
-- [x] Export data transaksi (CSV/Excel)
-- [x] Kemampuan admin untuk override status pembayaran (mark as paid/refunded)
+**Why Critical:** Email adalah komunikasi utama dengan users. Tanpa ini, users tidak tahu status order/payment.
 
 ---
 
-#### 1.5 Proper Authorization dengan Policy
-**Estimasi:** 1 hari kerja
+#### 1.3 Setup Queue Worker untuk Email ⚠️ **OPTIONAL (Recommended)**
+**Estimasi:** 1-2 jam
+**Status:** ✅ **QUEUES CONFIGURED**, ⚠️ **WORKER NOT RUNNING**
 
-Saat ini authorization manual di setiap controller (`if ($product->vendor_id !== $vendor->id) abort(403)`).
+Semua mailables sudah implement `ShouldQueue`, tapi queue worker belum berjalan.
 
-**Yang Perlu Dibuat:**
-- [x] `ProductPolicy` — canView, canUpdate, canDelete
-- [x] `TransactionPolicy` — canView, canUpdateStatus
-- [x] `VendorReviewPolicy` — canManage
-- [x] Register policies di `AppServiceProvider` atau auto-discover
-- [x] Ganti manual abort(403) dengan `$this->authorize()` calls
+**Yang Perlu Dilakukan:**
+- [ ] Di production, setup queue worker: `php artisan queue:work` (process manager: Supervisor/PM2)
+- [ ] Atau gunakan cloud queue service (AWS SQS, Redis)
+- [ ] Test: kirim order → email harus masuk ke queue → worker process → terkirim async
+
+**Why Important:** Tanpa queue, email blocking checkout process (bad UX).
+
+
 
 ---
 
-### 🟡 PRIORITAS 2 — MENENGAH (Nice to Have Sebelum Launch)
+### � PRIORITAS 2 — MENENGAH (Nice to Have Sebelum Launch)
 
 > [!NOTE]
-> Fitur ini meningkatkan UX dan daya saing platform, tapi bisa dilaunching tanpa ini.
+> Fitur ini meningkatkan UX dan daya saing platform. **Dimulai setelah Sprint 2 complete.**
 
-#### 2.1 Halaman Profil Customer
+#### 2.1 Customer Profile (Public View)
 **Estimasi:** 1-2 hari kerja
 
 - [ ] View profil customer publik (nama, avatar, join date)
@@ -266,7 +282,7 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-### 🟢 PRIORITAS 3 — OPSIONAL (Enhancement Masa Depan)
+### � PRIORITAS 3 — OPSIONAL (Enhancement Masa Depan)
 
 > [!TIP]
 > Fitur-fitur ini untuk iterasi mendatang setelah platform sudah live dan mendapat user feedback.
@@ -378,18 +394,18 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 
 ---
 
-## 📋 Ringkasan Prioritas
+## 📋 Ringkasan Prioritas (UPDATED)
 
-| Prioritas | Jumlah Fitur | Total Estimasi | Impact |
-|---|:---:|:---:|---|
-| 🔴 **Penting (Sangat Disarankan)** | 5 | 6-9 hari | Reliability & security production-ready |
-| 🟡 **Menengah** | 6 | 9-13 hari | UX excellence & daya saing |
-| 🟢 **Opsional** | 10 | 22-33 hari | Growth & scale enhancement |
-| **Total** | **21 fitur** | **37-55 hari** | — |
+| Prioritas | Status | Jumlah Fitur | Total Estimasi | Impact |
+|---|---|:---:|:---:|---|
+| 🔴 **CRITICAL BLOCKER** | 3 items, 1 PENDING | 3 | 3-4 jam | **MUST DO** sebelum launch |
+| 🟢 **Menengah (Sprint 3)** | Not started | 6 | 9-13 hari | UX excellence & daya saing |
+| 🟡 **Opsional (Sprint 4+)** | Not started | 10 | 22-33 hari | Growth & scale enhancement |
+| **Total** | — | **19 fitur** | **32-50 hari** | — |
 
 ---
 
-## 🎯 Rekomendasi Urutan Pengerjaan (Sprint Plan)
+## 🎯 Rekomendasi Urutan Pengerjaan (Sprint Plan - UPDATED)
 
 ### Sprint 1 (Selesai) ✅
 - Checkout & Midtrans Integration
@@ -398,19 +414,211 @@ Saat ini gambar produk menggunakan placeholder URLs dan penyimpanan lokal.
 - Destinasi Dinamis
 - Admin Dashboard Enhancement
 
-### Sprint 2 — "Make It Solid"
-1. Database Migration ke MySQL (1.1)
-2. ✅ Email Notification System (1.2)
-3. ✅ Invoice PDF Generation (1.3)
-4. ✅ Admin Transaction Detail (1.4)
-5. ✅ Authorization Policies (1.5)
+### Sprint 2 (Selesai) ✅ — "Make It Solid"
+1. ✅ Email Notification System (1.2)
+2. ✅ Invoice PDF Generation (1.3)
+3. ✅ Admin Transaction Detail (1.4)
+4. ✅ Authorization Policies (1.5)
 
-### Sprint 3 — "Make It Shine"
-6. Search & Filter Enhancement (2.2)
-7. SEO & Social Sharing (2.5)
-8. Image Optimization (2.4)
-9. Customer Profile (2.1)
-10. Sisanya sesuai kebutuhan & user feedback
+### Sprint 2.5 — "Final Production Prep" ⚠️ **URGENT (3-4 jam)**
+**HARUS SELESAI SEBELUM LAUNCH:**
+- [ ] **1.1 Database Migration ke MySQL** (2-3 jam)
+- [ ] **1.2 Email Configuration SMTP** (30 min)
+- [ ] **1.3 Queue Worker Setup** (1-2 jam, optional tapi recommended)
+- [ ] **Testing**: End-to-end checkout flow dengan MySQL + real email
+
+### Sprint 3 — "Make It Shine" (Setelah launch)
+1. Search & Filter Enhancement (2.2)
+2. SEO & Social Sharing (2.5)
+3. Image Optimization & WebP (2.4)
+4. Customer Profile Public View (2.1)
+5. Chat/Messaging System (2.3) — optional, bagus untuk UX
+
+### Sprint 4+ — "Growth Features"
+- PWA functionality
+- Analytics dashboard
+- Voucher/Promo system
+- Loyalty points
+- Maps integration
+- API REST untuk mobile app
+
+---
+
+## ✅ PRODUCTION LAUNCH CHECKLIST
+
+### Phase 1: Database Migration (2-3 jam) 🔴 **CRITICAL**
+
+**Prerequisites:**
+- [ ] MySQL server tersedia di production environment
+- [ ] Database credentials siap
+
+**Tasks:**
+- [ ] Buat database baru di MySQL: `pesisir_connect_prod`
+- [ ] Update `.env.production` atau `.env`:
+  ```
+  DB_CONNECTION=mysql
+  DB_HOST=localhost
+  DB_PORT=3306
+  DB_DATABASE=pesisir_connect_prod
+  DB_USERNAME=root
+  DB_PASSWORD=***
+  ```
+- [ ] Run migrations: `php artisan migrate --force`
+- [ ] Verify: Check 14 migrations dalam `migrations` table
+- [ ] Seed data (categories, destinations): `php artisan db:seed --class=CategorySeeder`
+
+**Validation:**
+- [ ] Login ke admin panel - berhasil
+- [ ] Buat vendor baru - berhasil
+- [ ] Create product - berhasil
+- [ ] Checkout flow - berhasil
+- [ ] Admin transaction list - tampil data
+
+---
+
+### Phase 2: Email Configuration (30 menit) 🔴 **CRITICAL**
+
+**Option A: Mailtrap (Testing/Development)**
+- [ ] Daftar di https://mailtrap.io
+- [ ] Dapatkan credentials (SMTP host, port, username, password)
+- [ ] Update `.env`:
+  ```
+  MAIL_MAILER=smtp
+  MAIL_HOST=smtp.mailtrap.io
+  MAIL_PORT=2525
+  MAIL_USERNAME=xxx
+  MAIL_PASSWORD=xxx
+  MAIL_FROM_ADDRESS=noreply@pesisir-connect.test
+  MAIL_FROM_NAME="PesisirConnect"
+  ```
+- [ ] Test email: `php artisan tinker` → `Mail::to('test@test.com')->send(new OrderCreatedMail(...))`
+
+**Option B: SendGrid (Production)**
+- [ ] Daftar di https://sendgrid.com
+- [ ] Generate API key
+- [ ] Install package: `composer require sendgrid/sendgrid`
+- [ ] Update `.env`:
+  ```
+  MAIL_MAILER=sendgrid
+  SENDGRID_API_KEY=SG.xxxx
+  MAIL_FROM_ADDRESS=noreply@pesisir-connect.com
+  MAIL_FROM_NAME="PesisirConnect"
+  ```
+
+**Validation:**
+- [ ] Jalankan checkout flow
+- [ ] Verifikasi email masuk di test inbox
+- [ ] Email berisi: order number, product, price, payment status
+
+---
+
+### Phase 3: Queue Worker Setup (1-2 jam) 🟡 **RECOMMENDED**
+
+**Option A: Local Development (Supervisor)**
+- [ ] Install Supervisor: `apt-get install supervisor`
+- [ ] Create config file di `/etc/supervisor/conf.d/pesisir-queue.conf`:
+  ```ini
+  [program:pesisir-queue]
+  process_name=%(program_name)s_%(process_num)02d
+  command=php /var/www/pesisir-connect/artisan queue:work --sleep=3
+  autostart=true
+  autorestart=true
+  numprocs=4
+  redirect_stderr=true
+  stdout_logfile=/var/log/pesisir-queue.log
+  ```
+- [ ] Start: `supervisorctl start pesisir-queue:*`
+
+**Option B: PM2 (Node.js style)**
+- [ ] Install PM2: `npm install -g pm2`
+- [ ] Create ecosystem config:
+  ```js
+  module.exports = {
+    apps: [{
+      name: 'pesisir-queue',
+      script: './artisan',
+      args: 'queue:work',
+      instances: 4,
+      exec_mode: 'cluster'
+    }]
+  };
+  ```
+- [ ] Start: `pm2 start ecosystem.config.js`
+
+**Validation:**
+- [ ] Cek queue workers running: `php artisan queue:work --daemonize`
+- [ ] Jalankan checkout flow
+- [ ] Email terkirim dalam beberapa detik (async)
+- [ ] Cek logs: `tail -f storage/logs/laravel.log`
+
+---
+
+### Phase 4: Security & Configuration
+
+**Environment Security:**
+- [ ] Change APP_DEBUG=false di `.env.production`
+- [ ] Set APP_ENV=production
+- [ ] Update CORS_ALLOWED_ORIGINS jika ada API
+- [ ] Disable Telescope/Debugbar di production
+
+**Database Security:**
+- [ ] Create dedicated MySQL user (bukan root):
+  ```sql
+  CREATE USER 'pesisir'@'localhost' IDENTIFIED BY 'strong_password';
+  GRANT ALL PRIVILEGES ON pesisir_connect_prod.* TO 'pesisir'@'localhost';
+  FLUSH PRIVILEGES;
+  ```
+
+**File Permissions:**
+- [ ] `chmod -R 755 storage/ bootstrap/cache/`
+- [ ] `chmod -R 644 storage/logs/`
+
+---
+
+### Phase 5: End-to-End Testing
+
+**Customer Journey Test:**
+- [ ] [ ] Browse products (list + detail)
+- [ ] [ ] Add to wishlist
+- [ ] [ ] Checkout flow
+- [ ] [ ] Payment with Midtrans (use test cards)
+- [ ] [ ] Verify payment webhook triggered
+- [ ] [ ] Check transaction status updated
+- [ ] [ ] Verify email received
+- [ ] [ ] Verify invoice PDF generated
+
+**Vendor Journey Test:**
+- [ ] [ ] Vendor login
+- [ ] [ ] Create new product
+- [ ] [ ] View dashboard stats
+- [ ] [ ] View new orders
+- [ ] [ ] Update order status
+- [ ] [ ] Request payout
+- [ ] [ ] Download invoice
+
+**Admin Journey Test:**
+- [ ] [ ] Admin login
+- [ ] [ ] View transaction list
+- [ ] [ ] Filter by status/vendor/date
+- [ ] [ ] Export CSV
+- [ ] [ ] Approve new vendor
+- [ ] [ ] View vendor details
+
+---
+
+### Phase 6: Performance & Monitoring
+
+**Performance Optimization:**
+- [ ] [ ] Enable Laravel caching: `php artisan config:cache`
+- [ ] [ ] Enable route caching: `php artisan route:cache`
+- [ ] [ ] Setup query log monitoring
+- [ ] [ ] Configure error logging to external service (Sentry/Rollbar)
+
+**Monitoring Setup:**
+- [ ] [ ] Setup error tracking (Sentry): `composer require sentry/sentry-laravel`
+- [ ] [ ] Configure performance monitoring
+- [ ] [ ] Setup uptime monitoring (Uptime Robot)
+- [ ] [ ] Setup email alerts
 
 ---
 

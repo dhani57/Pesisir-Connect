@@ -50,12 +50,27 @@
                           class="space-y-6 bg-white rounded-2xl p-5 shadow-card lg:sticky lg:top-28"
                           id="catalog-filters">
 
-                        {{-- Search --}}
-                        <div>
+                        {{-- Search with Autocomplete --}}
+                        <div x-data="searchAutocomplete()" @click.away="isOpen = false" class="relative">
                             <label class="block text-xs font-semibold text-gray-700 mb-2">Pencarian</label>
-                            <input type="text" name="search" value="{{ request('search') }}"
-                                   placeholder="Cari layanan..."
-                                   class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-400 focus:ring-ocean-400">
+                            <input type="text" name="search" x-model="query" @input.debounce.300ms="fetchSuggestions"
+                                   @focus="isOpen = true"
+                                   placeholder="Cari layanan atau lokasi..."
+                                   class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-400 focus:ring-ocean-400" autocomplete="off">
+                            
+                            {{-- Suggestions Dropdown --}}
+                            <div x-show="isOpen && suggestions.length > 0" x-transition x-cloak
+                                 class="absolute z-50 w-full mt-1 bg-white rounded-xl shadow-lg border border-gray-100 py-2 max-h-60 overflow-y-auto">
+                                <template x-for="item in suggestions" :key="item.slug">
+                                    <a :href="item.url" class="block px-4 py-2 hover:bg-ocean-50">
+                                        <div class="font-medium text-sm text-gray-900" x-text="item.name"></div>
+                                        <div class="text-xs text-gray-500 flex justify-between mt-1">
+                                            <span x-text="item.location"></span>
+                                            <span class="text-ocean-600 font-semibold" x-text="item.price"></span>
+                                        </div>
+                                    </a>
+                                </template>
+                            </div>
                         </div>
 
                         {{-- Category --}}
@@ -91,12 +106,40 @@
                             </select>
                         </div>
 
+                        {{-- Price Range --}}
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-2">Rentang Harga</label>
+                            <div class="flex items-center gap-2">
+                                <input type="number" name="harga_min" value="{{ request('harga_min') }}" placeholder="Min" min="{{ $priceRange['min'] }}" class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-400 focus:ring-ocean-400">
+                                <span class="text-gray-400">-</span>
+                                <input type="number" name="harga_max" value="{{ request('harga_max') }}" placeholder="Max" max="{{ $priceRange['max'] }}" class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-400 focus:ring-ocean-400">
+                            </div>
+                        </div>
+
+                        {{-- Rating --}}
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-2">Minimal Rating</label>
+                            <select name="rating_min" class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-400 focus:ring-ocean-400">
+                                <option value="">Semua Rating</option>
+                                <option value="4.5" {{ request('rating_min') == '4.5' ? 'selected' : '' }}>⭐ 4.5+</option>
+                                <option value="4" {{ request('rating_min') == '4' ? 'selected' : '' }}>⭐ 4.0+</option>
+                                <option value="3" {{ request('rating_min') == '3' ? 'selected' : '' }}>⭐ 3.0+</option>
+                            </select>
+                        </div>
+
+                        {{-- Capacity --}}
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-2">Kapasitas (Orang)</label>
+                            <input type="number" name="kapasitas_min" value="{{ request('kapasitas_min') }}" min="1" placeholder="Min. kapasitas" class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-400 focus:ring-ocean-400">
+                        </div>
+
                         {{-- Sort --}}
                         <div>
                             <label class="block text-xs font-semibold text-gray-700 mb-2">Urutkan</label>
                             <select name="sort"
                                     class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-400 focus:ring-ocean-400">
                                 <option value="" {{ !request('sort') ? 'selected' : '' }}>Terbaru</option>
+                                <option value="popular" {{ request('sort') === 'popular' ? 'selected' : '' }}>Paling Populer</option>
                                 <option value="price_low" {{ request('sort') === 'price_low' ? 'selected' : '' }}>Harga Terendah</option>
                                 <option value="price_high" {{ request('sort') === 'price_high' ? 'selected' : '' }}>Harga Tertinggi</option>
                                 <option value="rating" {{ request('sort') === 'rating' ? 'selected' : '' }}>Rating Tertinggi</option>
@@ -151,5 +194,27 @@
 
     <x-footer />
 
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('searchAutocomplete', () => ({
+                query: '{{ request('search') }}',
+                suggestions: [],
+                isOpen: false,
+                async fetchSuggestions() {
+                    if (this.query.length < 2) {
+                        this.suggestions = [];
+                        return;
+                    }
+                    try {
+                        const res = await fetch(`/api/search/suggestions?q=${encodeURIComponent(this.query)}`);
+                        this.suggestions = await res.json();
+                        this.isOpen = this.suggestions.length > 0;
+                    } catch (e) {
+                        console.error('Search autocomplete failed', e);
+                    }
+                }
+            }))
+        })
+    </script>
 </body>
 </html>

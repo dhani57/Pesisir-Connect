@@ -7,6 +7,7 @@ use App\Http\Controllers\Vendor\VendorSettingsController;
 use App\Http\Controllers\Vendor\VendorAnalyticsController;
 use App\Http\Controllers\Vendor\VendorReviewController;
 use App\Http\Controllers\Vendor\VendorEarningsController;
+use App\Http\Controllers\Vendor\VendorChatController;
 use App\Http\Controllers\Vendor\VendorNotificationController;
 use Illuminate\Support\Facades\Route;
 
@@ -57,4 +58,10 @@ Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(
     Route::get('notifications', [VendorNotificationController::class, 'index'])->name('notifications.index');
     Route::patch('notifications/{notification}/read', [VendorNotificationController::class, 'markRead'])->name('notifications.read');
     Route::delete('notifications/{notification}', [VendorNotificationController::class, 'destroy'])->name('notifications.destroy');
+
+    // Chat / Messaging
+    Route::get('chat', [VendorChatController::class, 'inbox'])->name('chat.inbox');
+    Route::get('chat/{conversation}', [VendorChatController::class, 'show'])->name('chat.show');
+    Route::post('chat/{conversation}/send', [VendorChatController::class, 'sendMessage'])->name('chat.send');
+    Route::get('chat/{conversation}/poll', [VendorChatController::class, 'pollMessages'])->name('chat.poll');
 });

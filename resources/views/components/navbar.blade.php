@@ -121,6 +121,12 @@
                              class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg ring-1 ring-black/5 py-2 animate-slide-down"
                              id="nav-profile-dropdown">
                             <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Dashboard</a>
+                            <a href="{{ route('chat.inbox') }}" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-ocean-600 transition-colors">
+                                Pesan
+                                @if(auth()->user()->unread_messages_count > 0)
+                                    <span class="w-5 h-5 flex items-center justify-center bg-coral-500 text-white text-[10px] font-bold rounded-full">{{ auth()->user()->unread_messages_count }}</span>
+                                @endif
+                            </a>
                             <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Profil Saya</a>
                             @if(auth()->user()->isVendor() && auth()->user()->vendor)
                                 <a href="{{ route('vendor.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">🏪 Vendor Dashboard</a>
