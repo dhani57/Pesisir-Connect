@@ -72,16 +72,18 @@
         @endif
 
         {{-- Price & CTA --}}
-        <div class="mt-auto pt-3 border-t border-gray-100 flex items-end justify-between">
-            <div>
-                <span class="text-xs text-gray-400">Mulai dari</span>
-                <div class="flex items-baseline gap-1">
-                    <span class="text-lg sm:text-xl font-bold text-ocean-600">{{ $product->formatted_price }}</span>
-                    <span class="text-xs text-gray-400">/{{ $product->price_unit }}</span>
+        <div class="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
+            <div class="min-w-0 flex-1">
+                <span class="text-[10px] sm:text-xs text-gray-400 block mb-0.5 leading-none">Mulai dari</span>
+                <div class="flex items-baseline gap-0.5 sm:gap-1 flex-wrap">
+                    <span class="font-bold text-ocean-600 whitespace-nowrap tracking-tight text-[15px] sm:text-base lg:text-[17px] max-w-full truncate">
+                        {{ $product->formatted_price }}
+                    </span>
+                    <span class="text-[10px] sm:text-xs text-gray-400 whitespace-nowrap">/{{ $product->price_unit }}</span>
                 </div>
             </div>
             <a href="{{ route('produk.detail', $product->slug) }}"
-               class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-ocean-600 text-white text-xs font-semibold hover:bg-ocean-700 active:scale-95 transition-all duration-200 shadow-sm shadow-ocean-600/25">
+               class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-ocean-600 text-white text-xs font-semibold hover:bg-ocean-700 active:scale-95 transition-all duration-200 shadow-sm shadow-ocean-600/25 shrink-0">
                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
                 Detail
             </a>
