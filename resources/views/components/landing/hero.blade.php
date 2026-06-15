@@ -58,14 +58,14 @@
                             <svg class="w-5 h-5 text-gray-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             <select name="location"
                                     x-model="location"
-                                    class="w-full border-0 bg-transparent text-sm text-gray-700 focus:ring-0 focus:outline-none py-1.5 pr-6 appearance-none cursor-pointer"
-                                    id="hero-location-select">
+                                    class="w-full border-0 bg-transparent text-sm text-gray-700 focus:ring-0 focus:outline-none py-1.5 pr-8 appearance-none cursor-pointer !bg-none"
+                                    id="hero-location-select"
+                                    style="background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 20 20\'%3E%3Cpath stroke=\'%236b7280\' stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'1.5\' d=\'m6 8 4 4 4-4\'/%3E%3C/svg%3E'); background-position: right 0.5rem center; background-repeat: no-repeat; background-size: 1.5em 1.5em;">
                                 <option value="">Semua Lokasi</option>
                                 @foreach($locations as $loc)
                                     <option value="{{ $loc }}">{{ $loc }}</option>
                                 @endforeach
                             </select>
-                            <svg class="w-4 h-4 text-gray-400 absolute right-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                         </div>
 
                         {{-- Search Button --}}
