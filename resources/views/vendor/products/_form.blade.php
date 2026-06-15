@@ -105,20 +105,33 @@
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
     <h3 class="text-lg font-bold text-gray-900 mb-4"><x-heroicon-o-camera class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Gambar</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
+        <div class="md:col-span-2">
             <label class="block text-sm font-semibold text-gray-700 mb-1">Gambar Utama @if(!$p) <span class="text-red-500">*</span> @endif</label>
-            @if($p && $p->thumbnail)
-                <img src="{{ $p->thumbnail_url }}" class="w-24 h-24 rounded-xl object-cover mb-2" alt="">
-            @endif
-            <input type="file" name="thumbnail" accept="image/*" class="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-ocean-50 file:text-ocean-700 hover:file:bg-ocean-100" {{ !$p ? 'required' : '' }}>
+            <p class="text-xs text-gray-500 mb-2">Pilih salah satu: unggah file gambar atau masukkan link URL gambar.</p>
+            <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+                @if($p && $p->thumbnail)
+                    <img src="{{ $p->thumbnail_url }}" class="w-24 h-24 rounded-xl object-cover shrink-0" alt="">
+                @endif
+                <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 mb-1">Unggah File</label>
+                        <input type="file" name="thumbnail" accept="image/*" class="w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-ocean-50 file:text-ocean-700 hover:file:bg-ocean-100">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-500 mb-1">Atau Link URL Gambar</label>
+                        <input type="url" name="thumbnail_url" value="{{ old('thumbnail_url', ($p && Str::startsWith($p->thumbnail, 'http')) ? $p->thumbnail : '') }}" class="w-full rounded-xl border-gray-300 focus:border-ocean-500 focus:ring-ocean-500 text-sm" placeholder="https://example.com/image.jpg">
+                    </div>
+                </div>
+            </div>
             @error('thumbnail') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+            @error('thumbnail_url') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
-        <div>
+        <div class="md:col-span-2 mt-4 pt-4 border-t border-gray-100">
             <label class="block text-sm font-semibold text-gray-700 mb-1">Galeri (maks. 10 gambar)</label>
             @if($p && $p->gallery)
-                <div class="flex gap-2 mb-2">
+                <div class="flex flex-wrap gap-2 mb-2">
                     @foreach($p->gallery as $img)
-                        <img src="{{ asset($img) }}" class="w-12 h-12 rounded-lg object-cover" alt="">
+                        <img src="{{ Str::startsWith($img, 'http') ? $img : asset($img) }}" class="w-16 h-16 rounded-lg object-cover" alt="">
                     @endforeach
                 </div>
             @endif
