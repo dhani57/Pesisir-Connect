@@ -13,10 +13,31 @@
 
 {{-- Key Metrics --}}
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-    @foreach([['Total Penjualan', 'Rp '.number_format($totalSales, 0, ',', '.'), '<x-heroicon-o-currency-dollar class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/>', 'ocean'], ['Total Pesanan', $totalOrders, '<x-heroicon-o-cube class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/>', 'blue'], ['Rata-rata Order', 'Rp '.number_format($avgOrderValue, 0, ',', '.'), '<x-heroicon-o-chart-bar class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/>', 'purple'], ['Total Pelanggan', $totalCustomers, '<x-heroicon-o-users class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/>', 'emerald'], ['Pelanggan Repeat', $repeatRate.'%', '<x-heroicon-o-arrow-path class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/>', 'amber'], ['Rating', '<x-heroicon-s-star class="w-5 h-5 inline-block text-yellow-400 mr-1"/> '.$avgRating, '<x-heroicon-s-star class="w-5 h-5 inline-block text-yellow-400 mr-1"/>', 'yellow'], ['Response Rate', $responseRate.'%', '<x-heroicon-o-chat-bubble-left-ellipsis class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/>', 'cyan'], ['Pelanggan Baru', $newCustomers, '<span class="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider inline-block mr-1">NEW</span>', 'pink']] as $m)
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ $m[0] }}</p>
-            <p class="text-xl font-bold text-gray-900 mt-2">{{ $m[1] }}</p>
+    @foreach([
+        ['Total Penjualan', 'Rp '.number_format($totalSales, 0, ',', '.'), 'o-currency-dollar', 'ocean'], 
+        ['Total Pesanan', $totalOrders, 'o-cube', 'blue'], 
+        ['Rata-rata Order', 'Rp '.number_format($avgOrderValue, 0, ',', '.'), 'o-chart-bar', 'purple'], 
+        ['Total Pelanggan', $totalCustomers, 'o-users', 'emerald'], 
+        ['Pelanggan Repeat', $repeatRate.'%', 'o-arrow-path', 'amber'], 
+        ['Rating', $avgRating, 's-star', 'yellow'], 
+        ['Response Rate', $responseRate.'%', 'o-chat-bubble-left-ellipsis', 'cyan'], 
+        ['Pelanggan Baru', $newCustomers, 'new', 'pink']
+    ] as $m)
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 relative overflow-hidden">
+            <div class="flex items-center justify-between mb-2">
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider">{{ $m[0] }}</p>
+                <div class="text-{{ $m[3] }}-500">
+                    @if($m[2] === 'new')
+                        <span class="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">NEW</span>
+                    @else
+                        @svg('heroicon-' . $m[2], 'w-5 h-5 opacity-75')
+                    @endif
+                </div>
+            </div>
+            <p class="text-xl font-bold text-gray-900 flex items-center gap-1">
+                @if($m[2] === 's-star') <x-heroicon-s-star class="w-5 h-5 text-yellow-400"/> @endif
+                {{ $m[1] }}
+            </p>
         </div>
     @endforeach
 </div>
