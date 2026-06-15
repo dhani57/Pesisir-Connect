@@ -2,7 +2,7 @@
 
 {{-- Basic Info --}}
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-    <h3 class="text-lg font-bold text-gray-900 mb-4">📝 Informasi Dasar</h3>
+    <h3 class="text-lg font-bold text-gray-900 mb-4"><x-heroicon-o-pencil-square class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Informasi Dasar</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="md:col-span-2">
             <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Produk <span class="text-red-500">*</span></label>
@@ -38,7 +38,7 @@
 
 {{-- Pricing & Inventory --}}
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-    <h3 class="text-lg font-bold text-gray-900 mb-4">💰 Harga & Stok</h3>
+    <h3 class="text-lg font-bold text-gray-900 mb-4"><x-heroicon-o-currency-dollar class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Harga & Stok</h3>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
             <label class="block text-sm font-semibold text-gray-700 mb-1">Harga (Rp) <span class="text-red-500">*</span></label>
@@ -80,7 +80,7 @@
 
 {{-- Location --}}
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-    <h3 class="text-lg font-bold text-gray-900 mb-4">📍 Lokasi</h3>
+    <h3 class="text-lg font-bold text-gray-900 mb-4"><x-heroicon-o-map-pin class="w-6 h-6 inline-block mr-1.5 -mt-1 text-gray-500"/> Lokasi</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
             <label class="block text-sm font-semibold text-gray-700 mb-1">Lokasi <span class="text-red-500">*</span></label>
@@ -103,7 +103,7 @@
 
 {{-- Images --}}
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-    <h3 class="text-lg font-bold text-gray-900 mb-4">📷 Gambar</h3>
+    <h3 class="text-lg font-bold text-gray-900 mb-4"><x-heroicon-o-camera class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Gambar</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
             <label class="block text-sm font-semibold text-gray-700 mb-1">Gambar Utama @if(!$p) <span class="text-red-500">*</span> @endif</label>
@@ -129,7 +129,7 @@
 
 {{-- Settings & SEO --}}
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-    <h3 class="text-lg font-bold text-gray-900 mb-4">⚙️ Pengaturan & SEO</h3>
+    <h3 class="text-lg font-bold text-gray-900 mb-4"><x-heroicon-o-cog-8-tooth class="w-6 h-6 inline-block mr-1.5 -mt-1 text-gray-500"/> Pengaturan & SEO</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
             <label class="block text-sm font-semibold text-gray-700 mb-1">Status</label>

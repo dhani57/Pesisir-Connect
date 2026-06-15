@@ -35,7 +35,7 @@
     </div>
     @empty
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-ocean-50 flex items-center justify-center"><span class="text-3xl">🔔</span></div>
+        <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-ocean-50 flex items-center justify-center"><span class="text-3xl"><x-heroicon-o-bell class="w-8 h-8 inline-block text-current"/></span></div>
         <h4 class="text-lg font-bold text-gray-900 mb-2">Tidak Ada Notifikasi</h4>
         <p class="text-gray-500 text-sm">Semua notifikasi Anda akan muncul di sini.</p>
     </div>

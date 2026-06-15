@@ -15,7 +15,7 @@
 
                 {{-- Shop Info --}}
                 <div class="border-b pb-6">
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">🏪 Informasi Toko</h3>
+                    <h3 class="text-lg font-bold text-gray-900 mb-4"><x-heroicon-o-building-storefront class="w-6 h-6 inline-block mr-1.5 -mt-1 text-gray-500"/> Informasi Toko</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="md:col-span-2">
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Toko <span class="text-red-500">*</span></label>
@@ -47,7 +47,7 @@
 
                 {{-- Address --}}
                 <div class="border-b pb-6">
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">📍 Alamat</h3>
+                    <h3 class="text-lg font-bold text-gray-900 mb-4"><x-heroicon-o-map-pin class="w-6 h-6 inline-block mr-1.5 -mt-1 text-gray-500"/> Alamat</h3>
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Alamat Lengkap</label>
@@ -68,7 +68,7 @@
 
                 {{-- Bank Info --}}
                 <div class="border-b pb-6">
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">🏦 Informasi Rekening</h3>
+                    <h3 class="text-lg font-bold text-gray-900 mb-4"><x-heroicon-o-building-library class="w-6 h-6 inline-block mr-1.5 -mt-1 text-gray-500"/> Informasi Rekening</h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Nama Bank</label>
@@ -87,7 +87,7 @@
 
                 {{-- Files --}}
                 <div>
-                    <h3 class="text-lg font-bold text-gray-900 mb-4">📎 Dokumen</h3>
+                    <h3 class="text-lg font-bold text-gray-900 mb-4"><x-heroicon-o-paper-clip class="w-6 h-6 inline-block mr-1.5 -mt-1 text-gray-500"/> Dokumen</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-1">Logo Toko</label>

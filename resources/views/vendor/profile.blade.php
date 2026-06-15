@@ -7,7 +7,7 @@
                 <h1 class="text-3xl font-bold">{{ $vendor->shop_name }}</h1>
                 <p class="text-ocean-200 mt-1">{{ $vendor->business_type ? ucfirst($vendor->business_type) : 'Vendor' }} · Bergabung {{ $vendor->created_at->format('M Y') }}</p>
                 <div class="flex items-center gap-4 mt-3 justify-center sm:justify-start">
-                    <span class="text-lg font-bold">⭐ {{ $vendor->average_rating }}</span>
+                    <span class="text-lg font-bold"><x-heroicon-s-star class="w-5 h-5 inline-block text-yellow-400 mr-1"/> {{ $vendor->average_rating }}</span>
                     <span class="text-ocean-300">({{ $vendor->review_count }} ulasan)</span>
                     <span class="text-ocean-300">·</span>
                     <span class="text-ocean-300">{{ $vendor->products()->count() }} produk</span>
