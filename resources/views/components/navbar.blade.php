@@ -76,13 +76,13 @@
                         <a href="{{ route('vendor.dashboard') }}"
                            :class="scrolled ? '{{ request()->routeIs('vendor.*') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('vendor.*') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
                            class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
-                            🏪 Vendor Panel
+                            Vendor Panel
                         </a>
                     @elseif(!auth()->user()->isVendor())
                         <a href="{{ route('vendor.register') }}"
                            :class="scrolled ? 'text-gray-700 hover:text-ocean-600' : 'text-white/90 hover:text-white'"
                            class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
-                            🚀 Jadi Vendor
+                            Jadi Vendor
                         </a>
                     @endif
                 @endguest
@@ -134,9 +134,9 @@
                             </a>
                             <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Profil Saya</a>
                             @if(auth()->user()->isVendor() && auth()->user()->vendor)
-                                <a href="{{ route('vendor.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">🏪 Vendor Dashboard</a>
+                                <a href="{{ route('vendor.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Vendor Dashboard</a>
                             @elseif(!auth()->user()->isVendor())
-                                <a href="{{ route('vendor.register') }}" class="block px-4 py-2 text-sm text-ocean-600 hover:bg-ocean-50 transition-colors font-medium">🚀 Jadi Vendor</a>
+                                <a href="{{ route('vendor.register') }}" class="block px-4 py-2 text-sm text-ocean-600 hover:bg-ocean-50 transition-colors font-medium">Jadi Vendor</a>
                             @endif
                             <hr class="my-1 border-gray-100">
                             <form method="POST" action="{{ route('logout') }}">
@@ -190,9 +190,9 @@
                     Simpan
                 </a>
                 @if(auth()->user()->isVendor() && auth()->user()->vendor)
-                    <a href="{{ route('vendor.dashboard') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors text-ocean-600 hover:bg-ocean-50">🏪 Vendor Panel</a>
+                    <a href="{{ route('vendor.dashboard') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors text-ocean-600 hover:bg-ocean-50">Vendor Panel</a>
                 @elseif(!auth()->user()->isVendor())
-                    <a href="{{ route('vendor.register') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors text-ocean-600 hover:bg-ocean-50">🚀 Jadi Vendor</a>
+                    <a href="{{ route('vendor.register') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors text-ocean-600 hover:bg-ocean-50">Jadi Vendor</a>
                 @endif
                 
                 <hr class="my-3 border-gray-100">
