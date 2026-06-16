@@ -107,26 +107,35 @@
 
                         {{-- Guest Info --}}
                         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h2 class="text-lg font-bold text-gray-900 mb-4">Informasi Tamu</h2>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                            <h2 class="text-lg font-bold text-gray-900 mb-5">Informasi Tamu</h2>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-1">Nama</label>
-                                    <div class="px-4 py-2.5 rounded-xl bg-gray-50 text-gray-900 text-sm font-medium">{{ auth()->user()->name }}</div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Nama Lengkap</label>
+                                    <input type="text" value="{{ auth()->user()->name }}" disabled 
+                                           class="w-full rounded-xl border-gray-200 bg-gray-50 text-gray-500 text-sm cursor-not-allowed py-2.5 px-4 shadow-sm">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-600 mb-1">Email</label>
-                                    <div class="px-4 py-2.5 rounded-xl bg-gray-50 text-gray-900 text-sm font-medium">{{ auth()->user()->email }}</div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Alamat Email</label>
+                                    <input type="email" value="{{ auth()->user()->email }}" disabled 
+                                           class="w-full rounded-xl border-gray-200 bg-gray-50 text-gray-500 text-sm cursor-not-allowed py-2.5 px-4 shadow-sm truncate">
                                 </div>
                             </div>
+                            
+                            <div class="mb-5">
+                                <label for="guests" class="block text-sm font-semibold text-gray-700 mb-1.5">Jumlah Tamu / Penumpang</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                                    </div>
+                                    <input type="number" id="guests" name="guests" min="1" value="{{ $quantity }}"
+                                           class="w-full pl-11 pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-medium text-gray-900 focus:border-ocean-500 focus:ring-ocean-500 shadow-sm transition-colors">
+                                </div>
+                            </div>
+                            
                             <div>
-                                <label for="guests" class="block text-sm font-medium text-gray-600 mb-1">Jumlah Tamu / Penumpang</label>
-                                <input type="number" id="guests" name="guests" min="1" value="{{ $quantity }}"
-                                       class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-500 focus:ring-ocean-500 py-2.5">
-                            </div>
-                            <div class="mt-4">
-                                <label for="notes" class="block text-sm font-medium text-gray-600 mb-1">Catatan (Opsional)</label>
-                                <textarea id="notes" name="notes" rows="3" maxlength="500" placeholder="Permintaan khusus, alergi, dll..."
-                                          class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-500 focus:ring-ocean-500"></textarea>
+                                <label for="notes" class="block text-sm font-semibold text-gray-700 mb-1.5">Catatan (Opsional)</label>
+                                <textarea id="notes" name="notes" rows="3" maxlength="500" placeholder="Permintaan khusus, alergi, atau info tambahan..."
+                                          class="w-full rounded-xl border-gray-200 text-sm text-gray-900 focus:border-ocean-500 focus:ring-ocean-500 shadow-sm transition-colors p-4"></textarea>
                             </div>
                         </div>
                     </div>
