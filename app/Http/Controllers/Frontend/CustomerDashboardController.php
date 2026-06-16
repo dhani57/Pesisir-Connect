@@ -55,4 +55,22 @@ class CustomerDashboardController extends Controller
 
         return view('dashboard', compact('stats', 'transactions', 'reviewedTransactionIds'));
     }
+
+    /**
+     * Show the E-Ticket for a specific paid/completed transaction.
+     */
+    public function ticket(string $invoiceNumber): View
+    {
+        $transaction = Transaction::where('invoice_number', $invoiceNumber)
+            ->where('user_id', auth()->id())
+            ->with(['product.vendor.user', 'customer'])
+            ->firstOrFail();
+
+        // Only paid or completed transactions have an active ticket
+        if (!in_array($transaction->status, ['paid', 'completed'])) {
+            abort(403, 'Tiket belum tersedia atau pesanan dibatalkan.');
+        }
+
+        return view('frontend.ticket', compact('transaction'));
+    }
 }
