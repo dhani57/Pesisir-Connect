@@ -101,6 +101,50 @@
                     </div>
                     @endif
 
+                    {{-- ══════════════════════════════════════════ --}}
+                    {{-- Ulasan Pelanggan --}}
+                    {{-- ══════════════════════════════════════════ --}}
+
+                    {{-- Rating Summary --}}
+                    <x-review-summary :ratingSummary="$ratingSummary" />
+
+                    {{-- Review Form (hanya jika user eligible) --}}
+                    @auth
+                        @if($canReview && $eligibleTransaction)
+                            <x-review-form :transaction="$eligibleTransaction" :product="$product" />
+                        @endif
+                    @endauth
+
+                    {{-- Flash Messages --}}
+                    @if(session('success'))
+                    <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm flex items-center gap-3">
+                        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        {{ session('success') }}
+                    </div>
+                    @endif
+                    @if(session('error'))
+                    <div class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm flex items-center gap-3">
+                        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                        {{ session('error') }}
+                    </div>
+                    @endif
+
+                    {{-- Review List --}}
+                    @if($reviews->count() > 0)
+                    <div class="space-y-4">
+                        @foreach($reviews as $review)
+                            <x-review-card :review="$review" />
+                        @endforeach
+                    </div>
+
+                    {{-- Pagination --}}
+                    @if($reviews->hasPages())
+                    <div class="mt-2">
+                        {{ $reviews->withQueryString()->links() }}
+                    </div>
+                    @endif
+                    @endif
+
                 </div>
 
                 {{-- Kanan: Floating Booking Card --}}

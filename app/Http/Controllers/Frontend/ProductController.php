@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Transaction;
+use App\Models\VendorReview;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -28,6 +30,56 @@ class ProductController extends Controller
                 ->exists();
         }
 
-        return view('frontend.produk-detail', compact('product', 'isSaved'));
+        // ── Load Reviews ────────────────────────────────
+        $reviews = VendorReview::visible()
+            ->whereHas('transaction', fn ($q) => $q->where('product_id', $product->id))
+            ->with(['user', 'transaction'])
+            ->latest()
+            ->paginate(10);
+
+        // ── Rating Summary (breakdown per bintang) ──────
+        $ratingBreakdown = VendorReview::visible()
+            ->whereHas('transaction', fn ($q) => $q->where('product_id', $product->id))
+            ->selectRaw('rating, COUNT(*) as count')
+            ->groupBy('rating')
+            ->pluck('count', 'rating')
+            ->toArray();
+
+        $totalReviews = array_sum($ratingBreakdown);
+        $averageRating = $totalReviews > 0
+            ? round(array_sum(array_map(fn ($r, $c) => $r * $c, array_keys($ratingBreakdown), $ratingBreakdown)) / $totalReviews, 1)
+            : 0;
+
+        $ratingSummary = [
+            'average'   => $averageRating,
+            'total'     => $totalReviews,
+            'breakdown' => $ratingBreakdown,
+        ];
+
+        // ── Review Eligibility (untuk user login) ───────
+        $canReview = false;
+        $eligibleTransaction = null;
+
+        if (auth()->check()) {
+            $userId = auth()->id();
+
+            // Cari transaksi completed yang belum di-review
+            $eligibleTransaction = Transaction::where('user_id', $userId)
+                ->where('product_id', $product->id)
+                ->where('vendor_status', 'completed')
+                ->whereDoesntHave('review')
+                ->first();
+
+            $canReview = $eligibleTransaction !== null;
+        }
+
+        return view('frontend.produk-detail', compact(
+            'product',
+            'isSaved',
+            'reviews',
+            'ratingSummary',
+            'canReview',
+            'eligibleTransaction',
+        ));
     }
 }
