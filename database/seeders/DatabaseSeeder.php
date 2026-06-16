@@ -282,8 +282,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Perahu wisata ke Pahawang, kapasitas 10 orang',
                 'facilities'  => ['Life Jacket', 'Guide Wisata', 'P3K', 'Air Mineral', 'Snack'],
                 'whatsapp'    => '081234567891',
-                'rating'      => 4.7,
-                'total_reviews' => 45,
+
             ],
             [
                 'name'        => 'Speedboat Teluk Kiluan Adventure',
@@ -295,8 +294,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Speedboat dolphin watching di Teluk Kiluan',
                 'facilities'  => ['Life Jacket', 'Guide', 'P3K', 'Teropong', 'Air Mineral'],
                 'whatsapp'    => '081234567891',
-                'rating'      => 4.9,
-                'total_reviews' => 78,
+
             ],
             [
                 'name'        => 'Perahu Nelayan Krui Sunset Tour',
@@ -308,8 +306,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Sunset tour dengan perahu nelayan tradisional',
                 'facilities'  => ['Life Jacket', 'Guide Lokal', 'Teh Hangat'],
                 'whatsapp'    => '081234567893',
-                'rating'      => 4.5,
-                'total_reviews' => 23,
+
             ],
             [
                 'name'        => 'Island Hopping Boat Pahawang',
@@ -321,8 +318,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Full day island hopping ke Pahawang Besar & Kecil',
                 'facilities'  => ['Life Jacket', 'Guide', 'P3K', 'Makan Siang', 'Snorkeling Gear', 'Dokumentasi'],
                 'whatsapp'    => '081234567891',
-                'rating'      => 4.8,
-                'total_reviews' => 112,
+
             ],
         ];
 
@@ -353,8 +349,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Peralatan snorkeling dasar di Pahawang',
                 'facilities'  => ['Masker', 'Snorkel', 'Life Jacket'],
                 'whatsapp'    => '081234567893',
-                'rating'      => 4.3,
-                'total_reviews' => 67,
+
             ],
             [
                 'name'        => 'Full Set Snorkeling Premium',
@@ -365,8 +360,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Set lengkap snorkeling premium dengan kamera bawah air',
                 'facilities'  => ['Masker Anti-Fog', 'Dry Snorkel', 'Fin', 'Wetsuit', 'Life Jacket', 'Kamera Underwater'],
                 'whatsapp'    => '081234567893',
-                'rating'      => 4.6,
-                'total_reviews' => 34,
+
             ],
             [
                 'name'        => 'Snorkeling Gear Kiluan Bay',
@@ -377,8 +371,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Peralatan snorkeling di Teluk Kiluan',
                 'facilities'  => ['Masker', 'Snorkel', 'Fin', 'Life Jacket'],
                 'whatsapp'    => '081234567892',
-                'rating'      => 4.4,
-                'total_reviews' => 19,
+
             ],
         ];
 
@@ -410,8 +403,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Homestay tepi pantai dengan sarapan di Pahawang',
                 'facilities'  => ['WiFi', 'Kamar Mandi Dalam', 'Sarapan', 'Teras Laut', 'Parkir'],
                 'whatsapp'    => '081234567892',
-                'rating'      => 4.6,
-                'total_reviews' => 89,
+
             ],
             [
                 'name'        => 'Sunset Villa Krui',
@@ -423,8 +415,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Villa modern menghadap pantai surfing Krui',
                 'facilities'  => ['AC', 'WiFi', 'Dapur Mini', 'Kamar Mandi Dalam', 'Parkir', 'TV'],
                 'whatsapp'    => '081234567892',
-                'rating'      => 4.8,
-                'total_reviews' => 56,
+
             ],
             [
                 'name'        => 'Kiluan Bay Lodge',
@@ -436,8 +427,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Lodge minimalis tepi Teluk Kiluan',
                 'facilities'  => ['Sarapan', 'Kamar Mandi Dalam', 'Pantai Pribadi', 'Hammock'],
                 'whatsapp'    => '081234567892',
-                'rating'      => 4.7,
-                'total_reviews' => 41,
+
             ],
             [
                 'name'        => 'Oceanview Cottage Pahawang',
@@ -449,8 +439,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Cottage premium pemandangan 180° laut Pahawang',
                 'facilities'  => ['AC', 'Hot Shower', 'WiFi', 'Antar Jemput', 'Sarapan', 'Laundry'],
                 'whatsapp'    => '081234567892',
-                'rating'      => 4.9,
-                'total_reviews' => 67,
+
             ],
             [
                 'name'        => 'Rumah Pantai Krui Surf House',
@@ -462,8 +451,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Surf house dengan akses langsung ke ombak Krui',
                 'facilities'  => ['Surf Rack', 'WiFi', 'Dapur Bersama', 'Outdoor Shower', 'Lounge Area', 'Board Rental'],
                 'whatsapp'    => '081234567893',
-                'rating'      => 4.5,
-                'total_reviews' => 38,
+
             ],
         ];
 
@@ -495,8 +483,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Paket komplit 2H1M Pahawang termasuk semua fasilitas',
                 'facilities'  => ['Transportasi PP', 'Homestay', 'Makan 3x', 'Snorkeling Gear', 'Guide', 'Dokumentasi'],
                 'whatsapp'    => '081234567891',
-                'rating'      => 4.8,
-                'total_reviews' => 156,
+
             ],
             [
                 'name'        => 'Dolphin Watching Tour Kiluan',
@@ -508,8 +495,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Dolphin watching eksklusif di Teluk Kiluan',
                 'facilities'  => ['Transportasi Laut', 'Sarapan', 'Makan Siang', 'Guide', 'Teropong', 'P3K'],
                 'whatsapp'    => '081234567892',
-                'rating'      => 4.9,
-                'total_reviews' => 203,
+
             ],
         ];
 

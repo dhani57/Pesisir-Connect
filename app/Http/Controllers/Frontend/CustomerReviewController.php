@@ -117,6 +117,11 @@ class CustomerReviewController extends Controller
                 'rating'        => round($reviews->avg('rating'), 2),
                 'total_reviews' => $reviews->count(),
             ]);
+        } else {
+            $product->update([
+                'rating'        => 0,
+                'total_reviews' => 0,
+            ]);
         }
     }
 }
