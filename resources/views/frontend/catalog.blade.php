@@ -3,16 +3,42 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    {{-- SEO Meta Tags --}}
     <meta name="description" content="Katalog layanan wisata pesisir Lampung — sewa perahu, alat snorkeling, dan homestay di Pahawang, Krui, Teluk Kiluan.">
+    <meta name="keywords" content="katalog wisata, sewa perahu lampung, snorkeling pahawang, homestay krui, lumba-lumba kiluan">
+    <meta name="author" content="PesisirConnect">
 
     <title>Katalog Wisata — PesisirConnect</title>
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Katalog Wisata — PesisirConnect">
+    <meta property="og:description" content="Katalog layanan wisata pesisir Lampung — sewa perahu, alat snorkeling, dan homestay di Pahawang, Krui, Teluk Kiluan.">
+    <meta property="og:image" content="https://placehold.co/1200x630/0ea5e9/ffffff?text=Katalog+Wisata+PesisirConnect">
+
+    {{-- Twitter --}}
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="Katalog Wisata — PesisirConnect">
+    <meta property="twitter:description" content="Katalog layanan wisata pesisir Lampung — sewa perahu, alat snorkeling, dan homestay di Pahawang, Krui, Teluk Kiluan.">
+    <meta property="twitter:image" content="https://placehold.co/1200x630/0ea5e9/ffffff?text=Katalog+Wisata+PesisirConnect">
 
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
 
-    <style>[x-cloak] { display: none !important; }</style>
+    <style>
+        [x-cloak] { display: none !important; }
+        input[type="range"]::-webkit-slider-thumb {
+            pointer-events: auto;
+        }
+        input[type="range"]::-moz-range-thumb {
+            pointer-events: auto;
+        }
+    </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased" x-data="{ showFilters: false }">
@@ -107,12 +133,36 @@
                         </div>
 
                         {{-- Price Range --}}
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-2">Rentang Harga</label>
-                            <div class="flex items-center gap-2">
-                                <input type="number" name="harga_min" value="{{ request('harga_min') }}" placeholder="Min" min="{{ $priceRange['min'] }}" class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-400 focus:ring-ocean-400">
-                                <span class="text-gray-400">-</span>
-                                <input type="number" name="harga_max" value="{{ request('harga_max') }}" placeholder="Max" max="{{ $priceRange['max'] }}" class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-400 focus:ring-ocean-400">
+                        <div x-data="rangeSlider({{ $priceRange['min'] }}, {{ $priceRange['max'] }}, {{ request('harga_min', $priceRange['min']) }}, {{ request('harga_max', $priceRange['max']) }})" class="space-y-4">
+                            <label class="block text-xs font-semibold text-gray-700 mb-1">Rentang Harga</label>
+                            
+                            <div class="relative h-2 rounded-full bg-gray-100 mt-6 mb-2">
+                                <div class="absolute h-full rounded-full bg-ocean-500" 
+                                     :style="`left: ${getPercent(minPrice)}%; right: ${100 - getPercent(maxPrice)}%`"></div>
+                                     
+                                <input type="range" min="{{ $priceRange['min'] }}" max="{{ $priceRange['max'] }}" step="10000" x-model.number="minPrice" @input="checkMin()"
+                                       class="absolute pointer-events-none appearance-none z-20 h-2 w-full opacity-0 cursor-pointer">
+                                <div class="absolute w-5 h-5 rounded-full bg-white border-2 border-ocean-500 shadow-md pointer-events-none -mt-1.5 z-30"
+                                     :style="`left: calc(${getPercent(minPrice)}% - 10px)`"></div>
+                                     
+                                <input type="range" min="{{ $priceRange['min'] }}" max="{{ $priceRange['max'] }}" step="10000" x-model.number="maxPrice" @input="checkMax()"
+                                       class="absolute pointer-events-none appearance-none z-20 h-2 w-full opacity-0 cursor-pointer">
+                                <div class="absolute w-5 h-5 rounded-full bg-white border-2 border-ocean-500 shadow-md pointer-events-none -mt-1.5 z-30"
+                                     :style="`left: calc(${getPercent(maxPrice)}% - 10px)`"></div>
+                            </div>
+                            
+                            <div class="flex items-center gap-2 pt-2">
+                                <div class="flex-1 relative">
+                                    <span class="absolute left-2.5 top-2 text-xs text-gray-400">Rp</span>
+                                    <input type="number" name="harga_min" x-model="minPrice"
+                                           class="w-full pl-7 pr-2 py-1.5 rounded-xl border-gray-200 text-xs focus:border-ocean-400 focus:ring-ocean-400 font-medium text-gray-700">
+                                </div>
+                                <span class="text-gray-400 text-xs">-</span>
+                                <div class="flex-1 relative">
+                                    <span class="absolute left-2.5 top-2 text-xs text-gray-400">Rp</span>
+                                    <input type="number" name="harga_max" x-model="maxPrice"
+                                           class="w-full pl-7 pr-2 py-1.5 rounded-xl border-gray-200 text-xs focus:border-ocean-400 focus:ring-ocean-400 font-medium text-gray-700">
+                                </div>
                             </div>
                         </div>
 
@@ -213,7 +263,30 @@
                         console.error('Search autocomplete failed', e);
                     }
                 }
-            }))
+            }));
+
+            Alpine.data('rangeSlider', (min, max, currentMin, currentMax) => ({
+                minPrice: currentMin,
+                maxPrice: currentMax,
+                min: min,
+                max: max,
+                getPercent(val) {
+                    return ((val - this.min) / (this.max - this.min)) * 100;
+                },
+                checkMin() {
+                    if (this.minPrice > this.maxPrice - 10000) {
+                        this.minPrice = this.maxPrice - 10000;
+                    }
+                },
+                checkMax() {
+                    if (this.maxPrice < this.minPrice + 10000) {
+                        this.maxPrice = this.minPrice + 10000;
+                    }
+                },
+                formatNumber(val) {
+                    return new Intl.NumberFormat('id-ID').format(val);
+                }
+            }));
         })
     </script>
 </body>

@@ -27,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
         // Register vendor middleware alias
         Route::aliasMiddleware('vendor', IsVendor::class);
 
+        // Register mail layout component alias
+        \Illuminate\Support\Facades\Blade::component('emails.components.layout', 'emails.components.layout');
+
         // Authorization Gates (non-model-specific)
         Gate::define('view-vendor-dashboard', function (User $user) {
             return $user->role === 'vendor' && $user->vendor && $user->vendor->is_approved;

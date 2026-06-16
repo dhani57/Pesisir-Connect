@@ -3,9 +3,46 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $product->name }} — PesisirConnect</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    {{-- SEO Meta Tags --}}
+    <meta name="description" content="{{ $product->meta_description ?? $product->short_description ?? Str::limit(strip_tags($product->description), 160) }}">
+    <meta name="keywords" content="{{ $product->meta_keywords ?? 'wisata lampung, ' . $product->location . ', ' . $product->category->name . ', pesisir connect' }}">
+    <meta name="author" content="PesisirConnect">
+
+    <title>{{ $product->meta_title ?? $product->name . ' — PesisirConnect' }}</title>
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="{{ $product->meta_title ?? $product->name . ' — PesisirConnect' }}">
+    <meta property="og:description" content="{{ $product->meta_description ?? $product->short_description ?? Str::limit(strip_tags($product->description), 160) }}">
+    <meta property="og:image" content="{{ $product->thumbnail_url }}">
+
+    {{-- Twitter --}}
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="{{ $product->meta_title ?? $product->name . ' — PesisirConnect' }}">
+    <meta property="twitter:description" content="{{ $product->meta_description ?? $product->short_description ?? Str::limit(strip_tags($product->description), 160) }}">
+    <meta property="twitter:image" content="{{ $product->thumbnail_url }}">
+
+    {{-- Favicon --}}
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">
+
+    {{-- Google Fonts — Plus Jakarta Sans --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
+    {{-- Leaflet JS CSS (Interactive Map) --}}
+    @if($product->latitude && $product->longitude)
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    @endif
+
+    {{-- Alpine.js cloak --}}
+    <style>[x-cloak] { display: none !important; }</style>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="antialiased bg-gray-50">
 
@@ -40,8 +77,81 @@
                 {{-- Kiri: Detail Info --}}
                 <div class="lg:col-span-2 space-y-8">
                     {{-- Gambar --}}
-                    <div class="rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 h-[300px] md:h-[450px]">
-                        <img src="{{ $product->thumbnail_url }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
+                    @php
+                        $allImages = array_merge([$product->thumbnail_url], $product->gallery_urls);
+                    @endphp
+
+                    <div x-data="{ 
+                        activeImage: '{{ $allImages[0] }}',
+                        images: {{ json_encode($allImages) }},
+                        openLightbox: false,
+                        lightboxIndex: 0
+                    }" class="space-y-4">
+                        {{-- Main Image Display --}}
+                        <div class="relative rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100 h-[300px] md:h-[450px] group cursor-zoom-in"
+                             @click="openLightbox = true; lightboxIndex = images.indexOf(activeImage)">
+                            <img :src="activeImage" alt="{{ $product->name }}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+                            
+                            {{-- Overlay info --}}
+                            <div class="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs text-white font-medium flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"/></svg>
+                                Perbesar
+                            </div>
+                        </div>
+
+                        {{-- Thumbnails Gallery (Only show if there are multiple images) --}}
+                        @if(count($allImages) > 1)
+                        <div class="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-200">
+                            @foreach($allImages as $index => $imgUrl)
+                            <button @click="activeImage = '{{ $imgUrl }}'"
+                                    class="relative w-20 h-16 md:w-24 md:h-20 rounded-xl overflow-hidden border-2 transition-all duration-200 shrink-0"
+                                    :class="activeImage === '{{ $imgUrl }}' ? 'border-ocean-600 ring-2 ring-ocean-100 scale-95' : 'border-transparent hover:border-gray-300'">
+                                <img src="{{ $imgUrl }}" alt="Foto {{ $index + 1 }}" class="w-full h-full object-cover">
+                            </button>
+                            @endforeach
+                        </div>
+                        @endif
+
+                        {{-- Lightbox / Fullscreen Modal --}}
+                        <div x-show="openLightbox" 
+                             x-transition:enter="transition ease-out duration-300"
+                             x-transition:enter-start="opacity-0"
+                             x-transition:enter-end="opacity-100"
+                             x-transition:leave="transition ease-in duration-200"
+                             x-transition:leave-start="opacity-100"
+                             x-transition:leave-end="opacity-0"
+                             class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 p-4 md:p-8"
+                             x-cloak
+                             @keydown.escape.window="openLightbox = false"
+                             @click="openLightbox = false">
+                             
+                            {{-- Close Button --}}
+                            <button @click="openLightbox = false" class="absolute top-6 right-6 text-white/80 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10">
+                                <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+
+                            {{-- Navigation: Left --}}
+                            <button @click.stop="lightboxIndex = (lightboxIndex - 1 + images.length) % images.length" 
+                                    class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                            </button>
+
+                            {{-- Active Image inside Lightbox --}}
+                            <div class="max-w-4xl max-h-[85vh] flex items-center justify-center" @click.stop>
+                                <img :src="images[lightboxIndex]" class="max-w-full max-h-[80vh] rounded-xl object-contain shadow-2xl">
+                            </div>
+
+                            {{-- Navigation: Right --}}
+                            <button @click.stop="lightboxIndex = (lightboxIndex + 1) % images.length" 
+                                    class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-3 rounded-full transition-colors">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                            </button>
+
+                            {{-- Image Counter / Indicator --}}
+                            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/80 text-sm font-medium">
+                                <span x-text="lightboxIndex + 1"></span> / <span x-text="images.length"></span>
+                            </div>
+                        </div>
                     </div>
 
                     {{-- Informasi Utama --}}
@@ -97,6 +207,50 @@
                             @endforeach
                         </div>
                     </div>
+                    @endif
+
+                    {{-- Lokasi & Peta --}}
+                    @if($product->latitude && $product->longitude)
+                    <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
+                        <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                            <svg class="w-6 h-6 text-ocean-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            Lokasi & Peta
+                        </h2>
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                            <p class="text-sm text-gray-600">
+                                {{ $product->address ?: $product->location }}
+                            </p>
+                            @if($product->gmaps_link)
+                            <a href="{{ $product->gmaps_link }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold text-ocean-600 hover:text-ocean-700 bg-ocean-50 hover:bg-ocean-100/80 px-3 py-1.5 rounded-lg transition-colors shrink-0">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                                Buka di Google Maps
+                            </a>
+                            @endif
+                        </div>
+                        <div id="map" class="h-[350px] w-full rounded-2xl overflow-hidden border border-gray-100 shadow-inner z-10" style="height: 350px; min-height: 350px;"></div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var lat = {{ $product->latitude }};
+                            var lng = {{ $product->longitude }};
+                            
+                            // Initialize map
+                            var map = L.map('map', {
+                                scrollWheelZoom: false
+                            }).setView([lat, lng], 14);
+                            
+                            // Load tiles
+                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                maxZoom: 19,
+                                attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            }).addTo(map);
+                            
+                            // Add custom marker
+                            var marker = L.marker([lat, lng]).addTo(map);
+                            marker.bindPopup("<div class='p-1'><strong class='text-sm text-gray-900'>{{ e($product->name) }}</strong><p class='text-xs text-gray-500 mt-1'>{{ e($product->location) }}</p></div>").openPopup();
+                        });
+                    </script>
                     @endif
 
                     {{-- ══════════════════════════════════════════ --}}
@@ -157,37 +311,17 @@
                         </div>
 
                         @auth
-                        <form action="{{ route('checkout', $product->slug) }}" method="POST" class="space-y-5"
-                              x-data="{
-                                  checkIn: '',
-                                  quantity: 1,
-                                  priceUnit: '{{ strtolower($product->price_unit) }}',
-                                  get isDurationBased() {
-                                      return ['malam', 'night', 'hari', 'day'].includes(this.priceUnit);
-                                  },
-                                  get checkOutDate() {
-                                      if (!this.checkIn) return null;
-                                      let date = new Date(this.checkIn);
-                                      if (this.isDurationBased) {
-                                          date.setDate(date.getDate() + parseInt(this.quantity || 1));
-                                      }
-                                      return date.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                                  },
-                                  get checkInFormatted() {
-                                      if (!this.checkIn) return null;
-                                      return new Date(this.checkIn).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                                  }
-                              }">
+                        <form action="{{ route('checkout', $product->slug) }}" method="POST" class="space-y-5">
                             @csrf
                             
                             {{-- Date Picker --}}
                             <div>
-                                <label for="tanggal" class="block text-sm font-semibold text-gray-700 mb-2">Pilih Tanggal <span x-show="isDurationBased" x-cloak>(Check-in)</span></label>
+                                <label for="tanggal" class="block text-sm font-semibold text-gray-700 mb-2">Pilih Tanggal</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                     </div>
-                                    <input type="date" id="tanggal" name="tanggal" required x-model="checkIn"
+                                    <input type="date" id="tanggal" name="tanggal" required
                                            min="{{ date('Y-m-d', strtotime('+1 day')) }}"
                                            class="w-full pl-10 pr-3 py-2.5 rounded-xl border-gray-200 text-sm focus:border-ocean-500 focus:ring-ocean-500">
                                 </div>
@@ -195,25 +329,13 @@
 
                             {{-- Quantity --}}
                             <div>
-                                <label for="jumlah" class="block text-sm font-semibold text-gray-700 mb-2">Jumlah {{ ucfirst($product->price_unit) }}</label>
+                                <label for="jumlah" class="block text-sm font-semibold text-gray-700 mb-2">Jumlah / Pax</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                                     </div>
-                                    <input type="number" id="jumlah" name="jumlah" min="1" required x-model.number="quantity"
+                                    <input type="number" id="jumlah" name="jumlah" min="1" value="1" required
                                            class="w-full pl-10 pr-3 py-2.5 rounded-xl border-gray-200 text-sm focus:border-ocean-500 focus:ring-ocean-500">
-                                </div>
-                            </div>
-                            
-                            {{-- Info Box --}}
-                            <div x-show="checkIn" x-cloak class="p-4 bg-ocean-50 rounded-xl text-sm border border-ocean-100 flex flex-col gap-2 shadow-sm">
-                                <div class="flex flex-col">
-                                    <span class="text-[11px] text-gray-500 uppercase tracking-wider font-semibold mb-0.5" x-text="isDurationBased ? 'Tanggal Check-in' : 'Berlaku Pada'"></span>
-                                    <span class="font-bold text-ocean-800" x-text="checkInFormatted"></span>
-                                </div>
-                                <div class="flex flex-col border-t border-ocean-200/60 pt-2 mt-1" x-show="isDurationBased">
-                                    <span class="text-[11px] text-gray-500 uppercase tracking-wider font-semibold mb-0.5">Tanggal Check-out</span>
-                                    <span class="font-bold text-ocean-800" x-text="checkOutDate"></span>
                                 </div>
                             </div>
 

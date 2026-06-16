@@ -45,12 +45,25 @@ class DashboardController extends Controller
 
         // 7. Data Grafik Transaksi (6 Bulan Terakhir)
         $sixMonthsAgo = now()->subMonths(5)->startOfMonth();
-        $monthlyTransactions = Transaction::selectRaw('
+        
+        $driver = \DB::connection()->getDriverName();
+        if ($driver === 'sqlite') {
+            $selectRaw = '
+                strftime("%Y", created_at) as year,
+                CAST(strftime("%m", created_at) as INTEGER) as month,
+                SUM(total_price) as revenue,
+                COUNT(id) as total_transactions
+            ';
+        } else {
+            $selectRaw = '
                 YEAR(created_at) as year,
                 MONTH(created_at) as month,
                 SUM(total_price) as revenue,
                 COUNT(id) as total_transactions
-            ')
+            ';
+        }
+
+        $monthlyTransactions = Transaction::selectRaw($selectRaw)
             ->where('status', 'paid')
             ->where('created_at', '>=', $sixMonthsAgo)
             ->groupBy('year', 'month')

@@ -82,6 +82,11 @@
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
     <h3 class="text-lg font-bold text-gray-900 mb-4"><x-heroicon-o-map-pin class="w-6 h-6 inline-block mr-1.5 -mt-1 text-gray-500"/> Lokasi</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="md:col-span-2">
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Link Google Maps (Opsional)</label>
+            <input type="url" name="gmaps_link" value="{{ old('gmaps_link', $p->gmaps_link ?? '') }}" class="w-full rounded-xl border-gray-300 focus:border-ocean-500 focus:ring-ocean-500" placeholder="Contoh: https://maps.app.goo.gl/... atau https://www.google.com/maps/...">
+            <p class="text-xs text-gray-500 mt-1">Tempel link Google Maps di sini, sistem akan otomatis mengekstrak koordinat Latitude & Longitude saat disimpan.</p>
+        </div>
         <div>
             <label class="block text-sm font-semibold text-gray-700 mb-1">Lokasi <span class="text-red-500">*</span></label>
             <input type="text" name="location" value="{{ old('location', $p->location ?? '') }}" class="w-full rounded-xl border-gray-300 focus:border-ocean-500 focus:ring-ocean-500" placeholder="Pahawang, Krui, dll." required>
@@ -97,6 +102,16 @@
         <div>
             <label class="block text-sm font-semibold text-gray-700 mb-1">Fasilitas (pisah koma)</label>
             <input type="text" name="facilities" value="{{ old('facilities', is_array($p->facilities ?? null) ? implode(', ', $p->facilities) : ($p->facilities ?? '')) }}" class="w-full rounded-xl border-gray-300 focus:border-ocean-500 focus:ring-ocean-500" placeholder="AC, WiFi, Parkir">
+        </div>
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Latitude</label>
+            <input type="text" name="latitude" value="{{ old('latitude', $p->latitude ?? '') }}" class="w-full rounded-xl border-gray-300 focus:border-ocean-500 focus:ring-ocean-500" placeholder="Contoh: -5.578619">
+            @error('latitude') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+        </div>
+        <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Longitude</label>
+            <input type="text" name="longitude" value="{{ old('longitude', $p->longitude ?? '') }}" class="w-full rounded-xl border-gray-300 focus:border-ocean-500 focus:ring-ocean-500" placeholder="Contoh: 105.228833">
+            @error('longitude') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
         </div>
     </div>
 </div>

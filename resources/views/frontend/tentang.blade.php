@@ -3,10 +3,27 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    {{-- SEO Meta Tags --}}
     <meta name="description" content="Tentang PesisirConnect — Misi kami dalam memberdayakan masyarakat pesisir Lampung melalui ekowisata berkelanjutan dan marketplace pariwisata digital.">
     <meta name="keywords" content="tentang pesisirconnect, ekowisata lampung, pemberdayaan masyarakat pesisir, pariwisata berkelanjutan">
+    <meta name="author" content="PesisirConnect">
 
     <title>Tentang Kami — PesisirConnect</title>
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Tentang Kami — PesisirConnect">
+    <meta property="og:description" content="Tentang PesisirConnect — Misi kami dalam memberdayakan masyarakat pesisir Lampung melalui ekowisata berkelanjutan dan marketplace pariwisata digital.">
+    <meta property="og:image" content="https://placehold.co/1200x630/0ea5e9/ffffff?text=Tentang+PesisirConnect">
+
+    {{-- Twitter --}}
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="Tentang Kami — PesisirConnect">
+    <meta property="twitter:description" content="Tentang PesisirConnect — Misi kami dalam memberdayakan masyarakat pesisir Lampung melalui ekowisata berkelanjutan dan marketplace pariwisata digital.">
+    <meta property="twitter:image" content="https://placehold.co/1200x630/0ea5e9/ffffff?text=Tentang+PesisirConnect">
 
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
