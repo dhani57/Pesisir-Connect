@@ -51,10 +51,10 @@ class CheckoutController extends Controller
         $checkIn  = old('check_in', $request->input('tanggal'));
         $quantity = max(1, (int) old('quantity', $request->input('jumlah', 1)));
 
-        // Calculate check-out (next day for per-night, same day for per-trip/set)
-        $nightBased = in_array($product->price_unit, ['malam', 'night']);
+        // Calculate check-out (add quantity days for per-night/per-day, same day for others)
+        $durationBased = in_array(strtolower($product->price_unit), ['malam', 'night', 'hari', 'day']);
         $checkOut   = old('check_out', $checkIn
-            ? date('Y-m-d', strtotime($checkIn . ($nightBased ? ' +1 day' : '')))
+            ? date('Y-m-d', strtotime($checkIn . ($durationBased ? " +{$quantity} days" : '')))
             : null);
 
         $unitPrice  = $product->discounted_price;
