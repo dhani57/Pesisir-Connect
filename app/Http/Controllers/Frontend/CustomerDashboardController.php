@@ -38,11 +38,15 @@ class CustomerDashboardController extends Controller
                 ->sum('total_price'),
         ];
 
-        // Recent transactions — eager load to prevent N+1
-        $transactions = Transaction::where('user_id', $user->id)
+        // Pagination logic
+        $perPage = request('per_page', 10);
+        $query = Transaction::where('user_id', $user->id)
             ->with(['product.category', 'product.vendor'])
-            ->orderByDesc('created_at')
-            ->paginate(10);
+            ->orderByDesc('created_at');
+
+        $transactions = $perPage === 'all' 
+            ? $query->paginate($query->count() > 0 ? $query->count() : 1)
+            : $query->paginate((int) $perPage);
 
         // Check which transactions have already been reviewed by this user
         $reviewedTransactionIds = VendorReview::where('user_id', $user->id)

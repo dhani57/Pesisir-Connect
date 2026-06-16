@@ -170,7 +170,9 @@
                             @endforeach
                         </div>
 
-                        <div class="mt-6">{{ $transactions->links() }}</div>
+                        <div class="mt-6">
+                            <x-admin-pagination :paginator="$transactions" />
+                        </div>
                     @else
                         <div class="text-center py-12">
                             <div class="w-20 h-20 mx-auto mb-5 rounded-2xl bg-ocean-50 flex items-center justify-center">
