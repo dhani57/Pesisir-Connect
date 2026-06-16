@@ -14,7 +14,7 @@
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h3 class="font-bold text-gray-900">💸 Pencairan Dana</h3>
+            <h3 class="font-bold text-gray-900"><x-heroicon-o-banknotes class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Pencairan Dana</h3>
             <p class="text-sm text-gray-500 mt-1">Minimum pencairan: Rp {{ number_format($minPayout, 0, ',', '.') }}</p>
         </div>
         @if($summary['pending'] >= $minPayout)
@@ -30,7 +30,7 @@
 
 {{-- Commission Info --}}
 <div class="bg-gradient-to-r from-ocean-50 to-blue-50 rounded-2xl border border-ocean-200 p-6 mb-8">
-    <h3 class="font-bold text-ocean-900 mb-2">📊 Cara Perhitungan Komisi</h3>
+    <h3 class="font-bold text-ocean-900 mb-2"><x-heroicon-o-chart-bar class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Cara Perhitungan Komisi</h3>
     <div class="text-sm text-ocean-800 space-y-1">
         <p><strong>Komisi = Total Transaksi × ({{ $summary['commission_rate'] }}% / 100)</strong></p>
         <p><strong>Pendapatan Vendor = Total Transaksi - Komisi</strong></p>
@@ -40,7 +40,7 @@
 
 {{-- Earnings by Product --}}
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8">
-    <div class="px-6 py-4 border-b border-gray-100"><h3 class="font-bold text-gray-900">📦 Pendapatan per Produk</h3></div>
+    <div class="px-6 py-4 border-b border-gray-100"><h3 class="font-bold text-gray-900"><x-heroicon-o-cube class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Pendapatan per Produk</h3></div>
     <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead><tr class="text-xs text-gray-500 uppercase border-b bg-gray-50/50"><th class="px-4 py-3 text-left">Produk</th><th class="px-4 py-3 text-center">Transaksi</th><th class="px-4 py-3 text-right">Total Penjualan</th><th class="px-4 py-3 text-right">Komisi</th><th class="px-4 py-3 text-right">Pendapatan</th></tr></thead>
@@ -57,7 +57,7 @@
 
 {{-- Payment History --}}
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-    <div class="px-6 py-4 border-b border-gray-100"><h3 class="font-bold text-gray-900">🏦 Riwayat Pembayaran</h3></div>
+    <div class="px-6 py-4 border-b border-gray-100"><h3 class="font-bold text-gray-900"><x-heroicon-o-building-library class="w-6 h-6 inline-block mr-1.5 -mt-1 text-gray-500"/> Riwayat Pembayaran</h3></div>
     <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead><tr class="text-xs text-gray-500 uppercase border-b bg-gray-50/50"><th class="px-4 py-3 text-left">Tanggal</th><th class="px-4 py-3 text-left">Periode</th><th class="px-4 py-3 text-right">Jumlah</th><th class="px-4 py-3 text-center">Status</th><th class="px-4 py-3 text-left">Referensi</th></tr></thead>

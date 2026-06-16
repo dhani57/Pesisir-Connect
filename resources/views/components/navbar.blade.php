@@ -36,6 +36,11 @@
                        class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
                         Beranda
                     </a>
+                    <a href="{{ route('catalog') }}"
+                       :class="scrolled ? '{{ request()->routeIs('catalog') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('catalog') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
+                       class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
+                        Katalog
+                    </a>
                     <a href="{{ route('destinasi') }}"
                        :class="scrolled ? '{{ request()->routeIs('destinasi') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('destinasi') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
                        class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
@@ -71,13 +76,13 @@
                         <a href="{{ route('vendor.dashboard') }}"
                            :class="scrolled ? '{{ request()->routeIs('vendor.*') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:text-ocean-600' }}' : '{{ request()->routeIs('vendor.*') ? 'text-white font-bold' : 'text-white/90 hover:text-white' }}'"
                            class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
-                            🏪 Vendor Panel
+                            Vendor Panel
                         </a>
                     @elseif(!auth()->user()->isVendor())
                         <a href="{{ route('vendor.register') }}"
                            :class="scrolled ? 'text-gray-700 hover:text-ocean-600' : 'text-white/90 hover:text-white'"
                            class="px-4 py-2 rounded-xl text-sm font-medium transition-colors duration-200">
-                            🚀 Jadi Vendor
+                            Jadi Vendor
                         </a>
                     @endif
                 @endguest
@@ -129,9 +134,9 @@
                             </a>
                             <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Profil Saya</a>
                             @if(auth()->user()->isVendor() && auth()->user()->vendor)
-                                <a href="{{ route('vendor.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">🏪 Vendor Dashboard</a>
+                                <a href="{{ route('vendor.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-ocean-50 hover:text-ocean-600 transition-colors">Vendor Dashboard</a>
                             @elseif(!auth()->user()->isVendor())
-                                <a href="{{ route('vendor.register') }}" class="block px-4 py-2 text-sm text-ocean-600 hover:bg-ocean-50 transition-colors font-medium">🚀 Jadi Vendor</a>
+                                <a href="{{ route('vendor.register') }}" class="block px-4 py-2 text-sm text-ocean-600 hover:bg-ocean-50 transition-colors font-medium">Jadi Vendor</a>
                             @endif
                             <hr class="my-1 border-gray-100">
                             <form method="POST" action="{{ route('logout') }}">
@@ -168,6 +173,7 @@
         <div class="px-4 py-4 space-y-1">
             @guest
                 <a href="{{ route('home') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('home') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Beranda</a>
+                <a href="{{ route('catalog') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('catalog') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Katalog</a>
                 <a href="{{ route('destinasi') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('destinasi') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Destinasi</a>
                 <a href="{{ route('tentang') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors {{ request()->routeIs('tentang') ? 'text-ocean-600 bg-ocean-50' : 'text-gray-700 hover:bg-ocean-50 hover:text-ocean-600' }}">Tentang</a>
                 
@@ -184,9 +190,9 @@
                     Simpan
                 </a>
                 @if(auth()->user()->isVendor() && auth()->user()->vendor)
-                    <a href="{{ route('vendor.dashboard') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors text-ocean-600 hover:bg-ocean-50">🏪 Vendor Panel</a>
+                    <a href="{{ route('vendor.dashboard') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors text-ocean-600 hover:bg-ocean-50">Vendor Panel</a>
                 @elseif(!auth()->user()->isVendor())
-                    <a href="{{ route('vendor.register') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors text-ocean-600 hover:bg-ocean-50">🚀 Jadi Vendor</a>
+                    <a href="{{ route('vendor.register') }}" class="block px-4 py-3 rounded-xl text-sm font-medium transition-colors text-ocean-600 hover:bg-ocean-50">Jadi Vendor</a>
                 @endif
                 
                 <hr class="my-3 border-gray-100">

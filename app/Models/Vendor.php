@@ -125,6 +125,12 @@ class Vendor extends Model
     // Accessors
     // ──────────────────────────────────────────
 
+    /** Get effective commission rate. */
+    public function getEffectiveCommissionRateAttribute(): float
+    {
+        return $this->commission_rate > 0 ? (float) $this->commission_rate : (float) setting('platform_commission', 5);
+    }
+
     /** Get formatted total earnings. */
     public function getFormattedEarningsAttribute(): string
     {

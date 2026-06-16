@@ -81,6 +81,12 @@ class Transaction extends Model
         return $this->belongsTo(Product::class);
     }
 
+    /** Review left for this transaction. */
+    public function review(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(VendorReview::class);
+    }
+
     // ──────────────────────────────────────────
     // Scopes
     // ──────────────────────────────────────────

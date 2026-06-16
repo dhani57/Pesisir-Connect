@@ -46,8 +46,8 @@ class ProductFactory extends Factory
                 fake()->numberBetween(2, 5)
             ),
             'whatsapp'          => '08' . fake()->numerify('##########'),
-            'rating'            => fake()->randomFloat(2, 3.5, 5.0),
-            'total_reviews'     => fake()->numberBetween(0, 150),
+            'rating'            => 0,
+            'total_reviews'     => 0,
             'is_featured'       => fake()->boolean(30),
             'is_active'         => true,
             'sort_order'        => 0,

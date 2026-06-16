@@ -19,8 +19,7 @@ class CommissionService
         }
 
         $amount = (float) $transaction->total_price;
-        $vendorRate = (float) $vendor->commission_rate;
-        $rate = $vendorRate > 0 ? $vendorRate : (float) setting('platform_commission', 5);
+        $rate = $vendor->effective_commission_rate;
         
         $commissionAmount = round($amount * ($rate / 100), 2);
         $vendorEarning = round($amount - $commissionAmount, 2);
@@ -66,7 +65,7 @@ class CommissionService
             'last_month' => $lastMonth,
             'all_time'   => $allTime,
             'pending'    => $pending,
-            'commission_rate' => $vendor->commission_rate > 0 ? $vendor->commission_rate : (float) setting('platform_commission', 5),
+            'commission_rate' => $vendor->effective_commission_rate,
         ];
     }
 

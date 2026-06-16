@@ -17,15 +17,15 @@
         <div class="lg:col-span-2 space-y-6">
             {{-- Product --}}
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 class="font-bold text-gray-900 mb-4">🏷️ Produk</h3>
+                <h3 class="font-bold text-gray-900 mb-4"><x-heroicon-o-tag class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Produk</h3>
                 <div class="flex gap-4">
                     <img src="{{ $transaction->product->thumbnail_url ?? '' }}" class="w-24 h-24 rounded-xl object-cover" alt="">
                     <div class="flex-1">
                         <p class="font-bold text-gray-900">{{ $transaction->product->name ?? '-' }}</p>
                         <div class="mt-2 text-sm text-gray-600 space-y-1">
-                            <p>📅 Check-in: <strong>{{ $transaction->check_in?->format('d M Y') }}</strong></p>
-                            <p>📅 Check-out: <strong>{{ $transaction->check_out?->format('d M Y') }}</strong></p>
-                            <p>👥 Tamu: <strong>{{ $transaction->guests }}</strong> · Qty: <strong>{{ $transaction->quantity }}</strong></p>
+                            <p><x-heroicon-o-calendar-days class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Check-in: <strong>{{ $transaction->check_in?->format('d M Y') }}</strong></p>
+                            <p><x-heroicon-o-calendar-days class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Check-out: <strong>{{ $transaction->check_out?->format('d M Y') }}</strong></p>
+                            <p><x-heroicon-o-users class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Tamu: <strong>{{ $transaction->guests }}</strong> · Qty: <strong>{{ $transaction->quantity }}</strong></p>
                         </div>
                         <div class="mt-3 pt-3 border-t flex justify-between">
                             <span class="text-sm text-gray-600">Harga satuan: Rp {{ number_format($transaction->unit_price, 0, ',', '.') }}</span>
@@ -37,7 +37,7 @@
 
             {{-- Customer --}}
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 class="font-bold text-gray-900 mb-4">👤 Pelanggan</h3>
+                <h3 class="font-bold text-gray-900 mb-4"><x-heroicon-o-user class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Pelanggan</h3>
                 <div class="space-y-2 text-sm">
                     <p><span class="text-gray-500 w-24 inline-block">Nama:</span> <strong>{{ $transaction->customer->name ?? '-' }}</strong></p>
                     <p><span class="text-gray-500 w-24 inline-block">Email:</span> {{ $transaction->customer->email ?? '-' }}</p>
@@ -50,7 +50,7 @@
 
             {{-- Vendor Notes --}}
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 class="font-bold text-gray-900 mb-4">📝 Catatan Vendor</h3>
+                <h3 class="font-bold text-gray-900 mb-4"><x-heroicon-o-pencil-square class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Catatan Vendor</h3>
                 @if($transaction->vendor_notes)
                     <p class="text-sm text-gray-700 p-3 bg-gray-50 rounded-xl mb-4">{{ $transaction->vendor_notes }}</p>
                 @endif
@@ -66,7 +66,7 @@
         <div class="space-y-6">
             {{-- Status Update --}}
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 class="font-bold text-gray-900 mb-4">🔄 Ubah Status</h3>
+                <h3 class="font-bold text-gray-900 mb-4"><x-heroicon-o-arrow-path class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Ubah Status</h3>
                 <form method="POST" action="{{ route('vendor.orders.update-status', $transaction) }}">
                     @csrf @method('PATCH')
                     <select name="vendor_status" class="w-full rounded-xl border-gray-300 focus:border-ocean-500 focus:ring-ocean-500 text-sm mb-3">
@@ -81,22 +81,22 @@
 
             {{-- Quick Actions --}}
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 class="font-bold text-gray-900 mb-4">⚡ Aksi</h3>
+                <h3 class="font-bold text-gray-900 mb-4"><x-heroicon-o-bolt class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Aksi</h3>
                 <div class="space-y-2">
                     <form method="POST" action="{{ route('vendor.orders.send-invoice', $transaction) }}">
                         @csrf
-                        <button type="submit" class="w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 flex items-center gap-2 text-gray-700">📧 Kirim Invoice via Email</button>
+                        <button type="submit" class="w-full text-left px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 flex items-center gap-2 text-gray-700"><x-heroicon-o-envelope class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Kirim Invoice via Email</button>
                     </form>
-                    <a href="{{ route('vendor.orders.invoice-pdf', $transaction) }}" target="_blank" class="block px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 flex items-center gap-2 text-gray-700">📄 Download Invoice PDF</a>
+                    <a href="{{ route('vendor.orders.invoice-pdf', $transaction) }}" target="_blank" class="block px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 flex items-center gap-2 text-gray-700"><x-heroicon-o-document-text class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Download Invoice PDF</a>
                     @if($transaction->customer?->phone)
-                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $transaction->customer->phone) }}" target="_blank" class="block px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 flex items-center gap-2 text-gray-700">💬 Hubungi via WhatsApp</a>
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $transaction->customer->phone) }}" target="_blank" class="block px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50 flex items-center gap-2 text-gray-700"><x-heroicon-o-chat-bubble-left-ellipsis class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Hubungi via WhatsApp</a>
                     @endif
                 </div>
             </div>
 
             {{-- Payment Info --}}
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                <h3 class="font-bold text-gray-900 mb-4">💳 Pembayaran</h3>
+                <h3 class="font-bold text-gray-900 mb-4"><x-heroicon-o-credit-card class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Pembayaran</h3>
                 <div class="space-y-2 text-sm">
                     <p><span class="text-gray-500">Metode:</span> <strong>{{ ucfirst(str_replace('_', ' ', $transaction->payment_method)) }}</strong></p>
                     <p><span class="text-gray-500">Total:</span> <strong>{{ $transaction->formatted_total }}</strong></p>

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Str;
 
 class Product extends Model
@@ -103,13 +104,30 @@ class Product extends Model
         return $this->hasMany(Transaction::class);
     }
 
+    /** Reviews for this product (through transactions). */
+    public function reviews(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            VendorReview::class,
+            Transaction::class,
+            'product_id',      // Foreign key on transactions table
+            'transaction_id',  // Foreign key on vendor_reviews table
+            'id',              // Local key on products table
+            'id'               // Local key on transactions table
+        );
+    }
+
     // ──────────────────────────────────────────
     // Scopes
     // ──────────────────────────────────────────
 
     public function scopeActive($query)
     {
-        return $query->where('is_active', true);
+        return $query->where('products.is_active', true)
+                     ->whereHas('vendor', function ($q) {
+                         $q->where('is_approved', true)
+                           ->where('status', 'approved');
+                     });
     }
 
     public function scopeByVendor($query, int $vendorId)

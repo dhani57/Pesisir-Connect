@@ -63,12 +63,16 @@
                                 <svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                                 {{ $product->location }}
                             </span>
-                            @if($product->total_reviews > 0)
-                                <span class="flex items-center text-sm text-gray-500">
-                                    <svg class="w-4 h-4 mr-1 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                                    {{ number_format($product->rating, 1) }} ({{ $product->total_reviews }} ulasan)
-                                </span>
+                            @if($product->vendor)
+                            <span class="flex items-center text-sm text-gray-500 hover:text-ocean-600 transition-colors">
+                                <svg class="w-4 h-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.75c0 .415.336.75.75.75z"/></svg>
+                                <a href="{{ route('vendor.public-profile', $product->vendor->id) }}">{{ $product->vendor->shop_name }}</a>
+                            </span>
                             @endif
+                            <span class="flex items-center text-sm text-gray-500">
+                                    <svg class="w-4 h-4 mr-1 {{ $ratingSummary['total'] > 0 ? 'text-amber-400' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                                    {{ number_format($ratingSummary['average'], 1) }} ({{ $ratingSummary['total'] }} ulasan)
+                                </span>
                         </div>
 
                         <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $product->name }}</h1>
@@ -93,6 +97,50 @@
                             @endforeach
                         </div>
                     </div>
+                    @endif
+
+                    {{-- ══════════════════════════════════════════ --}}
+                    {{-- Ulasan Pelanggan --}}
+                    {{-- ══════════════════════════════════════════ --}}
+
+                    {{-- Rating Summary --}}
+                    <x-review-summary :ratingSummary="$ratingSummary" />
+
+                    {{-- Review Form (hanya jika user eligible) --}}
+                    @auth
+                        @if($canReview && $eligibleTransaction)
+                            <x-review-form :transaction="$eligibleTransaction" :product="$product" />
+                        @endif
+                    @endauth
+
+                    {{-- Flash Messages --}}
+                    @if(session('success'))
+                    <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm flex items-center gap-3">
+                        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        {{ session('success') }}
+                    </div>
+                    @endif
+                    @if(session('error'))
+                    <div class="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm flex items-center gap-3">
+                        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                        {{ session('error') }}
+                    </div>
+                    @endif
+
+                    {{-- Review List --}}
+                    @if($reviews->count() > 0)
+                    <div class="space-y-4">
+                        @foreach($reviews as $review)
+                            <x-review-card :review="$review" />
+                        @endforeach
+                    </div>
+
+                    {{-- Pagination --}}
+                    @if($reviews->hasPages())
+                    <div class="mt-2">
+                        {{ $reviews->withQueryString()->links() }}
+                    </div>
+                    @endif
                     @endif
 
                 </div>

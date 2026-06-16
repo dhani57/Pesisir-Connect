@@ -10,7 +10,7 @@
                     <img src="{{ $vendor->logo_url }}" class="w-16 h-16 rounded-2xl object-cover border-2 border-white/20 shadow-lg" alt="{{ $vendor->shop_name }}">
                     <div>
                         <h2 class="text-2xl font-bold">{{ $vendor->shop_name }}</h2>
-                        <p class="text-ocean-200 text-sm mt-0.5">Selamat datang kembali, {{ auth()->user()->name }}! 👋</p>
+                        <p class="text-ocean-200 text-sm mt-0.5">Selamat datang kembali, {{ auth()->user()->name }}! <x-heroicon-o-sparkles class="w-5 h-5 inline-block text-yellow-500 mb-1 ml-1"/></p>
                     </div>
                 </div>
                 <span class="px-4 py-1.5 rounded-full text-xs font-bold {{ $vendor->status === 'approved' ? 'bg-emerald-400/20 text-emerald-100 ring-1 ring-emerald-400/30' : 'bg-amber-400/20 text-amber-100 ring-1 ring-amber-400/30' }}">
@@ -30,7 +30,7 @@
                 </div>
                 <div class="bg-white/10 backdrop-blur rounded-xl p-4">
                     <p class="text-ocean-200 text-xs font-medium">Rating Rata-rata</p>
-                    <p class="text-xl font-bold mt-1">⭐ {{ $vendor->average_rating }}</p>
+                    <p class="text-xl font-bold mt-1"><x-heroicon-s-star class="w-5 h-5 inline-block text-yellow-400 mr-1"/> {{ $vendor->average_rating }}</p>
                 </div>
                 <div class="bg-white/10 backdrop-blur rounded-xl p-4">
                     <p class="text-ocean-200 text-xs font-medium">Total Produk</p>
@@ -45,14 +45,14 @@
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
     {{-- Revenue Widget --}}
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">💰 Pendapatan</h3>
+        <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4"><x-heroicon-o-currency-dollar class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Pendapatan</h3>
         <div class="space-y-3">
             <div class="flex justify-between items-center"><span class="text-sm text-gray-600">Bulan ini</span><span class="font-bold text-gray-900">Rp {{ number_format($stats['revenueThisMonth'], 0, ',', '.') }}</span></div>
             <div class="flex justify-between items-center"><span class="text-sm text-gray-600">Bulan lalu</span><span class="font-semibold text-gray-700">Rp {{ number_format($stats['revenueLastMonth'], 0, ',', '.') }}</span></div>
             <div class="flex justify-between items-center"><span class="text-sm text-gray-600">Tahun ini</span><span class="font-semibold text-gray-700">Rp {{ number_format($stats['revenueThisYear'], 0, ',', '.') }}</span></div>
             <div class="pt-2 border-t">
                 <span class="inline-flex items-center gap-1 text-sm font-semibold {{ $stats['growthPercentage'] >= 0 ? 'text-emerald-600' : 'text-red-600' }}">
-                    @if($stats['growthPercentage'] >= 0) 📈 @else 📉 @endif
+                    @if($stats['growthPercentage'] >= 0) <x-heroicon-o-presentation-chart-line class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> @else <x-heroicon-o-chart-pie class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> @endif
                     {{ $stats['growthPercentage'] }}% dari bulan lalu
                 </span>
             </div>
@@ -61,7 +61,7 @@
 
     {{-- Orders Widget --}}
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">📦 Pesanan</h3>
+        <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4"><x-heroicon-o-cube class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Pesanan</h3>
         <div class="space-y-3">
             <div class="flex justify-between items-center"><span class="text-sm text-gray-600">Menunggu</span><span class="font-bold text-amber-600">{{ $stats['pendingOrders'] }}</span></div>
             <div class="flex justify-between items-center"><span class="text-sm text-gray-600">Siap Kirim</span><span class="font-bold text-blue-600">{{ $stats['readyOrders'] }}</span></div>
@@ -72,7 +72,7 @@
 
     {{-- Products Widget --}}
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">🏷️ Produk</h3>
+        <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4"><x-heroicon-o-tag class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Produk</h3>
         <div class="space-y-3">
             <div class="flex justify-between items-center"><span class="text-sm text-gray-600">Total Produk</span><span class="font-bold text-gray-900">{{ $stats['totalProducts'] }}</span></div>
             <div class="flex justify-between items-center"><span class="text-sm text-gray-600">Stok Habis</span><span class="font-bold {{ $stats['outOfStock'] > 0 ? 'text-red-600' : 'text-gray-600' }}">{{ $stats['outOfStock'] }}</span></div>
@@ -152,18 +152,18 @@
 {{-- Charts --}}
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <h3 class="font-bold text-gray-900 mb-4">📊 Tren Penjualan (30 Hari)</h3>
+        <h3 class="font-bold text-gray-900 mb-4"><x-heroicon-o-chart-bar class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Tren Penjualan (30 Hari)</h3>
         <canvas id="salesChart" height="200"></canvas>
     </div>
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <h3 class="font-bold text-gray-900 mb-4">📈 Distribusi Status Pesanan</h3>
+        <h3 class="font-bold text-gray-900 mb-4"><x-heroicon-o-presentation-chart-line class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Distribusi Status Pesanan</h3>
         <canvas id="orderStatusChart" height="200"></canvas>
     </div>
 </div>
 
 {{-- Quick Actions --}}
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-    <h3 class="font-bold text-gray-900 mb-4">⚡ Aksi Cepat</h3>
+    <h3 class="font-bold text-gray-900 mb-4"><x-heroicon-o-bolt class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Aksi Cepat</h3>
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
         <a href="{{ route('vendor.products.create') }}" class="flex flex-col items-center gap-2 p-4 rounded-xl bg-ocean-50 hover:bg-ocean-100 transition-colors text-center">
             <svg class="w-6 h-6 text-ocean-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>

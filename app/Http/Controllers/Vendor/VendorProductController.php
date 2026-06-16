@@ -67,9 +67,11 @@ class VendorProductController extends Controller
         $vendor = auth()->user()->vendor;
         $data = $request->validated();
 
-        // Handle thumbnail upload
+        // Handle thumbnail upload or url
         if ($request->hasFile('thumbnail')) {
             $data['thumbnail'] = 'storage/' . $request->file('thumbnail')->store('products/thumbnails', 'public');
+        } elseif ($request->filled('thumbnail_url')) {
+            $data['thumbnail'] = $request->input('thumbnail_url');
         }
 
         // Handle gallery
@@ -125,11 +127,18 @@ class VendorProductController extends Controller
         // Handle thumbnail
         if ($request->hasFile('thumbnail')) {
             // Delete old thumbnail
-            if ($product->thumbnail) {
+            if ($product->thumbnail && !Str::startsWith($product->thumbnail, 'http')) {
                 $oldPath = str_replace('storage/', '', $product->thumbnail);
                 Storage::disk('public')->delete($oldPath);
             }
             $data['thumbnail'] = 'storage/' . $request->file('thumbnail')->store('products/thumbnails', 'public');
+        } elseif ($request->filled('thumbnail_url')) {
+            // Delete old thumbnail
+            if ($product->thumbnail && !Str::startsWith($product->thumbnail, 'http')) {
+                $oldPath = str_replace('storage/', '', $product->thumbnail);
+                Storage::disk('public')->delete($oldPath);
+            }
+            $data['thumbnail'] = $request->input('thumbnail_url');
         }
 
         // Handle gallery
@@ -167,7 +176,7 @@ class VendorProductController extends Controller
         $this->authorizeVendorProduct($product);
 
         // Delete images
-        if ($product->thumbnail) {
+        if ($product->thumbnail && !Str::startsWith($product->thumbnail, 'http')) {
             $oldPath = str_replace('storage/', '', $product->thumbnail);
             Storage::disk('public')->delete($oldPath);
         }

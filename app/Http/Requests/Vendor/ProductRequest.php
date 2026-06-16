@@ -39,7 +39,8 @@ class ProductRequest extends FormRequest
             'location'         => 'required|string|max:255',
             'address'          => 'nullable|string|max:500',
             'whatsapp'         => 'nullable|string|max:20',
-            'thumbnail'        => ($this->isMethod('POST') ? 'required' : 'nullable') . '|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'thumbnail'        => ($this->isMethod('POST') ? 'required_without:thumbnail_url' : 'nullable') . '|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'thumbnail_url'    => ($this->isMethod('POST') ? 'required_without:thumbnail' : 'nullable') . '|url|max:1000',
             'gallery'          => 'nullable|array|max:10',
             'gallery.*'        => 'image|mimes:jpg,jpeg,png,webp|max:5120',
             'is_active'        => 'boolean',
@@ -65,9 +66,11 @@ class ProductRequest extends FormRequest
             'price.min'            => 'Harga harus lebih dari 0.',
             'stock.required'       => 'Stok wajib diisi.',
             'location.required'    => 'Lokasi wajib diisi.',
-            'thumbnail.required'   => 'Gambar utama wajib diupload.',
-            'thumbnail.image'      => 'Gambar utama harus berupa file gambar.',
-            'thumbnail.max'        => 'Ukuran gambar maksimal 5MB.',
+            'thumbnail.required_without'     => 'Gambar utama (file atau link) wajib diisi.',
+            'thumbnail_url.required_without' => 'Gambar utama (file atau link) wajib diisi.',
+            'thumbnail_url.url'              => 'Link gambar utama harus berupa URL yang valid.',
+            'thumbnail.image'                => 'Gambar utama harus berupa file gambar.',
+            'thumbnail.max'                  => 'Ukuran gambar maksimal 5MB.',
         ];
     }
 }
