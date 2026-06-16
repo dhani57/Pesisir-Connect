@@ -49,12 +49,19 @@
 
             <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">Review Pesanan</h1>
 
-            <form action="{{ route('checkout.process') }}" method="POST" id="checkout-form">
+            <form action="{{ route('checkout.process') }}" method="POST" id="checkout-form"
+                  x-data="{ 
+                      quantity: {{ $quantity }}, 
+                      unitPrice: {{ $product->discounted_price }},
+                      basePrice: {{ $product->price }},
+                      get totalPrice() { return this.unitPrice * this.quantity },
+                      get totalDiscount() { return (this.basePrice * this.quantity) - this.totalPrice },
+                      formatRupiah(amount) { return new Intl.NumberFormat('id-ID').format(amount) }
+                  }">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <input type="hidden" name="check_in" value="{{ $checkIn }}">
                 <input type="hidden" name="check_out" value="{{ $checkOut }}">
-                <input type="hidden" name="quantity" value="{{ $quantity }}">
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {{-- Left: Order Details --}}
@@ -100,7 +107,7 @@
                                 </div>
                                 <div class="bg-gray-50 rounded-xl p-4">
                                     <span class="text-xs text-gray-500 block mb-1">Jumlah</span>
-                                    <span class="font-semibold text-gray-900">{{ $quantity }} {{ $product->price_unit }}</span>
+                                    <span class="font-semibold text-gray-900"><span x-text="quantity"></span> {{ $product->price_unit }}</span>
                                 </div>
                             </div>
                         </div>
@@ -121,21 +128,35 @@
                                 </div>
                             </div>
                             
-                            <div class="mb-5">
-                                <label for="guests" class="block text-sm font-semibold text-gray-700 mb-1.5">Jumlah Tamu / Penumpang</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                                <div>
+                                    <label for="quantity" class="block text-sm font-semibold text-gray-700 mb-1.5">Jumlah {{ ucfirst($product->price_unit) }}</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                                        </div>
+                                        <input type="number" id="quantity" name="quantity" min="1" x-model.number="quantity"
+                                               class="w-full pl-11 pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-medium text-gray-900 focus:border-ocean-500 focus:ring-ocean-500 shadow-sm transition-colors">
                                     </div>
-                                    <input type="number" id="guests" name="guests" min="1" value="{{ $quantity }}"
-                                           class="w-full pl-11 pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-medium text-gray-900 focus:border-ocean-500 focus:ring-ocean-500 shadow-sm transition-colors">
                                 </div>
+                                @if(strtolower($product->price_unit) !== 'orang' && strtolower($product->price_unit) !== 'pax')
+                                <div>
+                                    <label for="guests" class="block text-sm font-semibold text-gray-700 mb-1.5">Jumlah Tamu / Penumpang</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                                        </div>
+                                        <input type="number" id="guests" name="guests" min="1" value="{{ old('guests', $quantity) }}"
+                                               class="w-full pl-11 pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-medium text-gray-900 focus:border-ocean-500 focus:ring-ocean-500 shadow-sm transition-colors">
+                                    </div>
+                                </div>
+                                @endif
                             </div>
                             
                             <div>
                                 <label for="notes" class="block text-sm font-semibold text-gray-700 mb-1.5">Catatan (Opsional)</label>
                                 <textarea id="notes" name="notes" rows="3" maxlength="500" placeholder="Permintaan khusus, alergi, atau info tambahan..."
-                                          class="w-full rounded-xl border-gray-200 text-sm text-gray-900 focus:border-ocean-500 focus:ring-ocean-500 shadow-sm transition-colors p-4"></textarea>
+                                          class="w-full rounded-xl border-gray-200 text-sm text-gray-900 focus:border-ocean-500 focus:ring-ocean-500 shadow-sm transition-colors p-4">{{ old('notes') }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -152,19 +173,19 @@
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-gray-500">Jumlah</span>
-                                    <span class="text-gray-900 font-medium">× {{ $quantity }}</span>
+                                    <span class="text-gray-900 font-medium">× <span x-text="quantity"></span></span>
                                 </div>
                                 @if($product->discount > 0)
-                                <div class="flex justify-between text-emerald-600">
+                                <div class="flex justify-between text-emerald-600" x-show="totalDiscount > 0" x-cloak>
                                     <span>Diskon {{ $product->discount_type === 'percentage' ? $product->discount . '%' : '' }}</span>
-                                    <span class="font-medium">-Rp {{ number_format($product->price * $quantity - $totalPrice, 0, ',', '.') }}</span>
+                                    <span class="font-medium">-Rp <span x-text="formatRupiah(totalDiscount)"></span></span>
                                 </div>
                                 @endif
                             </div>
 
                             <div class="flex justify-between items-center mb-6">
                                 <span class="text-base font-bold text-gray-900">Total</span>
-                                <span class="text-xl font-extrabold text-ocean-600">Rp {{ number_format($totalPrice, 0, ',', '.') }}</span>
+                                <span class="text-xl font-extrabold text-ocean-600">Rp <span x-text="formatRupiah(totalPrice)"></span></span>
                             </div>
 
                             <button type="submit" id="btn-pay" class="w-full inline-flex justify-center items-center gap-2 px-4 py-3.5 bg-ocean-600 hover:bg-ocean-700 text-white text-sm font-bold rounded-xl transition-colors active:scale-[0.98] shadow-md shadow-ocean-600/20 disabled:opacity-50 disabled:cursor-not-allowed">
