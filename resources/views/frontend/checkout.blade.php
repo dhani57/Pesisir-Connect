@@ -49,19 +49,12 @@
 
             <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-8">Review Pesanan</h1>
 
-            <form action="{{ route('checkout.process') }}" method="POST" id="checkout-form"
-                  x-data="{ 
-                      quantity: {{ $quantity }}, 
-                      unitPrice: {{ $product->discounted_price }},
-                      basePrice: {{ $product->price }},
-                      get totalPrice() { return this.unitPrice * this.quantity },
-                      get totalDiscount() { return (this.basePrice * this.quantity) - this.totalPrice },
-                      formatRupiah(amount) { return new Intl.NumberFormat('id-ID').format(amount) }
-                  }">
+            <form action="{{ route('checkout.process') }}" method="POST" id="checkout-form">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <input type="hidden" name="check_in" value="{{ $checkIn }}">
                 <input type="hidden" name="check_out" value="{{ $checkOut }}">
+                <input type="hidden" name="quantity" value="{{ $quantity }}">
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {{-- Left: Order Details --}}
@@ -107,56 +100,33 @@
                                 </div>
                                 <div class="bg-gray-50 rounded-xl p-4">
                                     <span class="text-xs text-gray-500 block mb-1">Jumlah</span>
-                                    <span class="font-semibold text-gray-900"><span x-text="quantity"></span> {{ $product->price_unit }}</span>
+                                    <span class="font-semibold text-gray-900">{{ $quantity }} {{ $product->price_unit }}</span>
                                 </div>
                             </div>
                         </div>
 
                         {{-- Guest Info --}}
                         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h2 class="text-lg font-bold text-gray-900 mb-5">Informasi Tamu</h2>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+                            <h2 class="text-lg font-bold text-gray-900 mb-4">Informasi Tamu</h2>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Nama Lengkap</label>
-                                    <input type="text" value="{{ auth()->user()->name }}" disabled 
-                                           class="w-full rounded-xl border-gray-200 bg-gray-50 text-gray-500 text-sm cursor-not-allowed py-2.5 px-4 shadow-sm">
+                                    <label class="block text-sm font-medium text-gray-600 mb-1">Nama</label>
+                                    <div class="px-4 py-2.5 rounded-xl bg-gray-50 text-gray-900 text-sm font-medium">{{ auth()->user()->name }}</div>
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Alamat Email</label>
-                                    <input type="email" value="{{ auth()->user()->email }}" disabled 
-                                           class="w-full rounded-xl border-gray-200 bg-gray-50 text-gray-500 text-sm cursor-not-allowed py-2.5 px-4 shadow-sm truncate">
+                                    <label class="block text-sm font-medium text-gray-600 mb-1">Email</label>
+                                    <div class="px-4 py-2.5 rounded-xl bg-gray-50 text-gray-900 text-sm font-medium">{{ auth()->user()->email }}</div>
                                 </div>
                             </div>
-                            
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
-                                <div>
-                                    <label for="quantity" class="block text-sm font-semibold text-gray-700 mb-1.5">Jumlah {{ ucfirst($product->price_unit) }}</label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-                                        </div>
-                                        <input type="number" id="quantity" name="quantity" min="1" x-model.number="quantity"
-                                               class="w-full pl-11 pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-medium text-gray-900 focus:border-ocean-500 focus:ring-ocean-500 shadow-sm transition-colors">
-                                    </div>
-                                </div>
-                                @if(strtolower($product->price_unit) !== 'orang' && strtolower($product->price_unit) !== 'pax')
-                                <div>
-                                    <label for="guests" class="block text-sm font-semibold text-gray-700 mb-1.5">Jumlah Tamu / Penumpang</label>
-                                    <div class="relative">
-                                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
-                                        </div>
-                                        <input type="number" id="guests" name="guests" min="1" value="{{ old('guests', $quantity) }}"
-                                               class="w-full pl-11 pr-4 py-2.5 rounded-xl border-gray-200 text-sm font-medium text-gray-900 focus:border-ocean-500 focus:ring-ocean-500 shadow-sm transition-colors">
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
-                            
                             <div>
-                                <label for="notes" class="block text-sm font-semibold text-gray-700 mb-1.5">Catatan (Opsional)</label>
-                                <textarea id="notes" name="notes" rows="3" maxlength="500" placeholder="Permintaan khusus, alergi, atau info tambahan..."
-                                          class="w-full rounded-xl border-gray-200 text-sm text-gray-900 focus:border-ocean-500 focus:ring-ocean-500 shadow-sm transition-colors p-4">{{ old('notes') }}</textarea>
+                                <label for="guests" class="block text-sm font-medium text-gray-600 mb-1">Jumlah Tamu / Penumpang</label>
+                                <input type="number" id="guests" name="guests" min="1" value="{{ $quantity }}"
+                                       class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-500 focus:ring-ocean-500 py-2.5">
+                            </div>
+                            <div class="mt-4">
+                                <label for="notes" class="block text-sm font-medium text-gray-600 mb-1">Catatan (Opsional)</label>
+                                <textarea id="notes" name="notes" rows="3" maxlength="500" placeholder="Permintaan khusus, alergi, dll..."
+                                          class="w-full rounded-xl border-gray-200 text-sm focus:border-ocean-500 focus:ring-ocean-500"></textarea>
                             </div>
                         </div>
                     </div>
@@ -173,24 +143,40 @@
                                 </div>
                                 <div class="flex justify-between">
                                     <span class="text-gray-500">Jumlah</span>
-                                    <span class="text-gray-900 font-medium">× <span x-text="quantity"></span></span>
+                                    <span class="text-gray-900 font-medium">× {{ $quantity }}</span>
                                 </div>
                                 @if($product->discount > 0)
-                                <div class="flex justify-between text-emerald-600" x-show="totalDiscount > 0" x-cloak>
+                                <div class="flex justify-between text-emerald-600">
                                     <span>Diskon {{ $product->discount_type === 'percentage' ? $product->discount . '%' : '' }}</span>
-                                    <span class="font-medium">-Rp <span x-text="formatRupiah(totalDiscount)"></span></span>
+                                    <span class="font-medium">-Rp {{ number_format($product->price * $quantity - $totalPrice, 0, ',', '.') }}</span>
                                 </div>
                                 @endif
                             </div>
 
                             <div class="flex justify-between items-center mb-6">
                                 <span class="text-base font-bold text-gray-900">Total</span>
-                                <span class="text-xl font-extrabold text-ocean-600">Rp <span x-text="formatRupiah(totalPrice)"></span></span>
+                                <span class="text-xl font-extrabold text-ocean-600">Rp {{ number_format($totalPrice, 0, ',', '.') }}</span>
                             </div>
 
                             <button type="submit" id="btn-pay" class="w-full inline-flex justify-center items-center gap-2 px-4 py-3.5 bg-ocean-600 hover:bg-ocean-700 text-white text-sm font-bold rounded-xl transition-colors active:scale-[0.98] shadow-md shadow-ocean-600/20 disabled:opacity-50 disabled:cursor-not-allowed">
                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                                 Bayar Sekarang
+                            </button>
+
+                            <p class="text-center text-xs text-gray-400 mt-4 flex items-center justify-center gap-1.5">
+                                <svg class="w-3.5 h-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                Pembayaran aman via Midtrans
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <x-footer />
+</body>
+</html>
                             </button>
 
                             <p class="text-center text-xs text-gray-400 mt-4 flex items-center justify-center gap-1.5">

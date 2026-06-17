@@ -3,11 +3,27 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    {{-- SEO Meta Tags --}}
     <meta name="description" content="PesisirConnect — Marketplace wisata pesisir Lampung. Sewa perahu, alat snorkeling, dan temukan homestay terbaik di Pahawang, Krui, dan Teluk Kiluan.">
     <meta name="keywords" content="wisata lampung, pahawang, krui, teluk kiluan, sewa perahu, snorkeling, homestay, pesisir lampung">
     <meta name="author" content="PesisirConnect">
 
     <title>PesisirConnect — Marketplace Wisata Pesisir Lampung</title>
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="PesisirConnect — Marketplace Wisata Pesisir Lampung">
+    <meta property="og:description" content="Sewa perahu, alat snorkeling, dan temukan homestay terbaik di Pahawang, Krui, dan Teluk Kiluan. Dukung ekowisata lokal Lampung.">
+    <meta property="og:image" content="https://placehold.co/1200x630/0ea5e9/ffffff?text=PesisirConnect+Lampung">
+
+    {{-- Twitter --}}
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="PesisirConnect — Marketplace Wisata Pesisir Lampung">
+    <meta property="twitter:description" content="Sewa perahu, alat snorkeling, dan temukan homestay terbaik di Pahawang, Krui, dan Teluk Kiluan. Dukung ekowisata lokal Lampung.">
+    <meta property="twitter:image" content="https://placehold.co/1200x630/0ea5e9/ffffff?text=PesisirConnect+Lampung">
 
     {{-- Favicon --}}
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">

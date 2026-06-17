@@ -69,7 +69,7 @@ class VendorProductController extends Controller
 
         // Handle thumbnail upload or url
         if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = 'storage/' . $request->file('thumbnail')->store('products/thumbnails', 'public');
+            $data['thumbnail'] = \App\Services\ImageService::compressAndConvertToWebp($request->file('thumbnail'), 'products/thumbnails');
         } elseif ($request->filled('thumbnail_url')) {
             $data['thumbnail'] = $request->input('thumbnail_url');
         }
@@ -78,7 +78,7 @@ class VendorProductController extends Controller
         if ($request->hasFile('gallery')) {
             $galleryPaths = [];
             foreach ($request->file('gallery') as $image) {
-                $galleryPaths[] = 'storage/' . $image->store('products/gallery', 'public');
+                $galleryPaths[] = \App\Services\ImageService::compressAndConvertToWebp($image, 'products/gallery');
             }
             $data['gallery'] = $galleryPaths;
         }
@@ -131,7 +131,7 @@ class VendorProductController extends Controller
                 $oldPath = str_replace('storage/', '', $product->thumbnail);
                 Storage::disk('public')->delete($oldPath);
             }
-            $data['thumbnail'] = 'storage/' . $request->file('thumbnail')->store('products/thumbnails', 'public');
+            $data['thumbnail'] = \App\Services\ImageService::compressAndConvertToWebp($request->file('thumbnail'), 'products/thumbnails');
         } elseif ($request->filled('thumbnail_url')) {
             // Delete old thumbnail
             if ($product->thumbnail && !Str::startsWith($product->thumbnail, 'http')) {
@@ -152,7 +152,7 @@ class VendorProductController extends Controller
             }
             $galleryPaths = [];
             foreach ($request->file('gallery') as $image) {
-                $galleryPaths[] = 'storage/' . $image->store('products/gallery', 'public');
+                $galleryPaths[] = \App\Services\ImageService::compressAndConvertToWebp($image, 'products/gallery');
             }
             $data['gallery'] = $galleryPaths;
         }

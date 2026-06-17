@@ -3,10 +3,27 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    {{-- SEO Meta Tags --}}
     <meta name="description" content="Jelajahi destinasi wisata pesisir Lampung — Pulau Pahawang, Pantai Krui, dan Teluk Kiluan. Temukan keindahan alam yang menakjubkan.">
     <meta name="keywords" content="destinasi lampung, pahawang, krui, teluk kiluan, wisata pesisir, ekowisata lampung">
+    <meta name="author" content="PesisirConnect">
 
     <title>Destinasi Wisata — PesisirConnect</title>
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Destinasi Wisata — PesisirConnect">
+    <meta property="og:description" content="Jelajahi destinasi wisata pesisir Lampung — Pulau Pahawang, Pantai Krui, dan Teluk Kiluan. Temukan keindahan alam yang menakjubkan.">
+    <meta property="og:image" content="https://placehold.co/1200x630/0ea5e9/ffffff?text=Destinasi+Wisata+PesisirConnect">
+
+    {{-- Twitter --}}
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="Destinasi Wisata — PesisirConnect">
+    <meta property="twitter:description" content="Jelajahi destinasi wisata pesisir Lampung — Pulau Pahawang, Pantai Krui, dan Teluk Kiluan. Temukan keindahan alam yang menakjubkan.">
+    <meta property="twitter:image" content="https://placehold.co/1200x630/0ea5e9/ffffff?text=Destinasi+Wisata+PesisirConnect">
 
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">

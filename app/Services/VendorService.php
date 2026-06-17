@@ -25,7 +25,7 @@ class VendorService
             $licensePath = null;
 
             if (isset($data['logo']) && $data['logo'] instanceof UploadedFile) {
-                $logoPath = $data['logo']->store('vendors/logos', 'public');
+                $logoPath = \App\Services\ImageService::compressAndConvertToWebp($data['logo'], 'vendors/logos');
             }
 
             if (isset($data['business_license']) && $data['business_license'] instanceof UploadedFile) {
@@ -44,7 +44,7 @@ class VendorService
                 'bank_name'        => $data['bank_name'] ?? null,
                 'account_holder'   => $data['account_holder'] ?? null,
                 'account_number'   => $data['account_number'] ?? null,
-                'logo'             => $logoPath ? 'storage/' . $logoPath : null,
+                'logo'             => $logoPath,
                 'bio'              => $data['bio'] ?? null,
                 'business_license' => $licensePath ? 'storage/' . $licensePath : null,
                 'status'           => 'pending_approval',
@@ -67,8 +67,7 @@ class VendorService
                 $oldPath = str_replace('storage/', '', $vendor->logo);
                 Storage::disk('public')->delete($oldPath);
             }
-            $logoPath = $data['logo']->store('vendors/logos', 'public');
-            $data['logo'] = 'storage/' . $logoPath;
+            $data['logo'] = \App\Services\ImageService::compressAndConvertToWebp($data['logo'], 'vendors/logos');
         }
 
         // Handle avatar upload
@@ -77,8 +76,7 @@ class VendorService
                 $oldPath = str_replace('storage/', '', $vendor->avatar);
                 Storage::disk('public')->delete($oldPath);
             }
-            $avatarPath = $data['avatar']->store('vendors/avatars', 'public');
-            $data['avatar'] = 'storage/' . $avatarPath;
+            $data['avatar'] = \App\Services\ImageService::compressAndConvertToWebp($data['avatar'], 'vendors/avatars');
         }
 
         // Handle business license upload
