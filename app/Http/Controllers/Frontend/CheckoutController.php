@@ -162,6 +162,10 @@ class CheckoutController extends Controller
 
         if (!$snapToken) {
             try {
+                // Menghindari error "order_id sudah digunakan" dari Midtrans untuk transaksi lama
+                $newInvoiceNumber = 'PC-' . now()->format('Ymd') . '-' . strtoupper(uniqid());
+                $transaction->update(['invoice_number' => $newInvoiceNumber]);
+
                 $snap = $this->midtransService->createSnapToken($transaction);
                 $snapToken = $snap['token'];
                 $transaction->update(['snap_token' => $snapToken]);
