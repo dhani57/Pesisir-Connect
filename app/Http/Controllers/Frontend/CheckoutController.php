@@ -231,6 +231,25 @@ class CheckoutController extends Controller
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
+        // Sync with Midtrans API directly, as webhooks might be delayed or unreachable in local environments.
+        if ($transaction->status === 'pending') {
+            try {
+                $statusObj = \Midtrans\Transaction::status($transaction->invoice_number);
+                $data = (array) $statusObj;
+                
+                $transactionStatus = $data['transaction_status'] ?? null;
+                $fraudStatus       = $data['fraud_status'] ?? null;
+
+                if ($this->midtransService->isPaymentSuccess($transactionStatus, $fraudStatus)) {
+                    $this->handlePaymentSuccess($transaction, $data);
+                } elseif ($this->midtransService->isPaymentFailed($transactionStatus)) {
+                    $this->handlePaymentFailed($transaction, $data);
+                }
+            } catch (\Exception $e) {
+                logger()->error('Midtrans status check error in finish page: ' . $e->getMessage());
+            }
+        }
+
         return view('frontend.payment-finish', compact('transaction'));
     }
 
