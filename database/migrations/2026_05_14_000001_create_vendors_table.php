@@ -34,7 +34,7 @@ return new class extends Migration
                 $table->string('status', 50)->default('pending_approval'); // pending_approval, approved, suspended, deactivated
                 $table->boolean('is_approved')->default(false);
                 $table->timestamp('verified_at')->nullable();
-                $table->decimal('commission_rate', 5, 2)->default(10); // percentage
+                $table->decimal('commission_rate', 5, 2)->default(0); // percentage
                 $table->decimal('total_earnings', 15, 2)->default(0);
                 $table->integer('response_time_hours')->default(24);
                 $table->boolean('auto_approve_orders')->default(false);

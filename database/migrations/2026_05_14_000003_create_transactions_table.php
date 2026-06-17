@@ -42,6 +42,7 @@ return new class extends Migration
                 'bank_transfer',
                 'cash',
             ])->default('midtrans');
+            $table->string('snap_token')->nullable();
             $table->string('midtrans_transaction_id')->nullable();
             $table->string('midtrans_payment_type')->nullable();
             $table->json('midtrans_response')->nullable(); // Raw response Midtrans
