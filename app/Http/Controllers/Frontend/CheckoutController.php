@@ -124,6 +124,9 @@ class CheckoutController extends Controller
             // Generate Midtrans Snap token
             $snap = $this->midtransService->createSnapToken($transaction);
 
+            // Save snap token to database
+            $transaction->update(['snap_token' => $snap['token']]);
+
             return view('frontend.payment', [
                 'transaction' => $transaction->load(['product', 'customer']),
                 'snapToken'   => $snap['token'],
@@ -138,6 +141,41 @@ class CheckoutController extends Controller
 
             return back()->with('error', 'Terjadi kesalahan saat memproses pembayaran. Silakan coba lagi.');
         }
+    }
+
+    /**
+     * Resume a pending payment.
+     */
+    public function resumePayment(string $invoiceNumber): View|RedirectResponse
+    {
+        $transaction = Transaction::with(['product', 'customer'])
+            ->where('invoice_number', $invoiceNumber)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        // Only pending transactions can be resumed
+        if ($transaction->status !== 'pending') {
+            return redirect()->route('dashboard')->with('error', 'Transaksi ini tidak dapat dilanjutkan pembayarannya karena statusnya bukan menunggu.');
+        }
+
+        $snapToken = $transaction->snap_token;
+
+        if (!$snapToken) {
+            try {
+                $snap = $this->midtransService->createSnapToken($transaction);
+                $snapToken = $snap['token'];
+                $transaction->update(['snap_token' => $snapToken]);
+            } catch (\Exception $e) {
+                logger()->error('Resume payment failed: ' . $e->getMessage());
+                return redirect()->route('dashboard')->with('error', 'Terjadi kesalahan saat memuat ulang pembayaran. Silakan coba lagi.');
+            }
+        }
+
+        return view('frontend.payment', [
+            'transaction' => $transaction,
+            'snapToken'   => $snapToken,
+            'clientKey'   => $this->midtransService->getClientKey(),
+        ]);
     }
 
     /**

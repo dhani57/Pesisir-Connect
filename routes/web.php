@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->group(function () {
     // Checkout Flow (specific route before wildcard)
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+    Route::get('/checkout/resume/{invoiceNumber}', [CheckoutController::class, 'resumePayment'])->name('checkout.resume');
     Route::match(['get', 'post'], '/checkout/{slug}', [CheckoutController::class, 'show'])->name('checkout');
     Route::get('/payment/finish/{invoiceNumber}', [CheckoutController::class, 'finish'])->name('checkout.finish');
 
