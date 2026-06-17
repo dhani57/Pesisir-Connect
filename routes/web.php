@@ -50,6 +50,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/review/{transaction}', [CustomerReviewController::class, 'store'])->name('customer.review.store');
     Route::patch('/transaction/{transaction}/cancel', [CustomerReviewController::class, 'cancelTransaction'])->name('customer.transaction.cancel');
 
+    // E-Ticket
+    Route::get('/tiket/{invoiceNumber}', [CustomerDashboardController::class, 'ticket'])->name('customer.ticket');
+
     // Wishlist
     Route::get('/simpan', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/simpan/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
