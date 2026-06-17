@@ -50,6 +50,9 @@
                     @if($link['route'] === 'vendor.notifications.index' && auth()->user()->vendor && auth()->user()->vendor->unread_notifications_count > 0)
                         <span class="ml-auto bg-coral-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ auth()->user()->vendor->unread_notifications_count }}</span>
                     @endif
+                    @if($link['route'] === 'vendor.chat.inbox' && auth()->user()->vendor && auth()->user()->vendor->unread_messages_count > 0)
+                        <span class="ml-auto bg-coral-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ auth()->user()->vendor->unread_messages_count }}</span>
+                    @endif
                 </a>
             @endforeach
         </nav>
