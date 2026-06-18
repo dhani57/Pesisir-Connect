@@ -31,60 +31,48 @@
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div class="hidden md:block absolute top-0 bottom-0 left-1/2 w-0.5 bg-ocean-200 -ml-0.5"></div>
             
-            <div class="space-y-12">
+            <div class="space-y-8">
                 {{-- Step 1 --}}
-                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-                    <div class="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-ocean-600 text-white font-bold border-4 border-white shadow-lg absolute left-1/2 -ml-6 z-10 group-hover:scale-110 transition-transform">1</div>
-                    <div class="w-full md:w-5/12">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
-                            <div class="w-12 h-12 bg-ocean-50 text-ocean-600 rounded-xl flex items-center justify-center mb-4 md:hidden">
-                                <span class="font-bold text-xl">1</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">Pilih Layanan & Destinasi</h3>
-                            <p class="text-gray-600 leading-relaxed text-sm">Gunakan fitur pencarian di Katalog atau jelajahi halaman Destinasi. Temukan perahu wisata, alat snorkeling, atau homestay yang paling pas dengan rencana liburan Anda.</p>
-                        </div>
+                <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col md:flex-row gap-6 items-start">
+                    <div class="w-16 h-16 shrink-0 bg-gradient-to-br from-ocean-500 to-ocean-600 text-white rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg shadow-ocean-500/30">
+                        1
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Pilih Layanan & Destinasi</h3>
+                        <p class="text-gray-600 leading-relaxed text-base">Gunakan fitur pencarian di Katalog atau jelajahi halaman Destinasi. Temukan perahu wisata, alat snorkeling, atau homestay yang paling pas dengan rencana liburan Anda.</p>
                     </div>
                 </div>
 
                 {{-- Step 2 --}}
-                <div class="relative flex items-center justify-between md:justify-normal md:even:flex-row group">
-                    <div class="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-ocean-600 text-white font-bold border-4 border-white shadow-lg absolute left-1/2 -ml-6 z-10 group-hover:scale-110 transition-transform">2</div>
-                    <div class="w-full md:w-5/12 ml-auto">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
-                            <div class="w-12 h-12 bg-ocean-50 text-ocean-600 rounded-xl flex items-center justify-center mb-4 md:hidden">
-                                <span class="font-bold text-xl">2</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">Isi Detail Pesanan</h3>
-                            <p class="text-gray-600 leading-relaxed text-sm">Tentukan tanggal kunjungan dan jumlah tamu/item yang ingin disewa. Sistem akan otomatis menghitung total harga tanpa biaya tersembunyi. Klik "Pesan Sekarang" untuk melanjutkan.</p>
-                        </div>
+                <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col md:flex-row gap-6 items-start">
+                    <div class="w-16 h-16 shrink-0 bg-gradient-to-br from-ocean-500 to-ocean-600 text-white rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg shadow-ocean-500/30">
+                        2
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Isi Detail Pesanan</h3>
+                        <p class="text-gray-600 leading-relaxed text-base">Tentukan tanggal kunjungan dan jumlah tamu/item yang ingin disewa. Sistem akan otomatis menghitung total harga tanpa biaya tersembunyi. Klik "Pesan Sekarang" untuk melanjutkan.</p>
                     </div>
                 </div>
 
                 {{-- Step 3 --}}
-                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-                    <div class="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-ocean-600 text-white font-bold border-4 border-white shadow-lg absolute left-1/2 -ml-6 z-10 group-hover:scale-110 transition-transform">3</div>
-                    <div class="w-full md:w-5/12">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
-                            <div class="w-12 h-12 bg-ocean-50 text-ocean-600 rounded-xl flex items-center justify-center mb-4 md:hidden">
-                                <span class="font-bold text-xl">3</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">Lakukan Pembayaran Aman</h3>
-                            <p class="text-gray-600 leading-relaxed text-sm">Selesaikan pembayaran secara online melalui gerbang pembayaran (Midtrans) kami. Anda dapat membayar menggunakan Virtual Account (Bank Transfer), E-Wallet, atau Kartu Kredit. Transaksi Anda 100% aman.</p>
-                        </div>
+                <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col md:flex-row gap-6 items-start">
+                    <div class="w-16 h-16 shrink-0 bg-gradient-to-br from-ocean-500 to-ocean-600 text-white rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg shadow-ocean-500/30">
+                        3
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Lakukan Pembayaran Aman</h3>
+                        <p class="text-gray-600 leading-relaxed text-base">Selesaikan pembayaran secara online melalui gerbang pembayaran (Midtrans) kami. Anda dapat membayar menggunakan Virtual Account (Bank Transfer), E-Wallet, atau Kartu Kredit. Transaksi Anda 100% aman.</p>
                     </div>
                 </div>
 
                 {{-- Step 4 --}}
-                <div class="relative flex items-center justify-between md:justify-normal md:even:flex-row group">
-                    <div class="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-ocean-600 text-white font-bold border-4 border-white shadow-lg absolute left-1/2 -ml-6 z-10 group-hover:scale-110 transition-transform">4</div>
-                    <div class="w-full md:w-5/12 ml-auto">
-                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
-                            <div class="w-12 h-12 bg-ocean-50 text-ocean-600 rounded-xl flex items-center justify-center mb-4 md:hidden">
-                                <span class="font-bold text-xl">4</span>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">Dapatkan E-Tiket Anda</h3>
-                            <p class="text-gray-600 leading-relaxed text-sm">Setelah pembayaran berhasil diverifikasi, E-Tiket Anda akan langsung tersedia di menu Dashboard Anda dan dikirimkan via email. Tunjukkan tiket tersebut kepada vendor saat kedatangan.</p>
-                        </div>
+                <div class="bg-white p-8 sm:p-10 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col md:flex-row gap-6 items-start">
+                    <div class="w-16 h-16 shrink-0 bg-gradient-to-br from-ocean-500 to-ocean-600 text-white rounded-2xl flex items-center justify-center font-bold text-2xl shadow-lg shadow-ocean-500/30">
+                        4
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-900 mb-3">Dapatkan E-Tiket Anda</h3>
+                        <p class="text-gray-600 leading-relaxed text-base">Setelah pembayaran berhasil diverifikasi, E-Tiket Anda akan langsung tersedia di menu Dashboard Anda dan dikirimkan via email. Tunjukkan tiket tersebut kepada vendor saat kedatangan.</p>
                     </div>
                 </div>
             </div>
