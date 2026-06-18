@@ -82,7 +82,7 @@
     </section>
 
     <section class="py-16 md:py-20 text-center relative z-10 bg-white border-t border-gray-100">
-        <a href="{{ route('catalog') }}" class="inline-flex items-center justify-center px-10 py-4 text-lg font-semibold text-white bg-ocean-600 rounded-xl hover:bg-ocean-700 transition-colors shadow-lg shadow-ocean-500/30">Mulai Pesan Sekarang</a>
+        <a href="{{ route('catalog') }}" class="btn-primary inline-flex items-center justify-center transition-colors shadow-lg shadow-ocean-500/30" style="padding: 1.25rem 3.5rem; font-size: 1.15rem; border-radius: 1rem;">Mulai Pesan Sekarang</a>
     </section>
 
     <x-footer />
