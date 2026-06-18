@@ -77,10 +77,12 @@
                 </div>
             </div>
 
-            <div class="mt-24 mb-8 text-center relative z-10">
-                <a href="{{ route('catalog') }}" class="inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-white bg-ocean-600 rounded-xl hover:bg-ocean-700 transition-colors shadow-lg shadow-ocean-500/30">Mulai Pesan Sekarang</a>
             </div>
         </div>
+    </section>
+
+    <section class="py-16 md:py-20 text-center relative z-10 bg-white border-t border-gray-100">
+        <a href="{{ route('catalog') }}" class="inline-flex items-center justify-center px-10 py-4 text-lg font-semibold text-white bg-ocean-600 rounded-xl hover:bg-ocean-700 transition-colors shadow-lg shadow-ocean-500/30">Mulai Pesan Sekarang</a>
     </section>
 
     <x-footer />
