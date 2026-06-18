@@ -39,8 +39,8 @@
                 </div>
             </div>
             <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500 mt-2">
-                <span>📅 {{ $trx->check_in->format('d M Y') }}</span>
-                <span>👥 {{ $trx->guests }} tamu</span>
+                <span class="flex items-center gap-1"><x-heroicon-o-calendar class="w-4 h-4" /> {{ $trx->check_in->format('d M Y') }}</span>
+                <span class="flex items-center gap-1"><x-heroicon-o-users class="w-4 h-4" /> {{ $trx->guests }} tamu</span>
                 <span class="font-bold text-ocean-600">{{ $trx->formatted_total }}</span>
             </div>
 
@@ -64,11 +64,13 @@
                 @endif
 
                 @if($trx->vendor_status === 'completed' && !in_array($trx->id, $reviewedTransactionIds))
-                <button @click="showReview = !showReview" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-ocean-200 text-ocean-600 hover:bg-ocean-50 transition-colors">
-                    ⭐ Beri Ulasan
+                <button @click="showReview = !showReview" class="px-3 py-1.5 text-xs font-semibold rounded-lg border border-ocean-200 text-ocean-600 hover:bg-ocean-50 transition-colors flex items-center gap-1">
+                    <x-heroicon-s-star class="w-4 h-4 text-yellow-400" /> Beri Ulasan
                 </button>
                 @elseif(in_array($trx->id, $reviewedTransactionIds))
-                <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-50 text-gray-500">✅ Sudah Diulas</span>
+                <span class="px-3 py-1.5 text-xs font-medium rounded-lg bg-gray-50 text-gray-500 flex items-center gap-1">
+                    <x-heroicon-s-check-circle class="w-4 h-4 text-emerald-500" /> Sudah Diulas
+                </span>
                 @endif
             </div>
         </div>

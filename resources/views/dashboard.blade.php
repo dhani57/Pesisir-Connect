@@ -7,7 +7,7 @@
                 <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
                 <div class="relative p-8 sm:p-10 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                     <div>
-                        <h3 class="text-3xl font-bold mb-2">Halo, {{ Auth::user()->name }}! 👋</h3>
+                        <h3 class="text-3xl font-bold mb-2 flex items-center gap-2">Halo, {{ Auth::user()->name }}!</h3>
                         <p class="text-ocean-100 text-lg">Siap untuk petualangan selanjutnya di pesisir Lampung?</p>
                     </div>
                     <a href="{{ route('catalog') }}" class="shrink-0 bg-white text-ocean-600 font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-ocean-50 transition-all duration-200 active:scale-95">
