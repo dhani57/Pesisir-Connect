@@ -229,6 +229,7 @@ class DatabaseSeeder extends Seeder
                 'slug'        => 'sewa-perahu-wisata',
                 'description' => 'Sewa perahu tradisional dan speedboat untuk menjelajahi pulau-pulau indah di pesisir Lampung.',
                 'icon'        => '⛵',
+                'image'       => 'https://mitra.boatria.com/assets/customers/731-ajizketapang/25bb09ece6a2dd33f85e2f3b4d2710bf.jpg',
                 'sort_order'  => 1,
             ],
             [
@@ -236,6 +237,7 @@ class DatabaseSeeder extends Seeder
                 'slug'        => 'alat-snorkeling',
                 'description' => 'Sewa peralatan snorkeling lengkap untuk menikmati keindahan terumbu karang.',
                 'icon'        => '🤿',
+                'image'       => 'https://image.made-in-china.com/202f0j00RvGlAZecymrO/Best-Snorkel-Set-Snorkeling-Gear-Snorkeling-Equipment-in-2025.webp',
                 'sort_order'  => 2,
             ],
             [
@@ -243,6 +245,7 @@ class DatabaseSeeder extends Seeder
                 'slug'        => 'homestay',
                 'description' => 'Penginapan lokal yang nyaman dengan pemandangan laut dan suasana pesisir autentik.',
                 'icon'        => '🏠',
+                'image'       => 'https://q-xx.bstatic.com/xdata/images/hotel/max1024x768/376761048.jpg?k=7e069b19c5ba043f1e86ba488d2955b518740af4a3c900444f80ad1f3ed4d6bb&o=?s=375x210&ar=16x9',
                 'sort_order'  => 3,
             ],
             [
@@ -250,6 +253,7 @@ class DatabaseSeeder extends Seeder
                 'slug'        => 'paket-wisata',
                 'description' => 'Paket wisata lengkap termasuk transportasi, akomodasi, dan aktivitas di pesisir Lampung.',
                 'icon'        => '🎒',
+                'image'       => 'https://jawaratourjogja.com/wp-content/uploads/2024/03/paket-wisata-jogja-2D1N-terestetik.jpeg',
                 'sort_order'  => 4,
             ],
             [
@@ -257,6 +261,7 @@ class DatabaseSeeder extends Seeder
                 'slug'        => 'kuliner-pesisir',
                 'description' => 'Nikmati kuliner khas pesisir Lampung — seafood segar, olahan tradisional, dan jajanan khas.',
                 'icon'        => '🦐',
+                'image'       => 'https://parksidehotels.co.id/wp-content/uploads/2025/02/073514400_1654104677-Warung_1.webp',
                 'sort_order'  => 5,
             ],
             [
@@ -264,6 +269,7 @@ class DatabaseSeeder extends Seeder
                 'slug'        => 'guide-pemandu',
                 'description' => 'Jasa pemandu wisata lokal yang berpengalaman untuk menjelajahi destinasi pesisir.',
                 'icon'        => '🧭',
+                'image'       => 'https://fastboatbaligilitrawangan.com/wp-content/uploads/2025/04/Sewa-Tour-Guide-di-Bali.webp',
                 'sort_order'  => 6,
             ],
         ])->map(fn ($data) => Category::create($data));
