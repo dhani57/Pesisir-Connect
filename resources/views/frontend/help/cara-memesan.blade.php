@@ -77,7 +77,7 @@
                 </div>
             </div>
 
-            <div class="mt-16 text-center">
+            <div class="mt-24 mb-8 text-center relative z-10">
                 <a href="{{ route('catalog') }}" class="inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-white bg-ocean-600 rounded-xl hover:bg-ocean-700 transition-colors shadow-lg shadow-ocean-500/30">Mulai Pesan Sekarang</a>
             </div>
         </div>
