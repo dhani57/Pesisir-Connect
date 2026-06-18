@@ -110,7 +110,7 @@ class VendorService
         VendorNotification::send(
             $vendor->id,
             'approval_status',
-            'Toko Anda Disetujui! 🎉',
+            'Toko Anda Disetujui!',
             'Selamat! Toko "' . $vendor->shop_name . '" telah disetujui oleh admin. Anda sekarang bisa mulai menambahkan produk dan menerima pesanan.',
             route('vendor.dashboard')
         );

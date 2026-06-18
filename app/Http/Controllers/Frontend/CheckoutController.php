@@ -275,7 +275,7 @@ class CheckoutController extends Controller
             VendorNotification::send(
                 $transaction->vendor_id,
                 'payment_received',
-                'Pembayaran Diterima! 💰',
+                'Pembayaran Diterima!',
                 'Pembayaran untuk pesanan #' . $transaction->invoice_number .
                 ' sebesar Rp ' . number_format($transaction->total_price, 0, ',', '.') .
                 ' telah berhasil diterima.',

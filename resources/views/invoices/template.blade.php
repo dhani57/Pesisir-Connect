@@ -76,7 +76,7 @@
         {{-- Header --}}
         <div class="header">
             <div class="header-left">
-                <div class="brand">🌊 PesisirConnect</div>
+                <div class="brand">PesisirConnect</div>
                 <div class="brand-sub">Platform Wisata Pesisir Lampung</div>
                 <div class="brand-sub" style="margin-top: 2px;">{{ $platformUrl }}</div>
             </div>
