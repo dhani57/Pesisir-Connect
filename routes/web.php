@@ -24,6 +24,11 @@ Route::get('/produk/{slug}', [ProductController::class, 'show'])->name('produk.d
 Route::get('/destinasi', [PageController::class, 'destinasi'])->name('destinasi');
 Route::get('/tentang', [PageController::class, 'tentang'])->name('tentang');
 
+// Help Pages
+Route::get('/bantuan/cara-memesan', [PageController::class, 'caraMemesan'])->name('help.how-to-order');
+Route::get('/bantuan/faq', [PageController::class, 'faq'])->name('help.faq');
+Route::get('/bantuan/kebijakan-privasi', [PageController::class, 'kebijakanPrivasi'])->name('help.privacy-policy');
+
 /*
 |--------------------------------------------------------------------------
 | Authenticated Routes

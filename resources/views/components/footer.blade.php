@@ -42,9 +42,9 @@
             <div>
                 <h4 class="text-white font-semibold text-sm mb-4">Bantuan</h4>
                 <ul class="space-y-2.5">
-                    <li><a href="#" class="text-sm text-gray-400 hover:text-ocean-400 transition-colors">Cara Memesan</a></li>
-                    <li><a href="#" class="text-sm text-gray-400 hover:text-ocean-400 transition-colors">FAQ</a></li>
-                    <li><a href="#" class="text-sm text-gray-400 hover:text-ocean-400 transition-colors">Kebijakan Privasi</a></li>
+                    <li><a href="{{ route('help.how-to-order') }}" class="text-sm text-gray-400 hover:text-ocean-400 transition-colors">Cara Memesan</a></li>
+                    <li><a href="{{ route('help.faq') }}" class="text-sm text-gray-400 hover:text-ocean-400 transition-colors">FAQ</a></li>
+                    <li><a href="{{ route('help.privacy-policy') }}" class="text-sm text-gray-400 hover:text-ocean-400 transition-colors">Kebijakan Privasi</a></li>
                 </ul>
             </div>
         </div>

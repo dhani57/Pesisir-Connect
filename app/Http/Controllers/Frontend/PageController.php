@@ -48,4 +48,57 @@ class PageController extends Controller
 
         return view('frontend.tentang', compact('stats', 'team'));
     }
+
+    /**
+     * Halaman Cara Memesan
+     */
+    public function caraMemesan(): View
+    {
+        return view('frontend.help.cara-memesan');
+    }
+
+    /**
+     * Halaman FAQ
+     */
+    public function faq(): View
+    {
+        $faqs = [
+            'Pemesanan' => [
+                [
+                    'q' => 'Bagaimana cara melakukan pemesanan (booking)?',
+                    'a' => 'Pilih layanan yang Anda inginkan melalui menu Katalog atau Destinasi, tentukan tanggal serta jumlah tamu, lalu klik "Pesan Sekarang". Setelah itu, ikuti petunjuk pembayaran yang tampil di layar.'
+                ],
+                [
+                    'q' => 'Apakah saya bisa mengubah jadwal booking?',
+                    'a' => 'Ya, perubahan jadwal dapat dilakukan dengan menghubungi vendor langsung melalui fitur Pesan/Chat maksimal 2 hari sebelum tanggal kedatangan, tergantung pada kebijakan masing-masing vendor.'
+                ]
+            ],
+            'Pembayaran' => [
+                [
+                    'q' => 'Metode pembayaran apa saja yang tersedia?',
+                    'a' => 'Kami mendukung berbagai metode pembayaran, mulai dari Virtual Account (BCA, Mandiri, BNI, BRI), Kartu Kredit, hingga e-Wallet (GoPay, OVO, ShopeePay) yang diproses aman melalui Midtrans.'
+                ],
+                [
+                    'q' => 'Apakah pembayaran saya aman?',
+                    'a' => 'Sangat aman. Seluruh transaksi diproses oleh penyedia layanan pembayaran resmi yang terlisensi (Midtrans), dan kami tidak menyimpan data sensitif seperti nomor kartu kredit Anda.'
+                ]
+            ],
+            'Kebijakan Pembatalan' => [
+                [
+                    'q' => 'Bagaimana jika saya ingin membatalkan pesanan?',
+                    'a' => 'Pesanan yang berstatus "Menunggu Pembayaran" dapat dibatalkan langsung melalui Dashboard Anda. Namun, pesanan yang sudah dibayar perlu mendapatkan persetujuan refund dari Vendor.'
+                ]
+            ]
+        ];
+
+        return view('frontend.help.faq', compact('faqs'));
+    }
+
+    /**
+     * Halaman Kebijakan Privasi
+     */
+    public function kebijakanPrivasi(): View
+    {
+        return view('frontend.help.kebijakan-privasi');
+    }
 }
