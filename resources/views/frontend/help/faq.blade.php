@@ -57,7 +57,13 @@
             <div class="mt-12 p-8 bg-ocean-50 rounded-2xl border border-ocean-100 text-center">
                 <h3 class="text-lg font-bold text-gray-900 mb-2">Masih Memiliki Pertanyaan?</h3>
                 <p class="text-gray-600 mb-6 text-sm">Jika Anda tidak menemukan jawaban yang Anda cari, jangan ragu untuk menghubungi tim dukungan kami.</p>
-                <a href="#" class="inline-flex items-center gap-2 px-6 py-2.5 bg-white text-ocean-600 border border-ocean-200 font-semibold rounded-lg hover:bg-ocean-50 transition-colors shadow-sm">
+                @php
+                    $waNumber = preg_replace('/[^0-9]/', '', setting('support_whatsapp', '081234567890'));
+                    if (str_starts_with($waNumber, '0')) {
+                        $waNumber = '62' . substr($waNumber, 1);
+                    }
+                @endphp
+                <a href="https://wa.me/{{ $waNumber }}" target="_blank" class="inline-flex items-center gap-2 px-6 py-2.5 bg-white text-ocean-600 border border-ocean-200 font-semibold rounded-lg hover:bg-ocean-50 transition-colors shadow-sm">
                     <x-heroicon-o-chat-bubble-left-ellipsis class="w-5 h-5" />
                     Hubungi Dukungan
                 </a>
