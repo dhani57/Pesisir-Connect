@@ -1,5 +1,5 @@
 <x-emails.components.layout subject="Pesanan Berhasil Dibuat">
-    <h2>Pesanan Anda Berhasil Dibuat! 🎉</h2>
+    <h2>Pesanan Anda Berhasil Dibuat!</h2>
     <p>Halo <strong>{{ $transaction->customer->name }}</strong>,</p>
     <p>Terima kasih telah memesan melalui PesisirConnect. Berikut detail pesanan Anda:</p>
 

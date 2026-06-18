@@ -110,7 +110,7 @@ class VendorService
         VendorNotification::send(
             $vendor->id,
             'approval_status',
-            'Toko Anda Disetujui! 🎉',
+            'Toko Anda Disetujui!',
             'Selamat! Toko "' . $vendor->shop_name . '" telah disetujui oleh admin. Anda sekarang bisa mulai menambahkan produk dan menerima pesanan.',
             route('vendor.dashboard')
         );
@@ -195,13 +195,18 @@ class VendorService
             ->get();
 
         // Charts data: Sales last 30 days
-        $salesData = $vendor->commissionLogs()
-            ->where('created_at', '>=', $now->copy()->subDays(30))
+        $salesDataRaw = $vendor->commissionLogs()
+            ->where('created_at', '>=', $now->copy()->subDays(29)->startOfDay())
             ->selectRaw('DATE(created_at) as date, SUM(vendor_earning) as total')
             ->groupBy('date')
-            ->orderBy('date')
             ->pluck('total', 'date')
             ->toArray();
+
+        $salesData = [];
+        for ($i = 29; $i >= 0; $i--) {
+            $dateStr = $now->copy()->subDays($i)->format('Y-m-d');
+            $salesData[$dateStr] = $salesDataRaw[$dateStr] ?? 0;
+        }
 
         // Order status distribution
         $orderStatusDistribution = [

@@ -7,7 +7,7 @@
     <title>{{ $title ?? 'Vendor Dashboard' }} — PesisirConnect</title>
     
     {{-- Favicon --}}
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230ea5e9'/><text x='50' y='75' font-size='70' font-family='sans-serif' font-weight='bold' fill='white' text-anchor='middle'>PC</text></svg>">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
@@ -49,6 +49,9 @@
                     {{ $link['label'] }}
                     @if($link['route'] === 'vendor.notifications.index' && auth()->user()->vendor && auth()->user()->vendor->unread_notifications_count > 0)
                         <span class="ml-auto bg-coral-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ auth()->user()->vendor->unread_notifications_count }}</span>
+                    @endif
+                    @if($link['route'] === 'vendor.chat.inbox' && auth()->user()->vendor && auth()->user()->vendor->unread_messages_count > 0)
+                        <span class="ml-auto bg-coral-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">{{ auth()->user()->vendor->unread_messages_count }}</span>
                     @endif
                 </a>
             @endforeach
@@ -117,5 +120,6 @@
         </main>
     </div>
 </div>
+@stack('scripts')
 </body>
 </html>

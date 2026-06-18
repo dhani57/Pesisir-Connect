@@ -122,8 +122,15 @@
                             if (res.ok) {
                                 const data = await res.json();
                                 if (data.messages && data.messages.length > 0) {
-                                    this.newMessages = [...this.newMessages, ...data.messages];
-                                    this.lastId = data.messages[data.messages.length - 1].id;
+                                    const existingIds = new Set(this.newMessages.map(m => m.id));
+                                    const filtered = data.messages.filter(m => !existingIds.has(m.id));
+                                    if (filtered.length > 0) {
+                                        this.newMessages = [...this.newMessages, ...filtered];
+                                        const maxId = Math.max(...filtered.map(m => m.id));
+                                        if (maxId > this.lastId) {
+                                            this.lastId = maxId;
+                                        }
+                                    }
                                 }
                             }
                         } catch (e) {

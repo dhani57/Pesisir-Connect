@@ -151,13 +151,17 @@
 
 {{-- Charts --}}
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
         <h3 class="font-bold text-gray-900 mb-4"><x-heroicon-o-chart-bar class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Tren Penjualan (30 Hari)</h3>
-        <canvas id="salesChart" height="200"></canvas>
+        <div class="relative flex-1" style="min-height: 250px;">
+            <canvas id="salesChart"></canvas>
+        </div>
     </div>
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col">
         <h3 class="font-bold text-gray-900 mb-4"><x-heroicon-o-presentation-chart-line class="w-5 h-5 inline-block mr-1.5 -mt-1 text-current"/> Distribusi Status Pesanan</h3>
-        <canvas id="orderStatusChart" height="200"></canvas>
+        <div class="relative flex-1" style="min-height: 250px;">
+            <canvas id="orderStatusChart"></canvas>
+        </div>
     </div>
 </div>
 
@@ -208,7 +212,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 pointBackgroundColor: '#0ea5e9', pointRadius: 3
             }]
         },
-        options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { callback: v => 'Rp ' + (v/1000) + 'k' } } } }
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }, 
+            scales: { 
+                y: { 
+                    beginAtZero: true, 
+                    ticks: { callback: v => 'Rp ' + (v/1000) + 'k' },
+                    grid: { borderDash: [2, 4], color: '#f3f4f6' }
+                },
+                x: {
+                    grid: { display: false }
+                }
+            } 
+        }
     });
 
     const statusData = @json($stats['orderStatusDistribution']);
@@ -219,10 +237,22 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 data: Object.values(statusData),
                 backgroundColor: ['#f59e0b', '#3b82f6', '#10b981', '#ef4444'],
-                borderWidth: 0
+                borderWidth: 2,
+                borderColor: '#ffffff',
+                hoverOffset: 4
             }]
         },
-        options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+        options: { 
+            responsive: true, 
+            maintainAspectRatio: false,
+            cutout: '65%',
+            plugins: { 
+                legend: { 
+                    position: 'bottom',
+                    labels: { padding: 20, usePointStyle: true }
+                } 
+            } 
+        }
     });
 });
 </script>
