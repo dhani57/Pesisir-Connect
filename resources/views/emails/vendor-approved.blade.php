@@ -1,5 +1,5 @@
 <x-emails.components.layout subject="Akun Vendor Disetujui">
-    <h2>Selamat! Akun Vendor Anda Aktif 🎉</h2>
+    <h2>Selamat! Akun Vendor Anda Aktif</h2>
     <p>Halo <strong>{{ $vendor->name }}</strong>,</p>
     <p>Dengan senang hati kami informasikan bahwa akun vendor Anda di PesisirConnect telah <strong>disetujui</strong> oleh tim admin kami.</p>
 

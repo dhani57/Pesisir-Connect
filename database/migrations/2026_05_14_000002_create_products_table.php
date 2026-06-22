@@ -34,7 +34,8 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
-            $table->string('thumbnail')->nullable();
+            $table->text('gmaps_link')->nullable();
+            $table->text('thumbnail')->nullable();
             $table->json('gallery')->nullable();    // Array of image paths
             $table->integer('capacity')->nullable(); // Kapasitas (penumpang perahu / tamu homestay)
             $table->integer('stock')->default(0);

@@ -229,6 +229,7 @@ class DatabaseSeeder extends Seeder
                 'slug'        => 'sewa-perahu-wisata',
                 'description' => 'Sewa perahu tradisional dan speedboat untuk menjelajahi pulau-pulau indah di pesisir Lampung.',
                 'icon'        => '⛵',
+                'image'       => 'https://mitra.boatria.com/assets/customers/731-ajizketapang/25bb09ece6a2dd33f85e2f3b4d2710bf.jpg',
                 'sort_order'  => 1,
             ],
             [
@@ -236,6 +237,7 @@ class DatabaseSeeder extends Seeder
                 'slug'        => 'alat-snorkeling',
                 'description' => 'Sewa peralatan snorkeling lengkap untuk menikmati keindahan terumbu karang.',
                 'icon'        => '🤿',
+                'image'       => 'https://image.made-in-china.com/202f0j00RvGlAZecymrO/Best-Snorkel-Set-Snorkeling-Gear-Snorkeling-Equipment-in-2025.webp',
                 'sort_order'  => 2,
             ],
             [
@@ -243,6 +245,7 @@ class DatabaseSeeder extends Seeder
                 'slug'        => 'homestay',
                 'description' => 'Penginapan lokal yang nyaman dengan pemandangan laut dan suasana pesisir autentik.',
                 'icon'        => '🏠',
+                'image'       => 'https://q-xx.bstatic.com/xdata/images/hotel/max1024x768/376761048.jpg?k=7e069b19c5ba043f1e86ba488d2955b518740af4a3c900444f80ad1f3ed4d6bb&o=?s=375x210&ar=16x9',
                 'sort_order'  => 3,
             ],
             [
@@ -250,6 +253,7 @@ class DatabaseSeeder extends Seeder
                 'slug'        => 'paket-wisata',
                 'description' => 'Paket wisata lengkap termasuk transportasi, akomodasi, dan aktivitas di pesisir Lampung.',
                 'icon'        => '🎒',
+                'image'       => 'https://jawaratourjogja.com/wp-content/uploads/2024/03/paket-wisata-jogja-2D1N-terestetik.jpeg',
                 'sort_order'  => 4,
             ],
             [
@@ -257,6 +261,7 @@ class DatabaseSeeder extends Seeder
                 'slug'        => 'kuliner-pesisir',
                 'description' => 'Nikmati kuliner khas pesisir Lampung — seafood segar, olahan tradisional, dan jajanan khas.',
                 'icon'        => '🦐',
+                'image'       => 'https://parksidehotels.co.id/wp-content/uploads/2025/02/073514400_1654104677-Warung_1.webp',
                 'sort_order'  => 5,
             ],
             [
@@ -264,6 +269,7 @@ class DatabaseSeeder extends Seeder
                 'slug'        => 'guide-pemandu',
                 'description' => 'Jasa pemandu wisata lokal yang berpengalaman untuk menjelajahi destinasi pesisir.',
                 'icon'        => '🧭',
+                'image'       => 'https://fastboatbaligilitrawangan.com/wp-content/uploads/2025/04/Sewa-Tour-Guide-di-Bali.webp',
                 'sort_order'  => 6,
             ],
         ])->map(fn ($data) => Category::create($data));
@@ -282,6 +288,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Perahu wisata ke Pahawang, kapasitas 10 orang',
                 'facilities'  => ['Life Jacket', 'Guide Wisata', 'P3K', 'Air Mineral', 'Snack'],
                 'whatsapp'    => '081234567891',
+                'thumbnail'   => 'https://mitra.boatria.com/assets/customers/738-asepdrajash/03693aa52a1e6d9c7d6aca212b670d2b.jpg',
 
             ],
             [
@@ -294,6 +301,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Speedboat dolphin watching di Teluk Kiluan',
                 'facilities'  => ['Life Jacket', 'Guide', 'P3K', 'Teropong', 'Air Mineral'],
                 'whatsapp'    => '081234567891',
+                'thumbnail'   => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxi-4t3f39ObzIQG8DuNlgfLuZG0q_Sofm3A&s',
 
             ],
             [
@@ -306,6 +314,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Sunset tour dengan perahu nelayan tradisional',
                 'facilities'  => ['Life Jacket', 'Guide Lokal', 'Teh Hangat'],
                 'whatsapp'    => '081234567893',
+                'thumbnail'   => 'https://kura2bus.com/files/representations/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBdk1DIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--7d3aad55e32177e4e796bb5905a6375b40f939d7/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDRG9MWm05eWJXRjBPZ2wzWldKd09oUnlaWE5wZW1WZmRHOWZiR2x0YVhSYkIya0NPQVJwQWpnRU9neGpiMjUyWlhKME93WT0iLCJleHAiOm51bGwsInB1ciI6InZhcmlhdGlvbiJ9fQ==--4759869aaa1270d3cd556742428b9bef8acb6049/DSC_0010-min.jpg?currency=usd&locale=id',
 
             ],
             [
@@ -318,6 +327,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Full day island hopping ke Pahawang Besar & Kecil',
                 'facilities'  => ['Life Jacket', 'Guide', 'P3K', 'Makan Siang', 'Snorkeling Gear', 'Dokumentasi'],
                 'whatsapp'    => '081234567891',
+                'thumbnail'   => 'https://s3.rdbuz.com/activity-images/Activity/1921/MOB/1921_1.png',
 
             ],
         ];
@@ -328,7 +338,6 @@ class DatabaseSeeder extends Seeder
                 'user_id'     => $vendor->user_id,
                 'vendor_id'   => $vendor->id,
                 'category_id' => $categories[0]->id,
-                'thumbnail'   => 'https://placehold.co/800x600/0284c7/ffffff?text=' . urlencode($boat['name']),
                 'is_featured' => true,
                 'is_active'   => true,
                 'status'      => 'active',
@@ -349,6 +358,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Peralatan snorkeling dasar di Pahawang',
                 'facilities'  => ['Masker', 'Snorkel', 'Life Jacket'],
                 'whatsapp'    => '081234567893',
+                'thumbnail'   => 'https://www.joglowisata.com/wp-content/uploads/2026/05/Paket-Wisata-Open-Trip-Pahawang-1-Hari.jpg',
 
             ],
             [
@@ -360,6 +370,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Set lengkap snorkeling premium dengan kamera bawah air',
                 'facilities'  => ['Masker Anti-Fog', 'Dry Snorkel', 'Fin', 'Wetsuit', 'Life Jacket', 'Kamera Underwater'],
                 'whatsapp'    => '081234567893',
+                'thumbnail'   => 'https://image.made-in-china.com/2f0j00qFbVQKNnSkzo/Basic-Customization-Mask-Fin-Snorkel-Set-with-Adult-Snorkeling-Gear-Panoramic-View-Diving-Mask-Trek-Fin-Dry-Top-Snorkel-Travel-Bags-Snorkel-for-Lap-Swimming.webp',
 
             ],
             [
@@ -371,6 +382,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Peralatan snorkeling di Teluk Kiluan',
                 'facilities'  => ['Masker', 'Snorkel', 'Fin', 'Life Jacket'],
                 'whatsapp'    => '081234567892',
+                'thumbnail'   => 'https://cdn.tripspoint.com/uploads/photos/7790/snorkeling-in-wall-point-gamat-bay-and-manta-bay-nusa-penida-island_q0v0G.jpeg',
 
             ],
         ];
@@ -381,7 +393,6 @@ class DatabaseSeeder extends Seeder
                 'user_id'     => $vendor->user_id,
                 'vendor_id'   => $vendor->id,
                 'category_id' => $categories[1]->id,
-                'thumbnail'   => 'https://placehold.co/800x600/0891b2/ffffff?text=' . urlencode($snorkel['name']),
                 'is_featured' => true,
                 'is_active'   => true,
                 'status'      => 'active',
@@ -403,6 +414,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Homestay tepi pantai dengan sarapan di Pahawang',
                 'facilities'  => ['WiFi', 'Kamar Mandi Dalam', 'Sarapan', 'Teras Laut', 'Parkir'],
                 'whatsapp'    => '081234567892',
+                'thumbnail'   => 'https://mediabooster.news/wp-content/uploads/2022/05/Pulau-Pahawang.jpg',
 
             ],
             [
@@ -415,6 +427,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Villa modern menghadap pantai surfing Krui',
                 'facilities'  => ['AC', 'WiFi', 'Dapur Mini', 'Kamar Mandi Dalam', 'Parkir', 'TV'],
                 'whatsapp'    => '081234567892',
+                'thumbnail'   => 'https://www.reservasiku.com/wp-content/uploads/2023/02/5-Rekomendasi-Penginapan-Terbaik-Krui-Lampung-untuk-Para-Surfer-4.jpg',
 
             ],
             [
@@ -427,6 +440,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Lodge minimalis tepi Teluk Kiluan',
                 'facilities'  => ['Sarapan', 'Kamar Mandi Dalam', 'Pantai Pribadi', 'Hammock'],
                 'whatsapp'    => '081234567892',
+                'thumbnail'   => 'https://destinasindo.com/wp-content/uploads/2025/01/pulau-kiluan.webp',
 
             ],
             [
@@ -439,6 +453,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Cottage premium pemandangan 180° laut Pahawang',
                 'facilities'  => ['AC', 'Hot Shower', 'WiFi', 'Antar Jemput', 'Sarapan', 'Laundry'],
                 'whatsapp'    => '081234567892',
+                'thumbnail'   => 'https://pix10.agoda.net/hotelImages/65491488/0/f6d8c6f291aedc1ee1187d28f7d40bd5.jpeg?ce=2&s=702x392',
 
             ],
             [
@@ -451,6 +466,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Surf house dengan akses langsung ke ombak Krui',
                 'facilities'  => ['Surf Rack', 'WiFi', 'Dapur Bersama', 'Outdoor Shower', 'Lounge Area', 'Board Rental'],
                 'whatsapp'    => '081234567893',
+                'thumbnail'   => 'storage/products/thumbnails/YpMLD8i6VATD1H6R46yNhdasxRNFCUcisho4Yhu2.webp',
 
             ],
         ];
@@ -461,7 +477,6 @@ class DatabaseSeeder extends Seeder
                 'user_id'     => $vendor->user_id,
                 'vendor_id'   => $vendor->id,
                 'category_id' => $categories[2]->id,
-                'thumbnail'   => 'https://placehold.co/800x600/059669/ffffff?text=' . urlencode($homestay['name']),
                 'is_featured' => true,
                 'is_active'   => true,
                 'status'      => 'active',
@@ -483,6 +498,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Paket komplit 2H1M Pahawang termasuk semua fasilitas',
                 'facilities'  => ['Transportasi PP', 'Homestay', 'Makan 3x', 'Snorkeling Gear', 'Guide', 'Dokumentasi'],
                 'whatsapp'    => '081234567891',
+                'thumbnail'   => 'https://www.wisatamu.co.id/wp-content/uploads/2024/08/Paket-Wisata-Pahawang-2-Hari-1-Malam.jpg',
 
             ],
             [
@@ -495,6 +511,7 @@ class DatabaseSeeder extends Seeder
                 'short_description' => 'Dolphin watching eksklusif di Teluk Kiluan',
                 'facilities'  => ['Transportasi Laut', 'Sarapan', 'Makan Siang', 'Guide', 'Teropong', 'P3K'],
                 'whatsapp'    => '081234567892',
+                'thumbnail'   => 'https://citraniwisata.com/wp-content/uploads/2016/06/Paket-Teluk-Kiluan-e1539016806427.jpg',
 
             ],
         ];
@@ -505,7 +522,6 @@ class DatabaseSeeder extends Seeder
                 'user_id'     => $vendor->user_id,
                 'vendor_id'   => $vendor->id,
                 'category_id' => $categories[3]->id,
-                'thumbnail'   => 'https://placehold.co/800x600/7c3aed/ffffff?text=' . urlencode($paket['name']),
                 'is_featured' => true,
                 'is_active'   => true,
                 'status'      => 'active',

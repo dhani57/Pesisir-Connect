@@ -50,7 +50,7 @@
         <div class="email-container">
             {{-- Header --}}
             <div class="email-header">
-                <h1>🌊 PesisirConnect</h1>
+                <h1>PesisirConnect</h1>
                 <p>Platform Wisata Pesisir Lampung</p>
             </div>
 

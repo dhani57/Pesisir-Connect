@@ -155,6 +155,18 @@ class Vendor extends Model
         return $this->notifications()->where('is_read', false)->count();
     }
 
+    /** Get unread messages count. */
+    public function getUnreadMessagesCountAttribute(): int
+    {
+        $userId = $this->user_id;
+        return \App\Models\Message::whereHas('conversation', function ($query) {
+            $query->where('vendor_id', $this->id);
+        })
+        ->where('sender_id', '!=', $userId)
+        ->whereNull('read_at')
+        ->count();
+    }
+
     /** Get logo URL. */
     public function getLogoUrlAttribute(): string
     {

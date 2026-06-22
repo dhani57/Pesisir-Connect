@@ -124,6 +124,9 @@ class CheckoutController extends Controller
             // Generate Midtrans Snap token
             $snap = $this->midtransService->createSnapToken($transaction);
 
+            // Save snap token to database
+            $transaction->update(['snap_token' => $snap['token']]);
+
             return view('frontend.payment', [
                 'transaction' => $transaction->load(['product', 'customer']),
                 'snapToken'   => $snap['token'],
@@ -138,6 +141,45 @@ class CheckoutController extends Controller
 
             return back()->with('error', 'Terjadi kesalahan saat memproses pembayaran. Silakan coba lagi.');
         }
+    }
+
+    /**
+     * Resume a pending payment.
+     */
+    public function resumePayment(string $invoiceNumber): View|RedirectResponse
+    {
+        $transaction = Transaction::with(['product', 'customer'])
+            ->where('invoice_number', $invoiceNumber)
+            ->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        // Only pending transactions can be resumed
+        if ($transaction->status !== 'pending') {
+            return redirect()->route('dashboard')->with('error', 'Transaksi ini tidak dapat dilanjutkan pembayarannya karena statusnya bukan menunggu.');
+        }
+
+        $snapToken = $transaction->snap_token;
+
+        if (!$snapToken) {
+            try {
+                // Menghindari error "order_id sudah digunakan" dari Midtrans untuk transaksi lama
+                $newInvoiceNumber = 'PC-' . now()->format('Ymd') . '-' . strtoupper(uniqid());
+                $transaction->update(['invoice_number' => $newInvoiceNumber]);
+
+                $snap = $this->midtransService->createSnapToken($transaction);
+                $snapToken = $snap['token'];
+                $transaction->update(['snap_token' => $snapToken]);
+            } catch (\Exception $e) {
+                logger()->error('Resume payment failed: ' . $e->getMessage());
+                return redirect()->route('dashboard')->with('error', 'Terjadi kesalahan saat memuat ulang pembayaran. Silakan coba lagi.');
+            }
+        }
+
+        return view('frontend.payment', [
+            'transaction' => $transaction,
+            'snapToken'   => $snapToken,
+            'clientKey'   => $this->midtransService->getClientKey(),
+        ]);
     }
 
     /**
@@ -189,6 +231,25 @@ class CheckoutController extends Controller
             ->where('user_id', auth()->id())
             ->firstOrFail();
 
+        // Sync with Midtrans API directly, as webhooks might be delayed or unreachable in local environments.
+        if ($transaction->status === 'pending') {
+            try {
+                $statusObj = \Midtrans\Transaction::status($transaction->invoice_number);
+                $data = (array) $statusObj;
+                
+                $transactionStatus = $data['transaction_status'] ?? null;
+                $fraudStatus       = $data['fraud_status'] ?? null;
+
+                if ($this->midtransService->isPaymentSuccess($transactionStatus, $fraudStatus)) {
+                    $this->handlePaymentSuccess($transaction, $data);
+                } elseif ($this->midtransService->isPaymentFailed($transactionStatus)) {
+                    $this->handlePaymentFailed($transaction, $data);
+                }
+            } catch (\Exception $e) {
+                logger()->error('Midtrans status check error in finish page: ' . $e->getMessage());
+            }
+        }
+
         return view('frontend.payment-finish', compact('transaction'));
     }
 
@@ -214,7 +275,7 @@ class CheckoutController extends Controller
             VendorNotification::send(
                 $transaction->vendor_id,
                 'payment_received',
-                'Pembayaran Diterima! 💰',
+                'Pembayaran Diterima!',
                 'Pembayaran untuk pesanan #' . $transaction->invoice_number .
                 ' sebesar Rp ' . number_format($transaction->total_price, 0, ',', '.') .
                 ' telah berhasil diterima.',

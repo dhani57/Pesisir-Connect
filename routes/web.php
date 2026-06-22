@@ -24,6 +24,11 @@ Route::get('/produk/{slug}', [ProductController::class, 'show'])->name('produk.d
 Route::get('/destinasi', [PageController::class, 'destinasi'])->name('destinasi');
 Route::get('/tentang', [PageController::class, 'tentang'])->name('tentang');
 
+// Help Pages
+Route::get('/bantuan/cara-memesan', [PageController::class, 'caraMemesan'])->name('help.how-to-order');
+Route::get('/bantuan/faq', [PageController::class, 'faq'])->name('help.faq');
+Route::get('/bantuan/kebijakan-privasi', [PageController::class, 'kebijakanPrivasi'])->name('help.privacy-policy');
+
 /*
 |--------------------------------------------------------------------------
 | Authenticated Routes
@@ -43,12 +48,16 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth'])->group(function () {
     // Checkout Flow (specific route before wildcard)
     Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+    Route::get('/checkout/resume/{invoiceNumber}', [CheckoutController::class, 'resumePayment'])->name('checkout.resume');
     Route::match(['get', 'post'], '/checkout/{slug}', [CheckoutController::class, 'show'])->name('checkout');
     Route::get('/payment/finish/{invoiceNumber}', [CheckoutController::class, 'finish'])->name('checkout.finish');
 
     // Customer Reviews
     Route::post('/review/{transaction}', [CustomerReviewController::class, 'store'])->name('customer.review.store');
     Route::patch('/transaction/{transaction}/cancel', [CustomerReviewController::class, 'cancelTransaction'])->name('customer.transaction.cancel');
+
+    // E-Ticket
+    Route::get('/tiket/{invoiceNumber}', [CustomerDashboardController::class, 'ticket'])->name('customer.ticket');
 
     // Wishlist
     Route::get('/simpan', [WishlistController::class, 'index'])->name('wishlist.index');

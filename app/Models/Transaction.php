@@ -24,6 +24,7 @@ class Transaction extends Model
         'status',
         'vendor_status',
         'payment_method',
+        'snap_token',
         'midtrans_transaction_id',
         'midtrans_payment_type',
         'midtrans_response',
